@@ -7198,10 +7198,10 @@ a:not(.c-btn).is-poki-ball:before {
 .c-poki-logo {
     cursor: pointer;
     float: left;
-    height: 32px;
+    height: 48px;
     pointer-events: auto;
     position: relative;
-    width: 68px;
+    width: 102px;
 }
 
 .c-poki-logo--centered {
@@ -7210,8 +7210,8 @@ a:not(.c-btn).is-poki-ball:before {
 
 @media (min-width: 720px) {
     .c-poki-logo {
-        height: 40px;
-        width: 85px;
+        height: 70px;
+        width: 130px;
     }
 }
 
