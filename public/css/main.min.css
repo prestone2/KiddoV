@@ -6937,7 +6937,7 @@ a:not(.c-btn).is-poki-ball:before {
 }
 
 .c-mobile-menu__item h3 {
-    color: #002b50;
+    color: #8d0b41;
     margin-bottom: 0.25rem;
 }
 
@@ -7351,7 +7351,7 @@ a:not(.c-btn).is-poki-ball:before {
 }
 
 .c-social-list__item {
-    background-color: #002b50;
+    background-color: #8d0b41;
     border-bottom: none !important;
     border-radius: 50%;
     height: 32px;
@@ -7379,7 +7379,7 @@ a:not(.c-btn).is-poki-ball:before {
 .c-social-media a {
     -webkit-align-items: center;
     align-items: center;
-    background: #002b50;
+    background: #8d0b41;
     border-bottom: none;
     border-radius: 50%;
     height: 32px;
