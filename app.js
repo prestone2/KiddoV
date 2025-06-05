@@ -16,4 +16,7 @@ app.use(cors({
 
 // Serve static files from the 'Public' folder within the server directory
 app.use(express.static(path.join(__dirname, 'Public')))
-app.listen(4000, () => console.log('server listening on http://localhost:4000'))
+
+// Use process.env.PORT with a fallback to 4000 for local development
+const PORT = process.env.PORT || 4000
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
