@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_48/white/play-knop-filled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Styleguide-general-UI-sheet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="00-styleguide" transform="translate(-425.000000, -9417.000000)" fill="#FFFFFF">
+            <g id="Buttons" transform="translate(79.000000, 8496.000000)">
+                <g id="icon_48/white/play-knop-filled" transform="translate(346.000000, 921.000000)">
+                    <g id="play-knop">
+                        <g id="icon_interface_48_playknop-" fill-rule="nonzero">
+                            <path d="M24,48 C10.745166,48 1.623249e-15,37.254834 0,24 C-1.623249e-15,10.745166 10.745166,2.4348735e-15 24,0 C37.254834,-2.4348735e-15 48,10.745166 48,24 C47.9848454,37.2485517 37.2485517,47.9848454 24,48 Z M20.5,33.5 C20.8170815,33.5001425 21.1260214,33.3996136 21.3823,33.2129 L32.3823,25.2129 C32.7702522,24.9306157 32.9997618,24.4797826 32.9997618,24 C32.9997618,23.5202174 32.7702522,23.0693843 32.3823,22.7871 L21.3823,14.7871 C20.9260506,14.4552578 20.3221897,14.4074817 19.8194341,14.6634496 C19.3166785,14.9194175 19.0000652,15.4358344 19,16 L19,32 C18.9998408,32.3978735 19.1578249,32.7794969 19.439164,33.060836 C19.7205031,33.3421751 20.1021265,33.5001592 20.5,33.5 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
