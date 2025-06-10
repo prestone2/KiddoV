@@ -16,20 +16,20 @@ const Hero: React.FC = () => {
               className="text-4xl md:text-5xl font-bold leading-tight animate-fade-in"
               style={{ color: '#8d0b41' }}
             >
-              Reimagine the Impossible with Roblox
+              Reimagine the Impossible with Kiddoverse
             </h1>
             <p className="text-xl opacity-90 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              Roblox is the ultimate platform for immersive experiences. 
+              KiddoVerse is the ultimate platform for immersive experiences. 
               Play, create, and share with a global community.
             </p>
             <div className="pt-4 flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <Link to="/signup">
+              {/* <Link to="/signup">
                 <Button className="bg-white text-roblox-blue hover:bg-gray-100 font-medium px-6 py-2 rounded-full">
                   Sign Up
                 </Button>
-              </Link>
+              </Link> */}
               <Link to="/games">
-                <Button variant="outline" className="text-white border-white hover:bg-white/10 font-medium px-6 py-2 rounded-full">
+                <Button variant="outline" className="text-black border-white hover:bg-white/10 font-medium px-6 py-2 rounded-full">
                   Discover Games
                 </Button>
               </Link>

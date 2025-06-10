@@ -46,7 +46,7 @@ const Index = () => {
             <div className="md:w-1/2 px-8">
               <h2 className="text-3xl font-bold mb-4">Create Anything You Can Imagine</h2>
               <p className="text-gray-700 mb-6 text-lg">
-                With Roblox Studio, anyone can design, build, and publish immersive 3D experiences. 
+                With Kiddo Studio, anyone can design, build, and publish immersive 3D experiences. 
                 Join millions of creators and publish your unique experience to reach billions of users.
               </p>
               <a 

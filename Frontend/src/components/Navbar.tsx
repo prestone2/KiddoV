@@ -3,30 +3,33 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Search, Bell, Settings, LogOut, User, Users, Coins, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/useAuth';
 import logo from '@/assets/logo.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const userData = localStorage.getItem('user');
-    setIsLoggedIn(loggedIn);
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
-    setIsLoggedIn(false);
-    setUser(null);
+  const handleLogout = async () => {
+    await signOut();
     navigate('/');
   };
+
+  if (loading) {
+    return (
+      <nav className="bg-white shadow-md sticky top-0 z-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <Link to="/" className="flex items-center">
+              <img src={logo} alt="Logo" className="h-12 w-auto rounded" />
+            </Link>
+            <div className="animate-pulse h-8 w-32 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -65,7 +68,7 @@ const Navbar = () => {
 
           {/* Right Side - User Menu or Auth Buttons */}
           <div className="flex items-center space-x-4">
-            {isLoggedIn && user ? (
+            {user ? (
               <>
                 <Link
                   to="/robux"
@@ -86,11 +89,11 @@ const Navbar = () => {
                 <div className="relative group">
                   <Button variant="ghost" size="sm" className="flex items-center space-x-2">
                     <img 
-                      src={user.avatar} 
-                      alt={user.displayName} 
+                       src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150" 
+                      alt="User Avatar" 
                       className="w-6 h-6 rounded-full"
                     />
-                    <span className="hidden sm:inline">{user.displayName}</span>
+                     <span className="hidden sm:inline">{user.email?.split('@')[0]}</span>
                   </Button>
                   
                   {/* Dropdown Menu */}
@@ -160,7 +163,7 @@ const Navbar = () => {
               <Link to="/groups" className="text-gray-700 hover:text-roblox-blue transition-colors">
                 Groups
               </Link>
-              {isLoggedIn && (
+              {user && (
                 <>
                   <Link to="/friends" className="text-gray-700 hover:text-roblox-blue transition-colors">
                     Friends

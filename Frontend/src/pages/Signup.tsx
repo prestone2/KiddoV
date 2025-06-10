@@ -1,28 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import logo from '@/assets/logo.png'; // Adjust the path if needed
 import bgImage from '@/assets/bg-solid-yellow.png';
+import { useAuth } from '@/hooks/useAuth';
 
 const Signup = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+   const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+ const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { signUp, user } = useAuth();
 
-  const handleSignup = (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate signup - in real app this would connect to backend
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('user', JSON.stringify({
-      username: username,
-      displayName: username,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'
-    }));
-    navigate('/');
+    
+    if (password !== confirmPassword) {
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await signUp( email, password, username, displayName);
+    
+    if (!error) {
+      // User will be redirected after email confirmation
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -51,7 +68,20 @@ const Signup = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Choose a username"
+              placeholder="Choose a unique username"
+              className="mt-1"
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="displayName">Display Name</Label>
+            <Input
+              id="displayName"
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your display name"
               className="mt-1"
               required
             />
@@ -94,13 +124,17 @@ const Signup = () => {
               className="mt-1"
               required
             />
+            {password !== confirmPassword && confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
+            )}
           </div>
 
           <Button
             type="submit"
+            disabled={loading || password !== confirmPassword}
             className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
           >
-            Create Account
+             {loading ? 'Creating Account...' : 'Create Account'}
           </Button>
         </form>
 

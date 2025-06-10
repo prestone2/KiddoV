@@ -180,7 +180,7 @@ const Footer: React.FC = () => {
                 className="h-20 w-auto rounded"
               />
             </div>
-            <p className="text-gray-600 mb-4">Roblox is a global platform that brings people together through play.</p>
+            <p className="text-gray-600 mb-4">Kiddoverse is a global platform that brings people together through play.</p>
           </div>
         </div>
         

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,21 +8,33 @@ import bgImage from '@/assets/bg-solid-yellow.png';
 import logo from '@/assets/logo.png';
 import FancyCursor from '@/components/FancyCursor';
 
+import { useAuth } from '@/hooks/useAuth';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { signIn, user } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login - in real app this would connect to backend
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('user', JSON.stringify({
-      username: 'CoolRobloxUser123',
-      displayName: 'Alex',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'
-    }));
-    navigate('/');
+    setLoading(true);
+
+    const { error } = await signIn(email, password);
+    
+    if (!error) {
+      navigate('/');
+    }
+    
+    setLoading(false);
   };
 
   return (
