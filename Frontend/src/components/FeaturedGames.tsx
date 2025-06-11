@@ -6,13 +6,12 @@ import { ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGames } from '@/hooks/useGames';
 
-
 interface FeaturedGamesProps {
   title: string;
 }
 
 const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title }) => {
-   const { data: games, isLoading, error } = useGames();
+  const { data: games, isLoading, error } = useGames();
 
   if (isLoading) {
     return (
@@ -71,6 +70,7 @@ const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title }) => {
               title={game.Title}
               creator={game.Developer}
               description={game.Description}
+              assets={game.Assets}
             />
           ))}
         </div>

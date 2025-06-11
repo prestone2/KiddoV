@@ -1,14 +1,23 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FeaturedGames from '@/components/FeaturedGames';
 import Footer from '@/components/Footer';
-import FancyCursor from '@/components/FancyCursor'; // <-- Add this import
+import { useGenres } from '@/hooks/useGames';
+import { Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const { data: genres, isLoading: genresLoading } = useGenres();
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (genre: string) => {
+    navigate(`/games?genre=${encodeURIComponent(genre)}`);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      <FancyCursor /> {/* <-- Add this line */}
       <Navbar />
       <Hero />
       
@@ -18,18 +27,40 @@ const Index = () => {
         {/* Featured Categories Section */}
         <section className="py-8">
           <h2 className="text-2xl font-bold mb-6">Featured Categories</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['Adventure', 'Role Play', 'Action', 'Simulator'].map(category => (
-              <div 
-                key={category}
-                className="rounded-lg overflow-hidden relative h-32 bg-gradient-to-r from-roblox-blue to-blue-600 hover:opacity-90 transition-opacity cursor-pointer"
-              >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-white font-bold text-xl">{category}</h3>
+          {genresLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin mr-2" />
+              <span>Loading categories...</span>
+            </div>
+          ) : genres && genres.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {genres.slice(0, 8).map((genre, index) => (
+                <div 
+                  key={genre}
+                  className="rounded-lg overflow-hidden relative h-32 bg-gradient-to-r from-roblox-blue to-blue-600 hover:opacity-90 transition-opacity cursor-pointer"
+                  onClick={() => handleCategoryClick(genre)}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <h3 className="text-white font-bold text-xl text-center px-2">{genre}</h3>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {['Adventure', 'Role Play', 'Action', 'Simulator'].map(category => (
+                <div 
+                  key={category}
+                  className="rounded-lg overflow-hidden relative h-32 bg-gradient-to-r from-roblox-blue to-blue-600 hover:opacity-90 transition-opacity cursor-pointer"
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <h3 className="text-white font-bold text-xl">{category}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
         
         <FeaturedGames title="Trending Now" />

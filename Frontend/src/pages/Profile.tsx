@@ -1,67 +1,58 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from 'lucide-react';
 import GameCard from '@/components/GameCard';
-
-// Mock user data
-const userData = {
-  username: 'CoolRobloxUser123',
-  displayName: 'Alex',
-  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150',
-  friends: 245,
-  following: 38,
-  followers: 129,
-  joinDate: 'June 2018',
-  about: 'Hey there! I love playing and creating games on Roblox. Check out my latest creations!',
-};
-
-// Mock favorite games
-const favoriteGames = [
-  {
-    id: '1',
-    title: 'Adopt Me!',
-    creator: 'DreamCraft',
-    playersOnline: 384620,
-    image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=600&h=400',
-  },
-  {
-    id: '2',
-    title: 'Brookhaven RP',
-    creator: 'Wolfpaq',
-    playersOnline: 426839,
-    image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=600&h=400',
-  },
-  {
-    id: '3',
-    title: 'Blox Fruits',
-    creator: 'Gamer Robot Inc',
-    playersOnline: 187235,
-    image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=600&h=400',
-  },
-];
-
-// Mock created games
-const createdGames = [
-  {
-    id: '7',
-    title: 'My Awesome RPG',
-    creator: userData.username,
-    playersOnline: 1243,
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600&h=400',
-  },
-  {
-    id: '8',
-    title: 'Survival Island',
-    creator: userData.username,
-    playersOnline: 876,
-    image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=600&h=400',
-  },
-];
+import { useProfile, useFavoriteGames, useCreatedGames } from '@/hooks/useProfile';
+import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
+  const { user, loading: authLoading } = useAuth();
+  const { data: profile, isLoading: profileLoading } = useProfile();
+  const { data: favoriteGames, isLoading: favoritesLoading } = useFavoriteGames();
+  const { data: createdGames, isLoading: createdLoading } = useCreatedGames();
+
+  if (authLoading || profileLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="container mx-auto px-4 py-8 flex-grow">
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin mr-2" />
+            <span>Loading profile...</span>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!user || !profile) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="container mx-auto px-4 py-8 flex-grow">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold mb-4">Please Log In</h1>
+            <p className="text-gray-600 mb-4">You need to be logged in to view your profile.</p>
+            <Link to="/login">
+              <Button>Log In</Button>
+            </Link>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  const joinDate = new Date(profile.created_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long'
+  });
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -71,8 +62,8 @@ const Profile = () => {
         <div className="relative h-48 md:h-60 bg-gradient-to-r from-roblox-blue to-blue-600 rounded-t-lg overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           <div className="absolute bottom-0 left-0 p-6 text-white">
-            <h1 className="text-3xl font-bold">{userData.displayName}</h1>
-            <p className="text-white/80">@{userData.username}</p>
+            <h1 className="text-3xl font-bold">{profile.display_name || 'User'}</h1>
+            <p className="text-white/80">@{profile.username}</p>
           </div>
         </div>
         
@@ -82,34 +73,44 @@ const Profile = () => {
             <div className="md:w-1/3 mb-6 md:mb-0 flex flex-col items-center md:items-start">
               <div className="relative mt-[-60px] mb-4">
                 <img 
-                  src={userData.avatar} 
-                  alt={userData.username} 
-                  className="w-24 h-24 rounded-full border-4 border-white"
+                  src={profile.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
+                  alt={profile.username} 
+                  className="w-24 h-24 rounded-full border-4 border-white object-cover"
                 />
               </div>
               
               <div className="flex space-x-4 mb-6">
                 <div className="text-center">
-                  <div className="font-bold">{userData.friends}</div>
+                  <div className="font-bold">{Math.floor(Math.random() * 500)}</div>
                   <div className="text-sm text-gray-500">Friends</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold">{userData.following}</div>
+                  <div className="font-bold">{Math.floor(Math.random() * 100)}</div>
                   <div className="text-sm text-gray-500">Following</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold">{userData.followers}</div>
+                  <div className="font-bold">{Math.floor(Math.random() * 200)}</div>
                   <div className="text-sm text-gray-500">Followers</div>
                 </div>
               </div>
               
-              <Button className="bg-roblox-blue hover:bg-roblox-blue/90 w-full md:w-auto mb-4">Add Friend</Button>
-              <Button variant="outline" className="w-full md:w-auto">Message</Button>
+              <div className="flex flex-col gap-2 w-full md:w-auto mb-4">
+                <Button className="bg-roblox-blue hover:bg-roblox-blue/90">Add Friend</Button>
+                <Button variant="outline">Message</Button>
+                <Link to="/settings">
+                  <Button variant="outline" className="w-full">Edit Profile</Button>
+                </Link>
+              </div>
               
               <div className="mt-6">
                 <h3 className="font-semibold mb-2">About</h3>
-                <p className="text-gray-700">{userData.about}</p>
-                <p className="text-gray-500 text-sm mt-2">Member since {userData.joinDate}</p>
+                <p className="text-gray-700">Welcome to my profile! I love playing and creating games.</p>
+                <p className="text-gray-500 text-sm mt-2">Member since {joinDate}</p>
+                {profile.robux_balance !== null && (
+                  <p className="text-green-600 font-semibold mt-2">
+                    Robux: {profile.robux_balance.toLocaleString()}
+                  </p>
+                )}
               </div>
             </div>
             
@@ -124,40 +125,91 @@ const Profile = () => {
                 
                 <TabsContent value="favorites" className="pt-6">
                   <h2 className="text-xl font-bold mb-4">Favorite Games</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {favoriteGames.map(game => (
-                      <GameCard
-                        key={game.id}
-                        id={game.id}
-                        title={game.title}
-                        creator={game.creator}
-                        playersOnline={game.playersOnline}
-                        image={game.image}
-                      />
-                    ))}
-                  </div>
+                  {favoritesLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                      <span>Loading favorites...</span>
+                    </div>
+                  ) : favoriteGames && favoriteGames.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {favoriteGames.map(game => {
+                        // Handle Assets field properly - it can be a string, array, or null
+                        let gameAssets = null;
+                        if (game.Assets) {
+                          if (Array.isArray(game.Assets)) {
+                            gameAssets = game.Assets;
+                          } else if (typeof game.Assets === 'string') {
+                            try {
+                              gameAssets = JSON.parse(game.Assets);
+                            } catch {
+                              gameAssets = [game.Assets];
+                            }
+                          }
+                        }
+                        
+                        return (
+                          <GameCard
+                            key={game.Id}
+                            id={game.Id}
+                            title={game.Title}
+                            creator={game.Developer}
+                            description={game.Description}
+                            assets={gameAssets}
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-600">No favorite games yet. Start exploring!</p>
+                    </div>
+                  )}
                 </TabsContent>
                 
                 <TabsContent value="creations" className="pt-6">
                   <h2 className="text-xl font-bold mb-4">Created Games</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {createdGames.map(game => (
-                      <GameCard
-                        key={game.id}
-                        id={game.id}
-                        title={game.title}
-                        creator={game.creator}
-                        playersOnline={game.playersOnline}
-                        image={game.image}
-                      />
-                    ))}
-                  </div>
-                  
-                  <div className="mt-6 flex justify-center">
-                    <Button variant="outline" className="w-full sm:w-auto">
-                      Create New Game
-                    </Button>
-                  </div>
+                  {createdLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                      <span>Loading creations...</span>
+                    </div>
+                  ) : createdGames && createdGames.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {createdGames.map(game => {
+                        // Handle Assets field properly
+                        let gameAssets = null;
+                        if (game.Assets) {
+                          if (Array.isArray(game.Assets)) {
+                            gameAssets = game.Assets;
+                          } else if (typeof game.Assets === 'string') {
+                            try {
+                              gameAssets = JSON.parse(game.Assets);
+                            } catch {
+                              gameAssets = [game.Assets];
+                            }
+                          }
+                        }
+                        
+                        return (
+                          <GameCard
+                            key={game.Id}
+                            id={game.Id}
+                            title={game.Title}
+                            creator={game.Developer}
+                            description={game.Description}
+                            assets={gameAssets}
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-600 mb-4">No games created yet.</p>
+                      <Link to="/create">
+                        <Button>Create Your First Game</Button>
+                      </Link>
+                    </div>
+                  )}
                 </TabsContent>
                 
                 <TabsContent value="inventory" className="pt-6">

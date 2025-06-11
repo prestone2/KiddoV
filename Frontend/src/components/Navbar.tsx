@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Search, Bell, Settings, LogOut, User, Users, Coins, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,15 +6,49 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import logo from '@/assets/logo.png';
 
+import { useSearch } from '@/hooks/useSearch';
+import SearchResults from '@/components/SearchResults';
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const { data: searchResults, isLoading: searchLoading } = useSearch(searchQuery);
 
   const handleLogout = async () => {
     await signOut();
     navigate('/');
   };
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowSearchResults(value.length >= 2);
+  };
+
+  const handleSearchResultClose = () => {
+    setShowSearchResults(false);
+    setSearchQuery('');
+  };
+
 
   if (loading) {
     return (
@@ -57,13 +91,25 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="hidden lg:flex items-center relative">
+           <div className="hidden lg:flex items-center relative" ref={searchRef}>
             <Input 
               type="text" 
-              placeholder="Search..." 
+              placeholder="Search games, user..." 
               className="w-64 pl-10"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
             />
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-black-400" />
+
+            {showSearchResults && (
+              <SearchResults
+                query={searchQuery}
+                results={searchResults}
+                isLoading={searchLoading}
+                onClose={handleSearchResultClose}
+              />
+            )}
           </div>
 
           {/* Right Side - User Menu or Auth Buttons */}
@@ -151,6 +197,28 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
             <div className="flex flex-col space-y-4">
+              {/* Mobile Search */}
+              <div className="relative" ref={searchRef}>
+                <Input 
+                  type="text" 
+                  placeholder="Search games, users..." 
+                  className="w-full pl-10"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
+                />
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                
+                {showSearchResults && (
+                  <SearchResults
+                    query={searchQuery}
+                    results={searchResults}
+                    isLoading={searchLoading}
+                    onClose={handleSearchResultClose}
+                  />
+                )}
+              </div>
+              
               <Link to="/games" className="text-gray-700 hover:text-roblox-blue transition-colors">
                 Games
               </Link>

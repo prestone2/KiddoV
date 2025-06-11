@@ -9,13 +9,19 @@ import logo from '@/assets/logo.png';
 import FancyCursor from '@/components/FancyCursor';
 
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn, user } = useAuth();
+   const { toast } = useToast();
 
   // Redirect if already logged in
   useEffect(() => {
@@ -36,6 +42,88 @@ const Login = () => {
     
     setLoading(false);
   };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResetLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Password reset email sent",
+          description: "Check your email for password reset instructions."
+        });
+        setShowForgotPassword(false);
+        setResetEmail('');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred.",
+        variant: "destructive"
+      });
+    }
+
+    setResetLoading(false);
+  };
+
+  if (showForgotPassword) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-roblox-blue to-blue-700 flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+          <div className="text-center mb-8">
+            <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
+              ROBLOX
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Reset Password</h1>
+            <p className="text-gray-600">Enter your email to receive reset instructions</p>
+          </div>
+
+          <form onSubmit={handleForgotPassword} className="space-y-6">
+            <div>
+              <Label htmlFor="reset-email">Email</Label>
+              <Input
+                id="reset-email"
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="mt-1"
+                required
+              />
+            </div>
+
+            <Button
+              type="submit"
+              disabled={resetLoading}
+              className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
+            >
+              {resetLoading ? 'Sending...' : 'Send Reset Email'}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => setShowForgotPassword(false)}
+              className="text-sm text-roblox-blue hover:text-roblox-blue/80"
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -108,9 +196,12 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-roblox-blue hover:text-roblox-blue/80">
-                  Forgot your password?
-                </a>
+                <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="font-medium text-roblox-blue hover:text-roblox-blue/80">
+                Forgot your password?
+                 </button>
               </div>
             </div>
 
