@@ -120,7 +120,6 @@ const Profile = () => {
                   <TabsTrigger value="favorites">Favorites</TabsTrigger>
                   <TabsTrigger value="creations">Creations</TabsTrigger>
                   <TabsTrigger value="inventory">Inventory</TabsTrigger>
-                  <TabsTrigger value="groups">Groups</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="favorites" className="pt-6">

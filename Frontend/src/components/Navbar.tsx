@@ -1,173 +1,114 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, Bell, Settings, LogOut, User, Users, Coins, ShoppingBag } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Search, Menu, X } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import logo from '@/assets/logo.png';
-
 import { useSearch } from '@/hooks/useSearch';
 import SearchResults from '@/components/SearchResults';
+import NotificationDropdown from '@/components/NotificationDropdown';
+import logo from '@/assets/logo.png';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const { user, signOut, loading } = useAuth();
-  const navigate = useNavigate();
-  const searchRef = useRef<HTMLDivElement>(null);
-
+  const { user, signOut } = useAuth();
   const { data: searchResults, isLoading: searchLoading } = useSearch(searchQuery);
 
-  const handleLogout = async () => {
-    await signOut();
-    navigate('/');
-  };
-
-  // Close search results when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowSearchResults(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    setShowSearchResults(value.length >= 2);
+    const query = e.target.value;
+    setSearchQuery(query);
+    setShowSearchResults(query.length >= 2);
   };
 
-  const handleSearchResultClose = () => {
+  const handleSearchFocus = () => {
+    if (searchQuery.length >= 2) {
+      setShowSearchResults(true);
+    }
+  };
+
+  const handleSearchBlur = () => {
+    // Delay hiding to allow clicking on results
+    setTimeout(() => setShowSearchResults(false), 200);
+  };
+
+  const closeSearchResults = () => {
     setShowSearchResults(false);
     setSearchQuery('');
   };
 
-
-  if (loading) {
-    return (
-      <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center">
-              <img src={logo} alt="Logo" className="h-12 w-auto rounded" />
-            </Link>
-            <div className="animate-pulse h-8 w-32 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
+  const menuItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Games', href: '/games' },
+    { name: 'Create', href: '/create' },
+    { name: 'Marketplace', href: '/marketplace' },
+    { name: 'Friends', href: '/friends' },
+  ];
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-white shadow-lg border-b">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src={logo} alt="Logo" className="h-12 w-auto rounded" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/games" className="text-black-700 hover:text-roblox-blue transition-colors">
-              Games
-            </Link>
-            <Link to="/catalog" className="text-black-700 hover:text-roblox-blue transition-colors">
-              Catalog
-            </Link>
-            <Link to="/create" className="text-black-700 hover:text-roblox-blue transition-colors">
-              Create
-            </Link>
-            <Link to="/groups" className="text-black-700 hover:text-roblox-blue transition-colors">
-              Groups
-            </Link>
-          </div>
-
-          {/* Search Bar */}
-           <div className="hidden lg:flex items-center relative" ref={searchRef}>
-            <Input 
-              type="text" 
-              placeholder="Search games, user..." 
-              className="w-64 pl-10"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-black-400" />
-
-            {showSearchResults && (
-              <SearchResults
-                query={searchQuery}
-                results={searchResults}
-                isLoading={searchLoading}
-                onClose={handleSearchResultClose}
+          {/* Desktop Search */}
+          <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
+            <div className="relative w-full">
+              <Input
+                type="text"
+                placeholder="Search games, users..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onFocus={handleSearchFocus}
+                onBlur={handleSearchBlur}
+                className="pl-10 pr-4"
               />
-            )}
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+              
+              {showSearchResults && (
+                <SearchResults
+                  query={searchQuery}
+                  results={searchResults}
+                  isLoading={searchLoading}
+                  onClose={closeSearchResults}
+                />
+              )}
+            </div>
           </div>
 
-          {/* Right Side - User Menu or Auth Buttons */}
-          <div className="flex items-center space-x-4">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="text-gray-700 hover:text-roblox-blue font-medium transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
+            
             {user ? (
-              <>
-                <Link
-                  to="/robux"
-                  className="flex items-center space-x-1 text-white px-3 py-1 rounded transition-colors"
-                  style={{ backgroundColor: '#8d0b41' }}
-                >
-                  <Coins className="w-4 h-4" />
-                  <span className="hidden sm:inline">ksh 1,250</span>
-                </Link>
-                <Link to="/friends">
-                  <Button variant="ghost" size="sm">
-                    <Users className="w-4 h-4" />
+              <div className="flex items-center space-x-4">
+                <NotificationDropdown />
+                <Link to="/robux">
+                  <Button variant="outline" size="sm" className="text-green-600 border-green-600 hover:bg-green-50">
+                    Buy Robux
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm">
-                  <Bell className="w-4 h-4" />
+                <Link to="/profile">
+                  <Button variant="outline" size="sm">
+                    Profile
+                  </Button>
+                </Link>
+                <Button variant="outline" size="sm" onClick={() => signOut()}>
+                  Sign Out
                 </Button>
-                <div className="relative group">
-                  <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                    <img 
-                       src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150" 
-                      alt="User Avatar" 
-                      className="w-6 h-6 rounded-full"
-                    />
-                     <span className="hidden sm:inline">{user.email?.split('@')[0]}</span>
-                  </Button>
-                  
-                  {/* Dropdown Menu */}
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-1">
-                      <Link to="/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <User className="w-4 h-4 mr-2" />
-                        Profile
-                      </Link>
-                      <Link to="/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <Settings className="w-4 h-4 mr-2" />
-                        Settings
-                      </Link>
-                      <Link to="/marketplace" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <ShoppingBag className="w-4 h-4 mr-2" />
-                        Marketplace
-                      </Link>
-                      <button 
-                        onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Logout
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </>
+              </div>
             ) : (
               <div className="flex items-center space-x-2">
                 <Link to="/login">
@@ -176,36 +117,40 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link to="/signup">
-                  <Button className="bg-roblox-blue hover:bg-roblox-blue/90" size="sm">
+                  <Button size="sm" className="bg-roblox-blue hover:bg-roblox-blue/90">
                     Sign Up
                   </Button>
                 </Link>
               </div>
             )}
+          </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
-            <div className="flex flex-col space-y-4">
-              {/* Mobile Search */}
-              <div className="relative" ref={searchRef}>
-                <Input 
-                  type="text" 
-                  placeholder="Search games, users..." 
-                  className="w-full pl-10"
+        {isOpen && (
+          <div className="md:hidden py-4 border-t">
+            {/* Mobile Search */}
+            <div className="mb-4 relative">
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search games, users..."
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                  className="pl-10 pr-4"
                 />
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 
@@ -214,32 +159,65 @@ const Navbar = () => {
                     query={searchQuery}
                     results={searchResults}
                     isLoading={searchLoading}
-                    onClose={handleSearchResultClose}
+                    onClose={closeSearchResults}
                   />
                 )}
               </div>
+            </div>
+            
+            <div className="space-y-2">
+              {menuItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="block py-2 text-gray-700 hover:text-roblox-blue font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
               
-              <Link to="/games" className="text-gray-700 hover:text-roblox-blue transition-colors">
-                Games
-              </Link>
-              <Link to="/catalog" className="text-gray-700 hover:text-roblox-blue transition-colors">
-                Catalog
-              </Link>
-              <Link to="/create" className="text-gray-700 hover:text-roblox-blue transition-colors">
-                Create
-              </Link>
-              <Link to="/groups" className="text-gray-700 hover:text-roblox-blue transition-colors">
-                Groups
-              </Link>
-              {user && (
-                <>
-                  <Link to="/friends" className="text-gray-700 hover:text-roblox-blue transition-colors">
-                    Friends
+              {user ? (
+                <div className="pt-4 space-y-2 border-t">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Notifications</span>
+                    <NotificationDropdown />
+                  </div>
+                  <Link to="/robux" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full text-green-600 border-green-600">
+                      Buy Robux
+                    </Button>
                   </Link>
-                  <Link to="/robux" className="text-gray-700 hover:text-roblox-blue transition-colors">
-                    Robux
+                  <Link to="/profile" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Profile
+                    </Button>
                   </Link>
-                </>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => {
+                      signOut();
+                      setIsOpen(false);
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <div className="pt-4 space-y-2 border-t">
+                  <Link to="/login" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Log In
+                    </Button>
+                  </Link>
+                  <Link to="/signup" onClick={() => setIsOpen(false)}>
+                    <Button size="sm" className="w-full bg-roblox-blue hover:bg-roblox-blue/90">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
               )}
             </div>
           </div>

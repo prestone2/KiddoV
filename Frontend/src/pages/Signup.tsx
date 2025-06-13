@@ -1,19 +1,21 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import logo from '@/assets/logo.png'; // Adjust the path if needed
+import logo from '@/assets/logo.png';
 import bgImage from '@/assets/bg-solid-yellow.png';
 import { useAuth } from '@/hooks/useAuth';
+import { motion } from 'framer-motion';
+import FancyCursor from '@/components/FancyCursor'; // <-- Add this import
 
 const Signup = () => {
-   const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
- const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { signUp, user } = useAuth();
 
@@ -26,19 +28,19 @@ const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       return;
     }
 
     setLoading(true);
 
-    const { error } = await signUp( email, password, username, displayName);
-    
+    const { error } = await signUp(email, password, username, displayName);
+
     if (!error) {
       // User will be redirected after email confirmation
     }
-    
+
     setLoading(false);
   };
 
@@ -47,17 +49,42 @@ const Signup = () => {
       className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 bg-opacity-90">
+      <FancyCursor /> {/* <-- Add the fancy cursor here */}
+      <motion.div
+        className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 bg-opacity-90"
+        initial={{ opacity: 0, scale: 0.95, y: 40 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+      >
         <div className="text-center mb-8">
-          <div className="inline-block mb-4">
+          <motion.div
+            className="inline-block mb-4"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.7, type: 'spring', stiffness: 120 }}
+          >
             <img
               src={logo}
               alt="Your Logo"
               className="h-20 mx-auto rounded"
             />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">Join Roblox</h1>
-          <p className="text-gray-600">Create your account and start playing!</p>
+          </motion.div>
+          <motion.h1
+            className="text-2xl font-bold text-gray-900"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            Join Roblox
+          </motion.h1>
+          <motion.p
+            className="text-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            Create your account and start playing!
+          </motion.p>
         </div>
 
         <form onSubmit={handleSignup} className="space-y-6">
@@ -134,7 +161,7 @@ const Signup = () => {
             disabled={loading || password !== confirmPassword}
             className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
           >
-             {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? 'Creating Account...' : 'Create Account'}
           </Button>
         </form>
 
@@ -146,7 +173,7 @@ const Signup = () => {
             </Link>
           </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

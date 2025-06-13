@@ -94,6 +94,7 @@ const GameDetail = () => {
         <GamePlayer
           gameUrl={game.GameURL}
           gameTitle={game.Title || 'Game'}
+          
           onClose={() => setIsPlaying(false)}
         />
       )}
