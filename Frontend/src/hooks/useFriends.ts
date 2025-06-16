@@ -31,32 +31,46 @@ export const useFriends = () => {
     queryFn: async (): Promise<Friend[]> => {
       if (!user) return [];
 
-      const { data, error } = await supabase
+      console.log('Fetching friends for user:', user.id);
+
+      // Get accepted relationships
+      const { data: relationships, error } = await supabase
         .from('user_relationships')
-        .select(`
-          *,
-          requester:profiles!user_relationships_requester_id_fkey(id, username, display_name, avatar_url),
-          addressee:profiles!user_relationships_addressee_id_fkey(id, username, display_name, avatar_url)
-        `)
+        .select('*')
         .eq('status', 'accepted')
         .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`);
 
       if (error) {
-        console.error('Error fetching friends:', error);
+        console.error('Error fetching relationships:', error);
         return [];
       }
 
-      return data?.map(relationship => {
-        const friend = relationship.requester_id === user.id ? relationship.addressee : relationship.requester;
-        return {
-          id: friend.id,
-          username: friend.username,
-          display_name: friend.display_name,
-          avatar_url: friend.avatar_url,
-          status: Math.random() > 0.5 ? 'online' : 'offline', // Mock status
-          lastSeen: Math.random() > 0.5 ? 'Online' : `${Math.floor(Math.random() * 24)} hours ago`,
-        };
-      }) || [];
+      if (!relationships || relationships.length === 0) return [];
+
+      // Get friend user IDs
+      const friendIds = relationships.map(rel => 
+        rel.requester_id === user.id ? rel.addressee_id : rel.requester_id
+      );
+
+      // Get friend profiles
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('id', friendIds);
+
+      if (profilesError) {
+        console.error('Error fetching friend profiles:', profilesError);
+        return [];
+      }
+
+      return profiles?.map(profile => ({
+        id: profile.id,
+        username: profile.username,
+        display_name: profile.display_name,
+        avatar_url: profile.avatar_url,
+        status: Math.random() > 0.5 ? 'online' : 'offline' as 'online' | 'offline',
+        lastSeen: Math.random() > 0.5 ? 'Online' : `${Math.floor(Math.random() * 24)} hours ago`,
+      })) || [];
     },
     enabled: !!user,
   });
@@ -66,12 +80,12 @@ export const useFriends = () => {
     queryFn: async (): Promise<FriendRequest[]> => {
       if (!user) return [];
 
-      const { data, error } = await supabase
+      console.log('Fetching friend requests for user:', user.id);
+
+      // Get pending requests where current user is the addressee
+      const { data: relationships, error } = await supabase
         .from('user_relationships')
-        .select(`
-          id,
-          requester:profiles!user_relationships_requester_id_fkey(id, username, display_name, avatar_url)
-        `)
+        .select('*')
         .eq('status', 'pending')
         .eq('addressee_id', user.id);
 
@@ -80,13 +94,30 @@ export const useFriends = () => {
         return [];
       }
 
-      return data?.map(request => ({
-        id: request.requester.id,
-        username: request.requester.username,
-        display_name: request.requester.display_name,
-        avatar_url: request.requester.avatar_url,
-        relationship_id: request.id,
-      })) || [];
+      if (!relationships || relationships.length === 0) return [];
+
+      // Get requester profiles
+      const requesterIds = relationships.map(rel => rel.requester_id);
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('id', requesterIds);
+
+      if (profilesError) {
+        console.error('Error fetching requester profiles:', profilesError);
+        return [];
+      }
+
+      return relationships.map(request => {
+        const profile = profiles?.find(p => p.id === request.requester_id);
+        return {
+          id: profile?.id || '',
+          username: profile?.username || '',
+          display_name: profile?.display_name || null,
+          avatar_url: profile?.avatar_url || null,
+          relationship_id: request.id,
+        };
+      }).filter(req => req.id);
     },
     enabled: !!user,
   });
@@ -94,6 +125,20 @@ export const useFriends = () => {
   const sendFriendRequest = useMutation({
     mutationFn: async (targetUserId: string) => {
       if (!user) throw new Error('User not authenticated');
+
+      console.log('Sending friend request to:', targetUserId);
+
+      // Check if relationship already exists
+      const { data: existingRelationship } = await supabase
+        .from('user_relationships')
+        .select('*')
+        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
+        .or(`requester_id.eq.${targetUserId},addressee_id.eq.${targetUserId}`)
+        .single();
+
+      if (existingRelationship) {
+        throw new Error('Relationship already exists');
+      }
 
       const { error } = await supabase
         .from('user_relationships')
@@ -117,6 +162,7 @@ export const useFriends = () => {
         }]);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-search'] });
       toast({
         title: "Friend request sent",
         description: "Your friend request has been sent!",
@@ -134,6 +180,8 @@ export const useFriends = () => {
 
   const acceptFriendRequest = useMutation({
     mutationFn: async (relationshipId: string) => {
+      console.log('Accepting friend request:', relationshipId);
+
       const { error } = await supabase
         .from('user_relationships')
         .update({ status: 'accepted', updated_at: new Date().toISOString() })
@@ -161,6 +209,8 @@ export const useFriends = () => {
 
   const declineFriendRequest = useMutation({
     mutationFn: async (relationshipId: string) => {
+      console.log('Declining friend request:', relationshipId);
+
       const { error } = await supabase
         .from('user_relationships')
         .delete()
@@ -185,6 +235,39 @@ export const useFriends = () => {
     },
   });
 
+  const removeFriend = useMutation({
+    mutationFn: async (friendId: string) => {
+      if (!user) throw new Error('User not authenticated');
+
+      console.log('Removing friend:', friendId);
+
+      // Find and delete the relationship
+      const { error } = await supabase
+        .from('user_relationships')
+        .delete()
+        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
+        .or(`requester_id.eq.${friendId},addressee_id.eq.${friendId}`)
+        .eq('status', 'accepted');
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['friends'] });
+      toast({
+        title: "Friend removed",
+        description: "Friend has been removed from your friends list.",
+      });
+    },
+    onError: (error) => {
+      console.error('Error removing friend:', error);
+      toast({
+        title: "Error",
+        description: "Failed to remove friend.",
+        variant: "destructive",
+      });
+    },
+  });
+
   return {
     friends,
     friendRequests,
@@ -192,5 +275,6 @@ export const useFriends = () => {
     sendFriendRequest: sendFriendRequest.mutate,
     acceptFriendRequest: acceptFriendRequest.mutate,
     declineFriendRequest: declineFriendRequest.mutate,
+    removeFriend: removeFriend.mutate,
   };
 };

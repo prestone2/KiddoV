@@ -6,14 +6,19 @@ import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GamePlayer from '@/components/GamePlayer';
+import FavoriteButton from '@/components/FavoriteButton';
+import ReportGameModal from '@/components/ReportGameModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Play, ArrowLeft, Users, Star, Heart } from 'lucide-react';
+import { Play, ArrowLeft, Users, Star, Share, Flag } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const GameDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const { toast } = useToast();
 
   const { data: game, isLoading, error } = useQuery({
     queryKey: ['game', id],
@@ -42,7 +47,43 @@ const GameDetail = () => {
     if (game?.GameURL) {
       setIsPlaying(true);
     } else {
-      alert('Game URL not available. This is a demo.');
+      toast({
+        title: "Game not available",
+        description: "This game cannot be played at the moment.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleShareGame = async () => {
+    try {
+      const gameUrl = `${window.location.origin}/games/${id}`;
+      await navigator.clipboard.writeText(gameUrl);
+      toast({
+        title: "Link Copied!",
+        description: "Game link has been copied to your clipboard.",
+      });
+    } catch (error) {
+      // Fallback for browsers that don't support clipboard API
+      const textArea = document.createElement('textarea');
+      textArea.value = `${window.location.origin}/games/${id}`;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        toast({
+          title: "Link Copied!",
+          description: "Game link has been copied to your clipboard.",
+        });
+      } catch (fallbackError) {
+        toast({
+          title: "Copy Failed",
+          description: "Unable to copy link to clipboard.",
+          variant: "destructive",
+        });
+      }
+      document.body.removeChild(textArea);
     }
   };
 
@@ -82,6 +123,7 @@ const GameDetail = () => {
     );
   }
 
+  // Get game image from Assets array or use fallback
   const gameImage = game.Assets && Array.isArray(game.Assets) && game.Assets.length > 0 
     ? String(game.Assets[0])
     : 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
@@ -94,7 +136,6 @@ const GameDetail = () => {
         <GamePlayer
           gameUrl={game.GameURL}
           gameTitle={game.Title || 'Game'}
-          
           onClose={() => setIsPlaying(false)}
         />
       )}
@@ -119,6 +160,9 @@ const GameDetail = () => {
                         src={gameImage} 
                         alt={game.Title || 'Game'} 
                         className="w-full h-96 object-cover rounded-t-lg"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
+                        }}
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                         <Button 
@@ -159,10 +203,7 @@ const GameDetail = () => {
                           <span className="font-semibold">4.8</span>
                           <span className="text-gray-600 ml-1">(2.1k)</span>
                         </div>
-                        <Button variant="outline" size="sm">
-                          <Heart className="h-4 w-4 mr-2" />
-                          Favorite
-                        </Button>
+                        <FavoriteButton gameId={id!} size="sm" />
                       </div>
 
                       {game.Description && (
@@ -242,13 +283,17 @@ const GameDetail = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      <Button className="w-full" variant="outline">
-                        Add to Favorites
-                      </Button>
-                      <Button className="w-full" variant="outline">
+                      <FavoriteButton gameId={id!} size="default" />
+                      <Button className="w-full" variant="outline" onClick={handleShareGame}>
+                        <Share className="mr-2 h-4 w-4" />
                         Share Game
                       </Button>
-                      <Button className="w-full" variant="outline">
+                      <Button 
+                        className="w-full" 
+                        variant="outline"
+                        onClick={() => setIsReportModalOpen(true)}
+                      >
+                        <Flag className="mr-2 h-4 w-4" />
                         Report Game
                       </Button>
                     </div>
@@ -261,6 +306,13 @@ const GameDetail = () => {
         
         <Footer />
       </div>
+
+      <ReportGameModal 
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        gameId={id!}
+        gameTitle={game.Title || 'Unknown Game'}
+      />
     </>
   );
 };

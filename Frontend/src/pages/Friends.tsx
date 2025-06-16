@@ -1,18 +1,37 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, UserPlus, MessageCircle, Users, Loader2 } from 'lucide-react';
+import { Search, UserPlus, MessageCircle, Users, Loader2, UserMinus } from 'lucide-react';
 import { useFriends } from '@/hooks/useFriends';
 import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { useUserSearch } from '@/hooks/useUserSearch';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const Friends = () => {
-  const [activeTab, setActiveTab] = useState('friends');
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'friends';
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [searchQuery, setSearchQuery] = useState('');
   const { user } = useAuth();
-  const { friends, friendRequests, isLoading, acceptFriendRequest, declineFriendRequest } = useFriends();
+  const { friends, friendRequests, isLoading, acceptFriendRequest, declineFriendRequest, removeFriend } = useFriends();
+  const { searchResults, isSearching, searchUsers } = useUserSearch();
+
+  // Update tab when URL changes
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      searchUsers(searchQuery);
+    }
+  };
 
   if (!user) {
     return (
@@ -72,16 +91,28 @@ const Friends = () => {
               <UserPlus className="w-4 h-4 mr-2" />
               Requests ({friendRequests.length})
             </Button>
+            <Button 
+              variant={activeTab === 'search' ? 'default' : 'outline'}
+              onClick={() => setActiveTab('search')}
+              className={activeTab === 'search' ? 'bg-roblox-blue hover:bg-roblox-blue/90' : ''}
+            >
+              <Search className="w-4 h-4 mr-2" />
+              Add Friends
+            </Button>
           </div>
 
-          <div className="relative mb-6">
-            <Input 
-              type="text" 
-              placeholder="Search friends..." 
-              className="pl-10"
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-          </div>
+          {activeTab === 'search' && (
+            <form onSubmit={handleSearch} className="relative mb-6">
+              <Input 
+                type="text" 
+                placeholder="Search users by username or display name..." 
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            </form>
+          )}
         </div>
 
         {activeTab === 'friends' && (
@@ -119,6 +150,14 @@ const Friends = () => {
                         View Profile
                       </Button>
                     </Link>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => removeFriend(friend.id)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <UserMinus className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
               ))
@@ -160,6 +199,54 @@ const Friends = () => {
                       onClick={() => acceptFriendRequest(request.relationship_id)}
                     >
                       Accept
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {activeTab === 'search' && (
+          <div className="grid gap-4">
+            {isSearching ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                <span>Searching users...</span>
+              </div>
+            ) : searchResults.length === 0 && searchQuery ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No users found matching "{searchQuery}"</p>
+              </div>
+            ) : (
+              searchResults.map(searchUser => (
+                <div key={searchUser.id} className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <img 
+                      src={searchUser.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
+                      alt={searchUser.display_name || searchUser.username} 
+                      className="w-12 h-12 rounded-full"
+                    />
+                    <div>
+                      <h3 className="font-semibold">{searchUser.display_name || searchUser.username}</h3>
+                      <p className="text-sm text-gray-600">@{searchUser.username}</p>
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Link to={`/profile/${searchUser.id}`}>
+                      <Button size="sm" variant="outline">
+                        View Profile
+                      </Button>
+                    </Link>
+                    <Button 
+                      size="sm" 
+                      className="bg-roblox-blue hover:bg-roblox-blue/90"
+                      onClick={() => searchUser.sendFriendRequest(searchUser.id)}
+                      disabled={searchUser.relationshipStatus !== 'none'}
+                    >
+                      {searchUser.relationshipStatus === 'pending' ? 'Request Sent' : 
+                       searchUser.relationshipStatus === 'friends' ? 'Friends' : 
+                       'Add Friend'}
                     </Button>
                   </div>
                 </div>

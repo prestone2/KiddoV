@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -5,15 +6,44 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from 'lucide-react';
 import GameCard from '@/components/GameCard';
-import { useProfile, useFavoriteGames, useCreatedGames } from '@/hooks/useProfile';
+import { useProfile, useCreatedGames } from '@/hooks/useProfile';
+import { useFavorites } from '@/hooks/useFavorites';
 import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const Profile = () => {
   const { user, loading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
-  const { data: favoriteGames, isLoading: favoritesLoading } = useFavoriteGames();
   const { data: createdGames, isLoading: createdLoading } = useCreatedGames();
+  const { favorites } = useFavorites();
+  const navigate = useNavigate();
+
+  // Fetch actual favorite games based on user's favorites
+  const { data: favoriteGames, isLoading: favoritesLoading } = useQuery({
+    queryKey: ['user-favorite-games', user?.id, favorites],
+    queryFn: async () => {
+      if (!user || !favorites || favorites.length === 0) return [];
+      
+      const { data, error } = await supabase
+        .from('games')
+        .select('*')
+        .in('Id', favorites);
+
+      if (error) {
+        console.error('Error fetching favorite games:', error);
+        return [];
+      }
+
+      return data;
+    },
+    enabled: !!user && !!favorites && favorites.length > 0,
+  });
+
+  const handleAddFriend = () => {
+    navigate('/friends?tab=search');
+  };
 
   if (authLoading || profileLoading) {
     return (
@@ -95,7 +125,12 @@ const Profile = () => {
               </div>
               
               <div className="flex flex-col gap-2 w-full md:w-auto mb-4">
-                <Button className="bg-roblox-blue hover:bg-roblox-blue/90">Add Friend</Button>
+                <Button 
+                  className="bg-roblox-blue hover:bg-roblox-blue/90"
+                  onClick={handleAddFriend}
+                >
+                  Add Friend
+                </Button>
                 <Button variant="outline">Message</Button>
                 <Link to="/settings">
                   <Button variant="outline" className="w-full">Edit Profile</Button>
@@ -160,7 +195,10 @@ const Profile = () => {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-gray-600">No favorite games yet. Start exploring!</p>
+                      <p className="text-gray-600 mb-4">No favorite games yet. Start exploring!</p>
+                      <Link to="/games">
+                        <Button>Browse Games</Button>
+                      </Link>
                     </div>
                   )}
                 </TabsContent>
