@@ -21,9 +21,9 @@ const Robux = () => {
       
       <div className="container mx-auto px-4 py-8 flex-grow">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Get Robux</h1>
+          <h1 className="text-4xl font-bold mb-4">Get Kiddokash</h1>
           <p className="text-xl text-gray-600">
-            Robux is the virtual currency of Roblox that allows you to buy upgrades or accessories for your avatar and buy special abilities in experiences.
+            Kiddokash is the virtual currency of Kiddoverse that allows you to buy upgrades or accessories for your avatar and buy special abilities in experiences.
           </p>
         </div>
 
