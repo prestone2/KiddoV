@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Chat from '@/components/Chat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, UserPlus, MessageCircle, Users, Loader2, UserMinus } from 'lucide-react';
@@ -14,6 +16,7 @@ const Friends = () => {
   const initialTab = searchParams.get('tab') || 'friends';
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedFriend, setSelectedFriend] = useState<any>(null);
   const { user } = useAuth();
   const { friends, friendRequests, isLoading, acceptFriendRequest, declineFriendRequest, removeFriend } = useFriends();
   const { searchResults, isSearching, searchUsers } = useUserSearch();
@@ -31,6 +34,14 @@ const Friends = () => {
     if (searchQuery.trim()) {
       searchUsers(searchQuery);
     }
+  };
+
+  const handleChatOpen = (friend: any) => {
+    setSelectedFriend(friend);
+  };
+
+  const handleChatClose = () => {
+    setSelectedFriend(null);
   };
 
   if (!user) {
@@ -60,6 +71,19 @@ const Friends = () => {
             <Loader2 className="h-8 w-8 animate-spin mr-2" />
             <span>Loading friends...</span>
           </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show chat if a friend is selected
+  if (selectedFriend) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="container mx-auto px-4 py-8 flex-grow">
+          <Chat friend={selectedFriend} onClose={handleChatClose} />
         </div>
         <Footer />
       </div>
@@ -101,6 +125,7 @@ const Friends = () => {
             </Button>
           </div>
 
+          {/* Search form for Add Friends tab */}
           {activeTab === 'search' && (
             <form onSubmit={handleSearch} className="relative mb-6">
               <Input 
@@ -115,6 +140,7 @@ const Friends = () => {
           )}
         </div>
 
+        {/* Friends Tab */}
         {activeTab === 'friends' && (
           <div className="grid gap-4">
             {friends.length === 0 ? (
@@ -142,7 +168,11 @@ const Friends = () => {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleChatOpen(friend)}
+                    >
                       <MessageCircle className="w-4 h-4" />
                     </Button>
                     <Link to={`/profile/${friend.id}`}>
@@ -165,6 +195,7 @@ const Friends = () => {
           </div>
         )}
 
+        {/* Friend Requests Tab */}
         {activeTab === 'requests' && (
           <div className="grid gap-4">
             {friendRequests.length === 0 ? (
@@ -207,6 +238,7 @@ const Friends = () => {
           </div>
         )}
 
+        {/* Search Tab */}
         {activeTab === 'search' && (
           <div className="grid gap-4">
             {isSearching ? (
