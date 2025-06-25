@@ -94,7 +94,7 @@ const SubscriptionPlans = () => {
                 <span className="text-lg font-normal text-gray-600">/month</span>
               </div>
               <div className="text-lg font-semibold text-roblox-blue">
-                {plan.robux_monthly.toLocaleString()} Robux/month
+                {plan.robux_monthly.toLocaleString()} kiddocash/month
               </div>
             </CardHeader>
 

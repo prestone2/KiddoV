@@ -78,7 +78,7 @@ const Careers = () => {
 
         {/* Benefits Section */}
         <div className="bg-gray-50 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Why Work at Roblox?</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">Why Work at Kiddoverse?</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <h4 className="font-semibold mb-2">Health & Wellness</h4>

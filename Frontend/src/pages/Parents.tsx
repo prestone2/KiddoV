@@ -185,7 +185,7 @@ const Parents = () => {
               <p className="text-gray-600">Yes, we have extensive safety measures including content moderation, chat filtering, and parental controls to ensure a safe environment.</p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">How much does Roblox cost?</h3>
+              <h3 className="font-semibold mb-2">How much does kiddocash cost?</h3>
               <p className="text-gray-600">Kiddoverse is free to play. Optional purchases for virtual items and currency (Robux) are available with parental approval.</p>
             </div>
             <div>

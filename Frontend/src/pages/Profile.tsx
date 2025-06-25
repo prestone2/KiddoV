@@ -208,7 +208,7 @@ const Profile = () => {
                 <p className="text-gray-500 text-sm mt-2">Member since {joinDate}</p>
                 {profile.robux_balance !== null && (
                   <p className="text-green-600 font-semibold mt-2">
-                    Robux: {profile.robux_balance?.toLocaleString() ?? 0}
+                    Kiddocash: {profile.robux_balance?.toLocaleString() ?? 0}
                   </p>
                 )}
               </div>
