@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -300,3 +299,14 @@ const Settings = () => {
 };
 
 export default Settings;
+
+// Add the missing fields to the type
+export type UpdateProfileInput = {
+  username?: string;
+  display_name?: string;
+  avatar_url?: string;
+  subscription_status?: string;
+  subscription_plan_id?: string;
+  subscription_expires_at?: string;
+  robux_balance?: number;
+};

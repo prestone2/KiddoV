@@ -16,6 +16,16 @@ export interface UserProfile {
   updated_at: string;
 }
 
+export type UpdateProfileInput = {
+  username?: string;
+  display_name?: string;
+  avatar_url?: string;
+  subscription_status?: string;
+  subscription_plan_id?: string;
+  subscription_expires_at?: string;
+  robux_balance?: number;
+};
+
 export const useProfile = () => {
   const { user } = useAuth();
   
@@ -48,45 +58,19 @@ export const useProfile = () => {
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (updates: {
-      subscription_status?: string;
-      subscription_plan_id?: string;
-      subscription_expires_at?: string;
-      robux_balance?: number;
-    }) => {
-      // Get user from auth context or fetch via supabase.auth.getUser()
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      if (userError || !userData?.user) throw new Error('User not authenticated');
-      const user = userData.user;
-      const { data, error } = await supabase
+    mutationFn: async (updates: UpdateProfileInput) => {
+      const { user } = useAuth();
+      if (!user) throw new Error('User not authenticated');
+      const { error } = await supabase
         .from('profiles')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', user.id)
-        .select()
-        .single();
-
+        .update(updates)
+        .eq('id', user.id);
       if (error) throw error;
-      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been successfully updated.",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Update failed",
-        description: error.message,
-        variant: "destructive",
-      });
     },
   });
 };
