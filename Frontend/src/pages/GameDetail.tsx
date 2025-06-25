@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -123,10 +122,37 @@ const GameDetail = () => {
     );
   }
 
-  // Get game image from Assets array or use fallback
-  const gameImage = game.Assets && Array.isArray(game.Assets) && game.Assets.length > 0 
-    ? String(game.Assets[0])
-    : 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
+  // Get game image from Assets field robustly
+  let gameImage = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
+  if (game.Assets) {
+    try {
+      let assetArray: any[] = [];
+      if (Array.isArray(game.Assets)) {
+        assetArray = game.Assets;
+      } else if (typeof game.Assets === 'string') {
+        try {
+          assetArray = JSON.parse(game.Assets);
+        } catch {
+          assetArray = [game.Assets];
+        }
+      } else if (typeof game.Assets === 'object' && game.Assets.length !== undefined) {
+        assetArray = [game.Assets];
+      } else if (typeof game.Assets === 'object') {
+        assetArray = [game.Assets];
+      }
+      if (assetArray.length > 0) {
+        const firstAsset = assetArray[0];
+        if (typeof firstAsset === 'string' && firstAsset.startsWith('http')) {
+          gameImage = firstAsset;
+        } else if (firstAsset && typeof firstAsset === 'object' && firstAsset.url) {
+          gameImage = firstAsset.url;
+        }
+      }
+    } catch (error) {
+      console.log('Error parsing assets:', error);
+    }
+  } // <-- This closes the if (game.Assets) block
+  // No 'Image' property on game object; fallback image is already set above.
 
   const playersOnline = Math.floor(Math.random() * 100000);
 

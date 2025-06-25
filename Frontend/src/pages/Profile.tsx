@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -19,6 +18,54 @@ const Profile = () => {
   const { data: createdGames, isLoading: createdLoading } = useCreatedGames();
   const { favorites } = useFavorites();
   const navigate = useNavigate();
+
+  // Fetch real-time friend statistics
+  const { data: friendStats, isLoading: statsLoading } = useQuery({
+    queryKey: ['friend-stats', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return { friends: 0, following: 0, followers: 0 };
+
+      // Get friends count (accepted relationships)
+      const { data: friendsData, error: friendsError } = await supabase
+        .from('user_relationships')
+        .select('*', { count: 'exact' })
+        .eq('status', 'accepted')
+        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`);
+
+      if (friendsError) {
+        console.error('Error fetching friends count:', friendsError);
+      }
+
+      // Get following count (where user is the requester)
+      const { data: followingData, error: followingError } = await supabase
+        .from('user_relationships')
+        .select('*', { count: 'exact' })
+        .eq('requester_id', user.id)
+        .eq('status', 'accepted');
+
+      if (followingError) {
+        console.error('Error fetching following count:', followingError);
+      }
+
+      // Get followers count (where user is the addressee)
+      const { data: followersData, error: followersError } = await supabase
+        .from('user_relationships')
+        .select('*', { count: 'exact' })
+        .eq('addressee_id', user.id)
+        .eq('status', 'accepted');
+
+      if (followersError) {
+        console.error('Error fetching followers count:', followersError);
+      }
+
+      return {
+        friends: friendsData?.length || 0,
+        following: followingData?.length || 0,
+        followers: followersData?.length || 0,
+      };
+    },
+    enabled: !!user?.id,
+  });
 
   // Fetch actual favorite games based on user's favorites
   const { data: favoriteGames, isLoading: favoritesLoading } = useQuery({
@@ -111,15 +158,33 @@ const Profile = () => {
               
               <div className="flex space-x-4 mb-6">
                 <div className="text-center">
-                  <div className="font-bold">{Math.floor(Math.random() * 500)}</div>
+                  <div className="font-bold">
+                    {statsLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+                    ) : (
+                      friendStats?.friends || 0
+                    )}
+                  </div>
                   <div className="text-sm text-gray-500">Friends</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold">{Math.floor(Math.random() * 100)}</div>
+                  <div className="font-bold">
+                    {statsLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+                    ) : (
+                      friendStats?.following || 0
+                    )}
+                  </div>
                   <div className="text-sm text-gray-500">Following</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold">{Math.floor(Math.random() * 200)}</div>
+                  <div className="font-bold">
+                    {statsLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+                    ) : (
+                      friendStats?.followers || 0
+                    )}
+                  </div>
                   <div className="text-sm text-gray-500">Followers</div>
                 </div>
               </div>
@@ -143,7 +208,7 @@ const Profile = () => {
                 <p className="text-gray-500 text-sm mt-2">Member since {joinDate}</p>
                 {profile.robux_balance !== null && (
                   <p className="text-green-600 font-semibold mt-2">
-                    Robux: {profile.robux_balance.toLocaleString()}
+                    Robux: {profile.robux_balance?.toLocaleString() ?? 0}
                   </p>
                 )}
               </div>
@@ -155,6 +220,7 @@ const Profile = () => {
                   <TabsTrigger value="favorites">Favorites</TabsTrigger>
                   <TabsTrigger value="creations">Creations</TabsTrigger>
                   <TabsTrigger value="inventory">Inventory</TabsTrigger>
+                  <TabsTrigger value="groups">Groups</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="favorites" className="pt-6">

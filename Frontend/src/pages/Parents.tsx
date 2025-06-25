@@ -55,9 +55,9 @@ const Parents = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Parents Guide to Roblox</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Parents Guide to kiddoverse</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Learn how Roblox keeps your child safe while they explore, create, and connect with friends in a digital world built for imagination.
+            Learn how kiddoverse keeps your child safe while they explore, create, and connect with friends in a digital world built for imagination.
           </p>
         </div>
 
@@ -114,7 +114,7 @@ const Parents = () => {
             <div>
               <h2 className="text-3xl font-bold mb-4">Parental Controls</h2>
               <p className="text-gray-600 mb-6">
-                Take control of your child's Roblox experience with our comprehensive parental control tools.
+                Take control of your child's kiddoverse experience with our comprehensive parental control tools.
               </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center">
@@ -181,20 +181,20 @@ const Parents = () => {
           <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
           <div className="space-y-6 max-w-3xl mx-auto">
             <div>
-              <h3 className="font-semibold mb-2">Is Roblox safe for my child?</h3>
+              <h3 className="font-semibold mb-2">Is Kiddoverse safe for my child?</h3>
               <p className="text-gray-600">Yes, we have extensive safety measures including content moderation, chat filtering, and parental controls to ensure a safe environment.</p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">How much does Roblox cost?</h3>
-              <p className="text-gray-600">Roblox is free to play. Optional purchases for virtual items and currency (Robux) are available with parental approval.</p>
+              <p className="text-gray-600">Kiddoverse is free to play. Optional purchases for virtual items and currency (Robux) are available with parental approval.</p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Can I limit my child's spending?</h3>
               <p className="text-gray-600">Yes, you can set spending limits, require approval for purchases, and monitor all transactions through parental controls.</p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">What age is appropriate for Roblox?</h3>
-              <p className="text-gray-600">Roblox is designed for users 9 and older, with additional safety features for younger children and parental oversight.</p>
+              <h3 className="font-semibold mb-2">What age is appropriate for Kiddoverse?</h3>
+              <p className="text-gray-600">Kiddoverse is designed for users 9 and older, with additional safety features for younger children and parental oversight.</p>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ const Parents = () => {
         {/* CTA Section */}
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-gray-600 mb-6">Create a safe account for your child and explore Roblox together.</p>
+          <p className="text-gray-600 mb-6">Create a safe account for your child and explore kiddoverse together.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
               <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">

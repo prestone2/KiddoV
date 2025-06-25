@@ -1,14 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import GameCard from '@/components/GameCard';
+import LazyGamesList from '@/components/LazyGamesList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Filter, Loader2 } from 'lucide-react';
-import { useGames, useGenres, useFilteredGames } from '@/hooks/useGames';
+import { Filter } from 'lucide-react';
+import { useGenres } from '@/hooks/useGames';
 
 const Games = () => {
   const [searchParams] = useSearchParams();
@@ -17,13 +16,7 @@ const Games = () => {
   const [deviceFilter, setDeviceFilter] = useState<string>('All Devices');
   const [genderFilter, setGenderFilter] = useState<string>('All Genders');
 
-  const { data: games, isLoading, error } = useGames();
   const { data: genres } = useGenres();
-  const { data: filteredGames, isLoading: isFilterLoading } = useFilteredGames(
-    genreFilter === 'All Genres' ? undefined : genreFilter,
-    deviceFilter === 'All Devices' ? undefined : deviceFilter,
-    genderFilter === 'All Genders' ? undefined : genderFilter
-  );
 
   // Set genre filter from URL parameter
   useEffect(() => {
@@ -33,24 +26,6 @@ const Games = () => {
       setFilterOpen(true);
     }
   }, [searchParams, genres]);
-
-  const displayGames = (genreFilter !== 'All Genres' || deviceFilter !== 'All Devices' || genderFilter !== 'All Genders') 
-    ? filteredGames : games;
-
-  const renderGamesGrid = (gamesList: any[]) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-      {gamesList.map(game => (
-        <GameCard
-          key={game.Id}
-          id={game.Id}
-          title={game.Title}
-          creator={game.Developer}
-          description={game.Description}
-          assets={game.Assets}
-        />
-      ))}
-    </div>
-  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -71,7 +46,7 @@ const Games = () => {
         
         {filterOpen && (
           <div className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               <div>
                 <label className="block font-medium mb-2">Genre</label>
                 <Select value={genreFilter} onValueChange={setGenreFilter}>
@@ -129,76 +104,48 @@ const Games = () => {
           </div>
         )}
         
-        {/* Loading State */}
-        {(isLoading || isFilterLoading) && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin mr-2" />
-            <span>Loading games...</span>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="text-center py-12">
-            <p className="text-red-600 mb-4">Error loading games: {error.message}</p>
-            <Button onClick={() => window.location.reload()}>Try Again</Button>
-          </div>
-        )}
-
-        {/* Games Content */}
-        {!isLoading && !isFilterLoading && !error && displayGames && (
-          <Tabs defaultValue="popular">
-            <TabsList className="mb-8">
-              <TabsTrigger value="popular">Popular</TabsTrigger>
-              <TabsTrigger value="recommended">Recommended</TabsTrigger>
-              <TabsTrigger value="top-rated">Top Rated</TabsTrigger>
-              <TabsTrigger value="featured">Featured</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="popular" className="mt-0">
-              {displayGames.length > 0 ? (
-                <>
-                  {renderGamesGrid(displayGames)}
-                  <div className="mt-8 text-center">
-                    <Button variant="outline" className="flex items-center gap-1">
-                      Load More
-                      <ChevronDown size={16} />
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-600 mb-4">No games found matching your filters.</p>
-                  <p className="text-sm text-gray-500">Try adjusting your filter criteria!</p>
-                </div>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="recommended">
-              {displayGames.length > 0 ? renderGamesGrid(displayGames.slice().reverse()) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-600">No recommended games available.</p>
-                </div>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="top-rated">
-              {displayGames.length > 0 ? renderGamesGrid(displayGames.slice().sort(() => Math.random() - 0.5)) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-600">No top-rated games available.</p>
-                </div>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="featured">
-              {displayGames.length > 0 ? renderGamesGrid(displayGames.slice(0, 6)) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-600">No featured games available.</p>
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
-        )}
+        {/* Games Content with Lazy Loading */}
+        <Tabs defaultValue="popular">
+          <TabsList className="mb-8">
+            <TabsTrigger value="popular">Popular</TabsTrigger>
+            <TabsTrigger value="recommended">Recommended</TabsTrigger>
+            <TabsTrigger value="top-rated">Top Rated</TabsTrigger>
+            <TabsTrigger value="featured">Featured</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="popular" className="mt-0">
+            <LazyGamesList 
+              genreFilter={genreFilter}
+              deviceFilter={deviceFilter}
+              genderFilter={genderFilter}
+            />
+          </TabsContent>
+          
+          <TabsContent value="recommended">
+            <LazyGamesList 
+              genreFilter={genreFilter}
+              deviceFilter={deviceFilter}
+              genderFilter={genderFilter}
+            />
+          </TabsContent>
+          
+          <TabsContent value="top-rated">
+            <LazyGamesList 
+              genreFilter={genreFilter}
+              deviceFilter={deviceFilter}
+              genderFilter={genderFilter}
+            />
+          </TabsContent>
+          
+          <TabsContent value="featured">
+            <LazyGamesList 
+              genreFilter={genreFilter}
+              deviceFilter={deviceFilter}
+              genderFilter={genderFilter}
+              pageSize={6}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
       
       <Footer />

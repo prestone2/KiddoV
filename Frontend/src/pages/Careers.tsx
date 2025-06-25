@@ -44,7 +44,7 @@ const Careers = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Careers at Roblox</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Careers at kiddoverse</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Join our mission to connect a billion people with optimism and civility. 
             Help us build the future of human co-experience.

@@ -75,7 +75,7 @@ const Community = () => {
     {
       user: "DesignGuru",
       time: "1 day ago",
-      content: "New UI design trends in Roblox games - what do you think about minimalist interfaces?",
+      content: "New UI design trends in kiddoverse games - what do you think about minimalist interfaces?",
       likes: 89,
       replies: 67
     }
@@ -88,7 +88,7 @@ const Community = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Roblox Community</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">kiddoverse Community</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Connect with millions of creators, developers, and players from around the world. 
             Share your creations, learn from others, and be part of something amazing.
@@ -194,7 +194,7 @@ const Community = () => {
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">#RobloxDevCon2024</span>
+                  <span className="text-sm">#kiddoDevCon2024</span>
                   <Star className="h-4 w-4 text-yellow-500" />
                 </div>
                 <div className="flex items-center justify-between">

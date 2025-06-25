@@ -16,6 +16,7 @@ import Create from "./pages/Create";
 import Settings from "./pages/Settings";
 import Friends from "./pages/Friends";
 import Robux from "./pages/Robux";
+import Subscription from "./pages/Subscription";
 import Catalog from "./pages/Catalog";
 import About from "./pages/About";
 import Careers from "./pages/Careers";
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/robux" element={<Robux />} />
+            <Route path="/subscription" element={<Subscription />} />
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />

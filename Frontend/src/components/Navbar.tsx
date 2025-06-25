@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, Crown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSearch } from '@/hooks/useSearch';
 import SearchResults from '@/components/SearchResults';
 import NotificationDropdown from '@/components/NotificationDropdown';
+import NotificationBell from '@/components/NotificationBell';
 import logo from '@/assets/logo.png';
 
 const Navbar = () => {
@@ -94,12 +95,18 @@ const Navbar = () => {
             
             {user ? (
               <div className="flex items-center space-x-4">
-                <NotificationDropdown />
-                <Link to="/robux">
+                <NotificationBell />
+                 <Link to="/subscription">
+                  <Button variant="outline" size="sm" className="text-purple-600 border-purple-600 hover:bg-purple-50">
+                    <Crown className="w-4 h-4 mr-1" />
+                    Premium
+                  </Button>
+                </Link>
+                {/* <Link to="/robux">
                   <Button variant="outline" size="sm" className="text-green-600 border-green-600 hover:bg-green-50">
                     Buy Robux
                   </Button>
-                </Link>
+                </Link> */}
                 <Link to="/profile">
                   <Button variant="outline" size="sm">
                     Profile
@@ -181,13 +188,19 @@ const Navbar = () => {
                 <div className="pt-4 space-y-2 border-t">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Notifications</span>
-                    <NotificationDropdown />
+                    <NotificationBell />
                   </div>
-                  <Link to="/robux" onClick={() => setIsOpen(false)}>
+                  <Link to="/subscription" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full text-purple-600 border-purple-600">
+                      <Crown className="w-4 h-4 mr-1" />
+                      Premium
+                    </Button>
+                  </Link>
+                  {/* <Link to="/robux" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full text-green-600 border-green-600">
                       Buy Robux
                     </Button>
-                  </Link>
+                  </Link> */}
                   <Link to="/profile" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full">
                       Profile

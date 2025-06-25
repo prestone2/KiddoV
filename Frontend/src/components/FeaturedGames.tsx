@@ -1,4 +1,3 @@
-
 import React from 'react';
 import GameCard from './GameCard';
 import { Button } from '@/components/ui/button';
@@ -8,9 +7,10 @@ import { useGames } from '@/hooks/useGames';
 
 interface FeaturedGamesProps {
   title: string;
+  excludeIds?: string[]; // Add this prop to allow exclusion
 }
 
-const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title }) => {
+const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title, excludeIds = [] }) => {
   const { data: games, isLoading, error } = useGames();
 
   if (isLoading) {
@@ -48,8 +48,9 @@ const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title }) => {
     );
   }
 
-  // Show up to 6 games for featured section
-  const featuredGames = games.slice(0, 6);
+  // Exclude games if excludeIds is provided
+  const filteredGames = games.filter(game => !excludeIds.includes(game.Id));
+  const featuredGames = filteredGames.slice(0, 6);
 
   return (
     <div className="py-8">
@@ -62,18 +63,34 @@ const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title }) => {
       </div>
       
       {featuredGames.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {featuredGames.map(game => (
-            <GameCard
-              key={game.Id}
-              id={game.Id}
-              title={game.Title}
-              creator={game.Developer}
-              description={game.Description}
+        <>
+          {/* Carousel for small screens */}
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory sm:hidden pb-2">
+            {featuredGames.map(game => (
+              <div key={game.Id} className="min-w-[50%] snap-center">
+                <GameCard
+                  id={game.Id}
+                  title={game.Title || 'Untitled Game'}
+              creator={game.Developer || 'Unknown Developer'}
               assets={game.Assets}
-            />
-          ))}
-        </div>
+                />
+              </div>
+            ))}
+          </div>
+          {/* Grid for medium and up */}
+          <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {featuredGames.map(game => (
+              <GameCard
+                key={game.Id}
+                id={game.Id}
+                title={game.Title}
+                creator={game.Developer}
+                description={game.Description}
+                assets={game.Assets}
+              />
+            ))}
+          </div>
+        </>
       ) : (
         <div className="text-center py-12">
           <p className="text-gray-600">No games available to display.</p>

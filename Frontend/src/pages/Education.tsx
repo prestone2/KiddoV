@@ -61,7 +61,7 @@ const Education = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Roblox Education</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">kiddoverse Education</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Empower the next generation with hands-on learning experiences that inspire creativity, 
             collaboration, and computational thinking.
@@ -158,7 +158,7 @@ const Education = () => {
             <div className="bg-white p-6 rounded-lg">
               <Users className="h-8 w-8 text-roblox-blue mb-3" />
               <h4 className="font-semibold mb-2">Teacher Community</h4>
-              <p className="text-sm text-gray-600 mb-3">Connect with educators using Roblox worldwide</p>
+              <p className="text-sm text-gray-600 mb-3">Connect with educators using kiddoverse worldwide</p>
               <Button size="sm" variant="outline">Join Community</Button>
             </div>
             <div className="bg-white p-6 rounded-lg">

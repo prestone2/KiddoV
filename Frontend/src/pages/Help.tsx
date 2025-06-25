@@ -29,7 +29,7 @@ const Help = () => {
       icon: Book,
       title: "Game Development",
       description: "Resources for creating and publishing games",
-      articles: ["Roblox Studio Basics", "Scripting Help", "Publishing Games", "Monetization"]
+      articles: ["kiddoverse Studio Basics", "Scripting Help", "Publishing Games", "Monetization"]
     }
   ];
 
@@ -39,7 +39,7 @@ const Help = () => {
     "Why can't I log in to my account?",
     "How to enable two-step verification",
     "How to change my username",
-    "How to get Robux"
+    "How to get kiddo"
   ];
 
   return (
@@ -51,7 +51,7 @@ const Help = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Help Center</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Get answers to your questions and learn how to make the most of Roblox
+            Get answers to your questions and learn how to make the most of kiddoverse
           </p>
           
           {/* Search Bar */}
