@@ -15,14 +15,14 @@ const SubscriptionStatus = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  // Auto-refresh subscription status every 10 seconds for better responsiveness
+  // Auto-refresh subscription status every 30 seconds for better responsiveness
   useEffect(() => {
     const interval = setInterval(() => {
       console.log('Auto-refreshing subscription data...');
       refetch();
       // Also refresh profile data
       queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
-    }, 10000);
+    }, 30000); // Increased to 30 seconds to reduce server load
 
     return () => clearInterval(interval);
   }, [refetch, queryClient, user?.id]);
@@ -71,7 +71,7 @@ const SubscriptionStatus = () => {
             <p className="text-gray-600 mb-4">You don't have an active subscription</p>
             <Badge variant="outline">Free Plan</Badge>
             <p className="text-sm text-gray-500 mt-2">
-              If you just made a payment, please wait a moment for it to process.
+              If you just made a payment, please wait a moment for it to process and click refresh.
             </p>
           </div>
         </CardContent>

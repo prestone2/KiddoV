@@ -2,6 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
 
 interface Notification {
   id: string;
@@ -38,6 +39,32 @@ export const useNotifications = () => {
     enabled: !!user,
   });
 
+  // Set up real-time subscription for notifications
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('notifications-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${user.id}`
+        },
+        (payload) => {
+          console.log('Notification change received:', payload);
+          queryClient.invalidateQueries({ queryKey: ['notifications', user.id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, queryClient]);
+
   const markAsRead = useMutation({
     mutationFn: async (notificationId: string) => {
       const { error } = await supabase
@@ -69,6 +96,20 @@ export const useNotifications = () => {
     },
   });
 
+  const deleteNotification = useMutation({
+    mutationFn: async (notificationId: string) => {
+      const { error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('id', notificationId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
+  });
+
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return {
@@ -77,5 +118,7 @@ export const useNotifications = () => {
     unreadCount,
     markAsRead: markAsRead.mutate,
     markAllAsRead: markAllAsRead.mutate,
+    deleteNotification: deleteNotification.mutate,
+    isUpdating: markAsRead.isPending || markAllAsRead.isPending || deleteNotification.isPending
   };
 };

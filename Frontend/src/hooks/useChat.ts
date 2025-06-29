@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { notificationService } from '@/services/notificationService';
 import { useEffect } from 'react';
 
 interface Message {
@@ -86,6 +87,25 @@ export const useChat = (friendId: string) => {
         }]);
 
       if (error) throw error;
+
+      // Get sender's profile info for the notification
+      const { data: senderProfile } = await supabase
+        .from('profiles')
+        .select('username, display_name')
+        .eq('id', user.id)
+        .single();
+
+      // Create notification for the receiver
+      if (senderProfile) {
+        const senderName = senderProfile.display_name || senderProfile.username;
+        await notificationService.createNotification({
+          userId: friendId,
+          type: 'general',
+          title: 'New Message',
+          message: `${senderName} sent you a message: "${content.length > 50 ? content.substring(0, 50) + '...' : content}"`,
+          relatedId: user.id
+        });
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages', user.id, friendId] });
