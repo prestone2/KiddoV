@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  kiddoverse-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kiddoverse-frontend
+    ports:
+      - "1000:80"
+    restart: unless-stopped
+    networks:
+      - kiddoverse
+
+networks:
+  kiddoverse:
+    driver: bridge
