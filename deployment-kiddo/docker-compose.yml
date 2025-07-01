@@ -3,7 +3,7 @@ version: '3.8'
 services:
   kiddoverse-frontend:
     build:
-      context: ../frontend
+      context: ../Frontend
       dockerfile: Dockerfile
     container_name: kiddoverse-frontend
     ports:
