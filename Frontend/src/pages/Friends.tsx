@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -14,6 +13,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 const Friends = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'friends';
+  const chatFriendId = searchParams.get('chat');
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFriend, setSelectedFriend] = useState<any>(null);
@@ -28,6 +28,16 @@ const Friends = () => {
       setActiveTab(tab);
     }
   }, [searchParams]);
+
+  // Handle chat parameter from URL
+  useEffect(() => {
+    if (chatFriendId) {
+      const friend = friends.find(f => f.id === chatFriendId);
+      if (friend) {
+        setSelectedFriend(friend);
+      }
+    }
+  }, [chatFriendId, friends]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,7 +185,7 @@ const Friends = () => {
                     >
                       <MessageCircle className="w-4 h-4" />
                     </Button>
-                    <Link to={`/profile/${friend.id}`}>
+                    <Link to={`/friends/${friend.id}`}>
                       <Button size="sm" className="bg-roblox-blue hover:bg-roblox-blue/90">
                         View Profile
                       </Button>
@@ -265,7 +275,7 @@ const Friends = () => {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <Link to={`/profile/${searchUser.id}`}>
+                    <Link to={`/friends/${searchUser.id}`}>
                       <Button size="sm" variant="outline">
                         View Profile
                       </Button>

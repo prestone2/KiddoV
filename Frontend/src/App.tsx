@@ -15,6 +15,7 @@ import Marketplace from "./pages/Marketplace";
 import Create from "./pages/Create";
 import Settings from "./pages/Settings";
 import Friends from "./pages/Friends";
+import FriendProfile from "./pages/FriendProfile";
 import Robux from "./pages/Robux";
 import Subscription from "./pages/Subscription";
 import Catalog from "./pages/Catalog";
@@ -43,12 +44,13 @@ const App = () => (
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/friends/:id" element={<FriendProfile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/create" element={<Create />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/friends" element={<Friends />} />
             <Route path="/robux" element={<Robux />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/catalog" element={<Catalog />} />

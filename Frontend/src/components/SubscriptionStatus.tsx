@@ -3,15 +3,14 @@ import React, { useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Crown, Calendar, CreditCard, RefreshCw } from 'lucide-react';
-import { useUserSubscription, useCancelSubscription } from '@/hooks/useSubscriptions';
+import { Crown, Calendar, RefreshCw } from 'lucide-react';
+import { useUserSubscription } from '@/hooks/useSubscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { format } from 'date-fns';
 
 const SubscriptionStatus = () => {
   const { data: subscription, isLoading, refetch } = useUserSubscription();
-  const cancelSubscription = useCancelSubscription();
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
@@ -128,18 +127,6 @@ const SubscriptionStatus = () => {
             </span>
           </div>
         )}
-
-        <div className="pt-4 border-t">
-          <Button
-            variant="outline"
-            className="w-full text-red-600 border-red-300 hover:bg-red-50"
-            onClick={() => cancelSubscription.mutate()}
-            disabled={cancelSubscription.isPending}
-          >
-            <CreditCard className="w-4 h-4 mr-2" />
-            {cancelSubscription.isPending ? 'Cancelling...' : 'Cancel Subscription'}
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
