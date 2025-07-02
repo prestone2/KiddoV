@@ -21,7 +21,7 @@ const Subscription = () => {
     if (paymentStatus === 'success') {
       toast({
         title: "Payment Successful!",
-        description: "Your subscription has been activated. Your Robux balance will be updated shortly.",
+        description: "Your subscription has been activated. Your kiddocash balance will be updated shortly.",
         duration: 5000,
       });
       
