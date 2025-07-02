@@ -1,99 +1,128 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Play } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Users, Play } from 'lucide-react';
+import FavoriteButton from '@/components/FavoriteButton';
+import { useAddToGameHistory } from '@/hooks/useGameHistory';
+import type { Json } from '@/integrations/supabase/types';
 
 interface GameCardProps {
   id: string;
-  title: string | null;
-  creator: string | null;
-  playersOnline?: number;
-  image?: string;
-  description?: string | null;
-  assets?: any;
+  title: string;
+  creator: string;
+  description?: string;
+  assets?: Json | null;
+  players?: number;
+  maxPlayers?: number;
+  isPublic?: boolean;
+  tags?: string[];
 }
 
-const GameCard: React.FC<GameCardProps> = ({ 
-  id, 
-  title, 
-  creator, 
-  playersOnline = Math.floor(Math.random() * 100000), 
-  image,
+const GameCard: React.FC<GameCardProps> = ({
+  id,
+  title,
+  creator,
   description,
-  assets 
+  assets,
+  players = Math.floor(Math.random() * 1000) + 1,
+  maxPlayers = 100,
+  isPublic = true,
+  tags,
 }) => {
-  // Handle game image from Assets field properly
-  let gameImage = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=600&h=400';
+  const addToHistory = useAddToGameHistory();
+
+  // Handle image URL - use first asset or fallback
+  let imageUrl = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=400&h=300';
   
   if (assets) {
-    try {
-      let assetArray: any[] = [];
-      
-      // Handle different asset formats
-      if (Array.isArray(assets)) {
-        assetArray = assets;
-      } else if (typeof assets === 'string') {
-        try {
-          assetArray = JSON.parse(assets);
-        } catch {
-          assetArray = [assets];
-        }
-      } else if (assets && typeof assets === 'object') {
-        // Handle object format
-        if (assets.length !== undefined) {
-          assetArray = Array.from(assets);
-        } else {
-          assetArray = [assets];
-        }
+    let assetsArray: any[] = [];
+    if (Array.isArray(assets)) {
+      assetsArray = assets;
+    } else if (typeof assets === 'string') {
+      try {
+        assetsArray = JSON.parse(assets);
+      } catch {
+        // If parsing fails, keep default
       }
-      
-      // Find the first valid image URL
-      if (assetArray.length > 0) {
-        const firstAsset = assetArray[0];
-        if (typeof firstAsset === 'string' && firstAsset.startsWith('http')) {
-          gameImage = firstAsset;
-        } else if (firstAsset && typeof firstAsset === 'object' && firstAsset.url) {
-          gameImage = firstAsset.url;
-        }
-      }
-    } catch (error) {
-      console.log('Error parsing assets:', error);
     }
-  } else if (image) {
-    gameImage = image;
+    
+    if (assetsArray.length > 0) {
+      imageUrl = assetsArray[0];
+    }
   }
 
+  const handleGameClick = () => {
+    // Add to game history when user clicks to play
+    addToHistory.mutate(id);
+  };
+
   return (
-    <Link to={`/games/${id}`}>
-      <div className="game-card group">
-        <div className="overflow-hidden relative">
-          <img 
-            src={gameImage} 
-            alt={title || 'Game'} 
-            className="game-card-image group-hover:scale-105 transition-transform duration-200 w-full h-40 object-cover rounded-t-lg" 
-            onError={(e) => {
-              // Fallback image if the asset image fails to load
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=600&h=400';
-            }}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
-                <Play className="h-6 w-6 text-white" fill="white" />
-              </div>
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+      <div className="relative">
+        <img 
+          src={imageUrl}
+          alt={title}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          onError={(e) => {
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=400&h=300';
+          }}
+        />
+        
+        {/* Favorite button overlay */}
+        <div className="absolute top-2 right-2">
+          <FavoriteButton gameId={id} size="sm" />
+        </div>
+        
+        {/* Play button overlay */}
+        <Link to={`/games/${id}`} onClick={handleGameClick}>
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+            <div className="bg-roblox-blue text-white rounded-full p-3 opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
+              <Play className="w-6 h-6 fill-current" />
             </div>
           </div>
-        </div>
-        <div className="p-3">
-          <h3 className="font-semibold text-base truncate">{title || 'Untitled Game'}</h3>
-          <p className="text-sm text-gray-500 truncate">{creator || 'Unknown Creator'}</p>
-          <div className="mt-2 flex items-center">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-1" />
-            <span className="text-xs text-gray-600">{playersOnline.toLocaleString()} active</span>
-          </div>
-        </div>
+        </Link>
       </div>
-    </Link>
+      
+      <CardContent className="p-4">
+        <Link to={`/games/${id}`} className="block" onClick={handleGameClick}>
+          <h3 className="font-semibold text-lg mb-1 group-hover:text-roblox-blue transition-colors line-clamp-1">
+            {title}
+          </h3>
+        </Link>
+        
+        <p className="text-sm text-gray-600 mb-2">by {creator}</p>
+        
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center text-sm text-gray-500">
+            <Users className="w-4 h-4 mr-1" />
+            <span>{players.toLocaleString()}/{maxPlayers}</span>
+          </div>
+          
+          {isPublic && (
+            <Badge variant="secondary" className="text-xs">
+              Public
+            </Badge>
+          )}
+        </div>
+        
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {tags.slice(0, 3).map((tag, index) => (
+              <Badge key={index} variant="outline" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
+            {tags.length > 3 && (
+              <Badge variant="outline" className="text-xs">
+                +{tags.length - 3}
+              </Badge>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

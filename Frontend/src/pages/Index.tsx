@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FeaturedGames from '@/components/FeaturedGames';
 import Footer from '@/components/Footer';
+import RecentGames from '@/components/RecentGames';
 import { useGenres, useGames } from '@/hooks/useGames';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -39,6 +40,8 @@ const Index = () => {
       <Hero />
       
       <div className="container mx-auto px-4 flex-grow">
+          <RecentGames />
+        
         <FeaturedGames title="Popular Games" />
         
         {/* Featured Categories Section */}

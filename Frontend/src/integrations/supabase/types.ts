@@ -283,6 +283,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_subscription_transactions_subscription_id"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "subscription_transactions_subscription_id_fkey"
             columns: ["subscription_id"]
             isOneToOne: false
@@ -308,6 +315,30 @@ export type Database = {
           created_at?: string
           game_id?: string
           id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_game_history: {
+        Row: {
+          created_at: string
+          game_id: string
+          id: string
+          played_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          game_id: string
+          id?: string
+          played_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          game_id?: string
+          id?: string
+          played_at?: string
           user_id?: string
         }
         Relationships: []
@@ -406,7 +437,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_robux: {
+        Args: { user_id: string; amount: number }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
