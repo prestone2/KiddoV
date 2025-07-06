@@ -2,9 +2,10 @@ import React from 'react';
 import { useRecentGames } from '@/hooks/useGameHistory';
 import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Clock, Play } from 'lucide-react';
+import { Clock, Play, User, Heart, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useAddToGameHistory } from '@/hooks/useGameHistory';
 import FavoriteButton from '@/components/FavoriteButton';
 import type { Json } from '@/integrations/supabase/types';
@@ -14,7 +15,59 @@ const RecentGames = () => {
   const { data: recentGames, isLoading, error } = useRecentGames(6);
 
   if (!user) {
-    return null;
+    return (
+      <section className="py-8">
+        <div className="flex items-center mb-6">
+          <Clock className="w-6 h-6 mr-2 text-roblox-blue" />
+          <h2 className="text-2xl font-bold">Recently Played</h2>
+        </div>
+        
+        {/* Attractive login prompt */}
+        <div className="bg-gradient-to-br from-roblox-blue to-blue-600 rounded-xl p-8 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full translate-y-12 -translate-x-12"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center mb-4">
+              <User className="w-8 h-8 mr-3" />
+              <h3 className="text-2xl font-bold">Join the Adventure!</h3>
+            </div>
+            
+            <p className="text-lg mb-6 opacity-90">
+              Sign up now to unlock amazing features and make your gaming experience even better!
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="flex items-center">
+                <Clock className="w-5 h-5 mr-2 opacity-80" />
+                <span>Track your recently played games</span>
+              </div>
+              <div className="flex items-center">
+                <Heart className="w-5 h-5 mr-2 opacity-80" />
+                <span>Save your favorite games</span>
+              </div>
+              <div className="flex items-center">
+                <MessageCircle className="w-5 h-5 mr-2 opacity-80" />
+                <span>Connect with friends</span>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link to="/signup">
+                <Button size="lg" className="bg-white text-roblox-blue hover:bg-gray-100 font-semibold px-8">
+                  Sign Up Free
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-roblox-blue font-semibold px-8">
+                  Already have an account? Log In
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   if (isLoading) {

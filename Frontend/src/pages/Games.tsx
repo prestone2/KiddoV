@@ -82,10 +82,9 @@ const Games = () => {
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="All Genders">All Genders</SelectItem>
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Female">Female</SelectItem>
-                    <SelectItem value="Unisex">Unisex</SelectItem>
+                    <SelectItem value="All Genders">Both Boys and Girls</SelectItem>
+                    <SelectItem value="Male">Boys</SelectItem>
+                    <SelectItem value="Female">Girls</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
