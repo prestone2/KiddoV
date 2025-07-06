@@ -1,10 +1,10 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Games from "./pages/Games";
 import GameDetail from "./pages/GameDetail";
@@ -28,6 +28,10 @@ import DeveloperHub from "./pages/DeveloperHub";
 import Education from "./pages/Education";
 import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
+import Contact from "./pages/Contact";
+import HelpCenter from "./pages/HelpCenter";
+import Safety from "./pages/Safety";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +42,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/games" element={<Games />} />
@@ -59,6 +64,10 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/parents" element={<Parents />} />
             <Route path="/help" element={<Help />} />
+            <Route path="/help-center" element={<HelpCenter />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/safety" element={<Safety />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/developer-hub" element={<DeveloperHub />} />
             <Route path="/education" element={<Education />} />
             <Route path="/community" element={<Community />} />
@@ -72,3 +81,10 @@ const App = () => (
 );
 
 export default App;
+// This code sets up the main application structure using React Router for navigation.
+// It includes routes for various pages like games, profile, login, signup, marketplace, and more.
+// The `QueryClientProvider` is used for managing server state with React Query, and the `AuthProvider` provides authentication context.
+// The `TooltipProvider` wraps the application to enable tooltips throughout the app.
+// The `Toaster` and `Sonner` components are used for displaying notifications and alerts.
+// The `ScrollToTop` component ensures that the page scrolls to the top when navigating between routes.
+// The `NotFound` route handles any undefined paths, displaying a 404 page.
