@@ -4,8 +4,8 @@ import GameCard from './GameCard';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useInfiniteGames, useInfiniteFilteredGames } from '@/hooks/useGames';
-
+import { useInfiniteGames } from '@/hooks/useInfiniteGames';
+import { useInfiniteFilteredGames } from '@/hooks/useFilteredGames';
 interface LazyGamesListProps {
   genreFilter?: string;
   deviceFilter?: string;
@@ -96,6 +96,7 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
             title={game.Title || 'Untitled Game'}
             creator={game.Developer || 'Unknown Developer'}
             assets={game.Assets}
+            isPremium={game.is_premium || false}
           />
         ))}
       </div>

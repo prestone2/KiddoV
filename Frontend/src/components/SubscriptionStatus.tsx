@@ -7,10 +7,12 @@ import { Crown, Calendar, RefreshCw } from 'lucide-react';
 import { useUserSubscription } from '@/hooks/useSubscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { format } from 'date-fns';
 
 const SubscriptionStatus = () => {
   const { data: subscription, isLoading, refetch } = useUserSubscription();
+  const { data: profile } = useProfile();
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
@@ -21,7 +23,7 @@ const SubscriptionStatus = () => {
       refetch();
       // Also refresh profile data
       queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
-    }, 30000); // Increased to 30 seconds to reduce server load
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [refetch, queryClient, user?.id]);
@@ -51,7 +53,11 @@ const SubscriptionStatus = () => {
     );
   }
 
-  if (!subscription) {
+  // Check if user has active subscription (either via subscription table or profile)
+  const hasActiveSubscription = subscription?.status === 'active' || profile?.subscription_status === 'active';
+  const subscriptionPlan = subscription?.subscription_plans || null;
+
+  if (!hasActiveSubscription) {
     return (
       <Card>
         <CardHeader>
@@ -72,6 +78,11 @@ const SubscriptionStatus = () => {
             <p className="text-sm text-gray-500 mt-2">
               If you just made a payment, please wait a moment for it to process and click refresh.
             </p>
+            {profile?.subscription_status && (
+              <p className="text-xs text-gray-400 mt-2">
+                Profile status: {profile.subscription_status}
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -95,36 +106,52 @@ const SubscriptionStatus = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Current Plan:</span>
-          <Badge variant="outline" className="font-semibold">
-            {subscription.subscription_plans.name}
-          </Badge>
-        </div>
+        {subscriptionPlan ? (
+          <>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Current Plan:</span>
+              <Badge variant="outline" className="font-semibold">
+                {subscriptionPlan.name}
+              </Badge>
+            </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Monthly Robux:</span>
-          <span className="font-semibold text-roblox-blue">
-            {subscription.subscription_plans.robux_monthly.toLocaleString()} R$
-          </span>
-        </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Monthly Robux:</span>
+              <span className="font-semibold text-roblox-blue">
+                {subscriptionPlan.robux_monthly.toLocaleString()} R$
+              </span>
+            </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Monthly Cost:</span>
-          <span className="font-semibold">
-            KSH {subscription.subscription_plans.price_ksh}
-          </span>
-        </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Monthly Cost:</span>
+              <span className="font-semibold">
+                KSH {subscriptionPlan.price_ksh}
+              </span>
+            </div>
 
-        {subscription.current_period_end && (
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 flex items-center">
-              <Calendar className="w-4 h-4 mr-1" />
-              Next Billing:
-            </span>
-            <span className="font-semibold">
-              {format(new Date(subscription.current_period_end), 'MMM dd, yyyy')}
-            </span>
+            {subscription?.current_period_end && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 flex items-center">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  Next Billing:
+                </span>
+                <span className="font-semibold">
+                  {format(new Date(subscription.current_period_end), 'MMM dd, yyyy')}
+                </span>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-4">
+            <Badge className="bg-green-500">Active Subscription</Badge>
+            <p className="text-sm text-gray-600 mt-2">
+              Premium features are available
+            </p>
+            {profile?.subscription_expires_at && (
+              <p className="text-xs text-gray-500 mt-1">
+                Expires: {format(new Date(profile.subscription_expires_at), 'MMM dd, yyyy')}
+              </p>
+            )}
           </div>
         )}
       </CardContent>

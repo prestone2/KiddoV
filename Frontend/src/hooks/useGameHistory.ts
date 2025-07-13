@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -27,7 +26,7 @@ export const useRecentGames = (limit: number = 6) => {
       try {
         const { data, error } = await supabase.rpc('get_recent_games' as any, {
           user_id_param: user.id,
-          limit_param: limit
+          limit_param: limit * 2 // Fetch more to account for duplicates
         });
 
         if (error) {
@@ -35,26 +34,46 @@ export const useRecentGames = (limit: number = 6) => {
           throw error;
         }
 
-        return data || [];
+        // Remove duplicates by keeping only the most recent entry for each game
+        const uniqueGames = new Map();
+        (data || []).forEach((entry: GameHistoryEntry) => {
+          const existing = uniqueGames.get(entry.game_id);
+          if (!existing || new Date(entry.played_at) > new Date(existing.played_at)) {
+            uniqueGames.set(entry.game_id, entry);
+          }
+        });
+
+        return Array.from(uniqueGames.values()).slice(0, limit);
       } catch (error) {
         console.error('Error with RPC function, falling back to direct query:', error);
         
-        // Fallback to direct query
+        // Fallback to direct query with duplicate removal
         const { data: fallbackData, error: fallbackError } = await supabase
           .from('user_game_history')
           .select('*')
           .eq('user_id', user.id)
           .order('played_at', { ascending: false })
-          .limit(limit);
+          .limit(limit * 2); // Fetch more to account for duplicates
 
         if (fallbackError) {
           console.error('Fallback query error:', fallbackError);
           return [];
         }
 
-        // For each history entry, fetch the game data separately
+        // Remove duplicates by keeping only the most recent entry for each game
+        const uniqueGames = new Map();
+        (fallbackData || []).forEach((entry: any) => {
+          const existing = uniqueGames.get(entry.game_id);
+          if (!existing || new Date(entry.played_at) > new Date(existing.played_at)) {
+            uniqueGames.set(entry.game_id, entry);
+          }
+        });
+
+        const uniqueEntries = Array.from(uniqueGames.values()).slice(0, limit);
+
+        // For each unique history entry, fetch the game data separately
         const historyWithGames = await Promise.all(
-          (fallbackData || []).map(async (entry: any) => {
+          uniqueEntries.map(async (entry: any) => {
             const { data: gameData } = await supabase
               .from('games')
               .select('*')

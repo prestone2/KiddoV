@@ -1,15 +1,17 @@
+
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GamePlayer from '@/components/GamePlayer';
-import FavoriteButton from '@/components/FavoriteButton';
 import ReportGameModal from '@/components/ReportGameModal';
+import GameDetailHeader from '@/components/GameDetailHeader';
+import GameDetailContent from '@/components/GameDetailContent';
+import GameSidebar from '@/components/GameSidebar';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Play, ArrowLeft, Users, Star, Share, Flag } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -18,6 +20,7 @@ const GameDetail = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { toast } = useToast();
+  const { hasPremiumAccess, isAuthenticated } = usePremiumAccess();
 
   const { data: game, isLoading, error } = useQuery({
     queryKey: ['game', id],
@@ -43,6 +46,16 @@ const GameDetail = () => {
   });
 
   const handlePlayGame = () => {
+    // Check if game is premium and user has access
+    if (game?.is_premium && !hasPremiumAccess) {
+      toast({
+        title: "Premium Required",
+        description: "This is a premium game. Please upgrade your subscription to play.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (game?.GameURL) {
       setIsPlaying(true);
     } else {
@@ -109,12 +122,8 @@ const GameDetail = () => {
           <div className="text-center py-12">
             <h1 className="text-2xl font-bold mb-4">Game Not Found</h1>
             <p className="text-gray-600 mb-4">The game you're looking for doesn't exist.</p>
-            <Link to="/games">
-              <Button>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Games
-              </Button>
-            </Link>
+            <GameDetailHeader gameTitle="Game Not Found" />
+            <Button>Back to Games</Button>
           </div>
         </div>
         <Footer />
@@ -122,39 +131,13 @@ const GameDetail = () => {
     );
   }
 
-  // Get game image from Assets field robustly
-  let gameImage = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
-  if (game.Assets) {
-    try {
-      let assetArray: any[] = [];
-      if (Array.isArray(game.Assets)) {
-        assetArray = game.Assets;
-      } else if (typeof game.Assets === 'string') {
-        try {
-          assetArray = JSON.parse(game.Assets);
-        } catch {
-          assetArray = [game.Assets];
-        }
-      } else if (typeof game.Assets === 'object' && game.Assets.length !== undefined) {
-        assetArray = [game.Assets];
-      } else if (typeof game.Assets === 'object') {
-        assetArray = [game.Assets];
-      }
-      if (assetArray.length > 0) {
-        const firstAsset = assetArray[0];
-        if (typeof firstAsset === 'string' && firstAsset.startsWith('http')) {
-          gameImage = firstAsset;
-        } else if (firstAsset && typeof firstAsset === 'object' && firstAsset.url) {
-          gameImage = firstAsset.url;
-        }
-      }
-    } catch (error) {
-      console.log('Error parsing assets:', error);
-    }
-  } // <-- This closes the if (game.Assets) block
-  // No 'Image' property on game object; fallback image is already set above.
+  // Get game image from Assets array or use fallback
+  const gameImage = game.Assets && Array.isArray(game.Assets) && game.Assets.length > 0 
+    ? String(game.Assets[0])
+    : 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
 
   const playersOnline = Math.floor(Math.random() * 100000);
+  const canAccessGame = !game.is_premium || hasPremiumAccess;
 
   return (
     <>
@@ -170,163 +153,27 @@ const GameDetail = () => {
         <Navbar />
         
         <div className="container mx-auto px-4 py-8 flex-grow">
-          <div className="mb-6">
-            <Link to="/games" className="flex items-center text-blue-600 hover:underline mb-4">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Games
-            </Link>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Game Image and Play Button */}
-              <div className="lg:col-span-2">
-                <Card>
-                  <CardContent className="p-0">
-                    <div className="relative">
-                      <img 
-                        src={gameImage} 
-                        alt={game.Title || 'Game'} 
-                        className="w-full h-96 object-cover rounded-t-lg"
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800&h=600';
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <Button 
-                          size="lg" 
-                          className="bg-green-600 hover:bg-green-700"
-                          onClick={handlePlayGame}
-                        >
-                          <Play className="mr-2 h-6 w-6" />
-                          Play Game
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h1 className="text-3xl font-bold mb-2">{game.Title || 'Untitled Game'}</h1>
-                          <p className="text-lg text-gray-600">by {game.Developer || 'Unknown Developer'}</p>
-                        </div>
-                        <Button 
-                          size="lg" 
-                          className="bg-green-600 hover:bg-green-700"
-                          onClick={handlePlayGame}
-                        >
-                          <Play className="mr-2 h-5 w-5" />
-                          Play
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center gap-6 mb-6">
-                        <div className="flex items-center">
-                          <Users className="h-5 w-5 mr-2 text-green-500" />
-                          <span className="font-semibold">{playersOnline.toLocaleString()}</span>
-                          <span className="text-gray-600 ml-1">playing</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Star className="h-5 w-5 mr-2 text-yellow-500" />
-                          <span className="font-semibold">4.8</span>
-                          <span className="text-gray-600 ml-1">(2.1k)</span>
-                        </div>
-                        <FavoriteButton gameId={id!} size="sm" />
-                      </div>
+          <GameDetailHeader gameTitle={game.Title || 'Game'} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <GameDetailContent
+              game={game}
+              gameImage={gameImage}
+              playersOnline={playersOnline}
+              canAccessGame={canAccessGame}
+              onPlayGame={handlePlayGame}
+            />
 
-                      {game.Description && (
-                        <div className="mb-6">
-                          <h3 className="text-xl font-semibold mb-3">About</h3>
-                          <p className="text-gray-700 leading-relaxed">{game.Description}</p>
-                        </div>
-                      )}
-
-                      {game.KeyFeatures && (
-                        <div className="mb-6">
-                          <h3 className="text-xl font-semibold mb-3">Key Features</h3>
-                          <p className="text-gray-700">{game.KeyFeatures}</p>
-                        </div>
-                      )}
-
-                      {game.Instructions && (
-                        <div>
-                          <h3 className="text-xl font-semibold mb-3">How to Play</h3>
-                          <p className="text-gray-700">{game.Instructions}</p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Game Info Sidebar */}
-              <div>
-                <Card className="mb-6">
-                  <CardHeader>
-                    <CardTitle>Game Info</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div>
-                        <span className="font-medium">Developer:</span>
-                        <p className="text-gray-600">{game.Developer || 'Unknown'}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium">Created:</span>
-                        <p className="text-gray-600">
-                          {game.created_at ? new Date(game.created_at).toLocaleDateString() : 'Unknown'}
-                        </p>
-                      </div>
-                      {game.Genres && Array.isArray(game.Genres) && game.Genres.length > 0 && (
-                        <div>
-                          <span className="font-medium">Genres:</span>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {game.Genres.map((genre, index) => (
-                              <span key={index} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                                {String(genre)}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {game.Tags && Array.isArray(game.Tags) && game.Tags.length > 0 && (
-                        <div>
-                          <span className="font-medium">Tags:</span>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {game.Tags.map((tag, index) => (
-                              <span key={index} className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                                {String(tag)}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <FavoriteButton gameId={id!} size="default" />
-                      <Button className="w-full" variant="outline" onClick={handleShareGame}>
-                        <Share className="mr-2 h-4 w-4" />
-                        Share Game
-                      </Button>
-                      <Button 
-                        className="w-full" 
-                        variant="outline"
-                        onClick={() => setIsReportModalOpen(true)}
-                      >
-                        <Flag className="mr-2 h-4 w-4" />
-                        Report Game
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+            <GameSidebar
+              developer={game.Developer || 'Unknown'}
+              createdAt={game.created_at || undefined}
+              isPremium={game.is_premium || false}
+              genres={game.Genres}
+              tags={game.Tags}
+              gameId={game.Id}
+              onShareGame={handleShareGame}
+              onReportGame={() => setIsReportModalOpen(true)}
+            />
           </div>
         </div>
         

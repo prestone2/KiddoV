@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
 import { Filter } from 'lucide-react';
-import { useGenres } from '@/hooks/useGames';
+import { useGenres } from '@/hooks/useGenres';
 
 const Games = () => {
   const [searchParams] = useSearchParams();

@@ -128,14 +128,20 @@ const RecentGames = () => {
         <Clock className="w-6 h-6 mr-2 text-roblox-blue" />
         <h2 className="text-2xl font-bold">Recently Played</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      {/* Horizontal scroll on small screens, grid on md+ */}
+      <div className="flex gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 sm:gap-4">
         {recentGames.map((entry) => (
-          <SimpleGameCard
+          <div
             key={entry.id}
-            id={entry.game?.Id || entry.game_id}
-            title={entry.game?.Title || 'Untitled Game'}
-            assets={entry.game?.Assets}
-          />
+            className="flex-shrink-0 sm:flex-shrink sm:w-auto"
+            style={{ width: '8rem' }} // w-32 for small screens
+          >
+            <SimpleGameCard
+              id={entry.game?.Id || entry.game_id}
+              title={entry.game?.Title || 'Untitled Game'}
+              assets={entry.game?.Assets}
+            />
+          </div>
         ))}
       </div>
     </section>
@@ -181,40 +187,26 @@ const SimpleGameCard: React.FC<SimpleGameCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
-      <div className="relative">
-        <img 
-          src={imageUrl}
-          alt={title}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=400&h=300';
-          }}
-        />
-        
-        {/* Favorite button overlay */}
-        <div className="absolute top-2 right-2">
-          <FavoriteButton gameId={id} size="sm" />
-        </div>
-        
-        {/* Play button overlay */}
+    <div className="group flex flex-col items-center"> {/* Removed Card wrapper */}
+      <div className="relative flex flex-col items-center">
         <Link to={`/games/${id}`} onClick={handleGameClick}>
-          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+          <img 
+            src={imageUrl}
+            alt={title}
+            className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=400&h=300';
+            }}
+          />
+          {/* Play button overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-roblox-blue text-white rounded-full p-3 opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
               <Play className="w-6 h-6 fill-current" />
             </div>
           </div>
         </Link>
       </div>
-      
-      <CardContent className="p-4">
-        <Link to={`/games/${id}`} className="block" onClick={handleGameClick}>
-          <h3 className="font-semibold text-lg mb-1 group-hover:text-roblox-blue transition-colors line-clamp-1">
-            {title}
-          </h3>
-        </Link>
-      </CardContent>
-    </Card>
+    </div>
   );
 };
 

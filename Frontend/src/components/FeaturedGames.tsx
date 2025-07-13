@@ -73,6 +73,7 @@ const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title, excludeIds = [] })
                   title={game.Title || 'Untitled Game'}
               creator={game.Developer || 'Unknown Developer'}
               assets={game.Assets}
+              isPremium={game.is_premium || false}
                 />
               </div>
             ))}
@@ -87,6 +88,7 @@ const FeaturedGames: React.FC<FeaturedGamesProps> = ({ title, excludeIds = [] })
                 creator={game.Developer}
                 description={game.Description}
                 assets={game.Assets}
+                isPremium={game.is_premium || false}
               />
             ))}
           </div>
