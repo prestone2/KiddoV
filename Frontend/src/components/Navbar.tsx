@@ -61,7 +61,7 @@ const Navbar = () => {
             <div className="relative w-full">
               <Input
                 type="text"
-                placeholder="Search games, users..."
+                placeholder="Search for games..."
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onFocus={handleSearchFocus}
@@ -152,7 +152,7 @@ const Navbar = () => {
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Search games, users..."
+                  placeholder="Search for games ..."
                   value={searchQuery}
                   onChange={handleSearchChange}
                   onFocus={handleSearchFocus}

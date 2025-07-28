@@ -4,7 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface SearchResult {
   games: any[];
-  profiles: any[];
 }
 
 export const useSearch = (query: string) => {
@@ -12,20 +11,21 @@ export const useSearch = (query: string) => {
     queryKey: ['search', query],
     queryFn: async (): Promise<SearchResult> => {
       if (!query || query.trim().length < 2) {
-        return { games: [], profiles: [] };
+        return { games: [] };
       }
 
-      console.log('Searching for:', query);
+      console.log('Searching for games:', query);
 
       // Search games by title, developer, or tags
       const { data: games, error: gamesError } = await supabase
         .from('games')
         .select('*')
         .or(`Title.ilike.%${query}%,Developer.ilike.%${query}%`)
-        .limit(10);
+        .limit(20);
 
       if (gamesError) {
         console.error('Error searching games:', gamesError);
+        return { games: [] };
       }
 
       // Also search games by tags (client-side filtering for JSON field)
@@ -55,28 +55,16 @@ export const useSearch = (query: string) => {
         });
       }
 
-      // Search profiles by username or display_name
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .or(`username.ilike.%${query}%,display_name.ilike.%${query}%`)
-        .limit(5);
-
-      if (profilesError) {
-        console.error('Error searching profiles:', profilesError);
-      }
-
       // Combine and deduplicate games
       const allFoundGames = [...(games || []), ...tagFilteredGames];
       const uniqueGames = allFoundGames.filter((game, index, self) => 
         index === self.findIndex(g => g.Id === game.Id)
-      ).slice(0, 10);
+      ).slice(0, 20);
 
-      console.log('Search results:', { games: uniqueGames, profiles: profiles || [] });
+      console.log('Search results:', { games: uniqueGames });
 
       return {
-        games: uniqueGames,
-        profiles: profiles || []
+        games: uniqueGames
       };
     },
     enabled: query.trim().length >= 2,
