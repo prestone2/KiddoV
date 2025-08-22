@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -46,7 +47,7 @@ const Games = () => {
         
         {filterOpen && (
           <div className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block font-medium mb-2">Genre</label>
                 <Select value={genreFilter} onValueChange={setGenreFilter}>
@@ -82,9 +83,10 @@ const Games = () => {
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="All Genders">Both Boys and Girls</SelectItem>
-                    <SelectItem value="Male">Boys</SelectItem>
-                    <SelectItem value="Female">Girls</SelectItem>
+                    <SelectItem value="All Genders">All Genders</SelectItem>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Unisex">Unisex</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -117,6 +119,7 @@ const Games = () => {
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
+              sortType="popular"
             />
           </TabsContent>
           
@@ -125,6 +128,7 @@ const Games = () => {
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
+              sortType="recommended"
             />
           </TabsContent>
           
@@ -133,6 +137,7 @@ const Games = () => {
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
+              sortType="top-rated"
             />
           </TabsContent>
           
@@ -142,6 +147,7 @@ const Games = () => {
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
               pageSize={6}
+              sortType="featured"
             />
           </TabsContent>
         </Tabs>

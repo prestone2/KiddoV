@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
                   <span>About Us</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/careers" className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors group">
                   <span className="inline-block group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300">💼</span>
                   <span>Careers</span>
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
                   <span className="inline-block group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300">📝</span>
                   <span>Blog</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/parents" className="flex items-center space-x-2 text-gray-600 hover:text-pink-600 transition-colors group">
                   <span className="inline-block group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300">👨‍👩‍👧‍👦</span>

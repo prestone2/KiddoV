@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,13 +8,24 @@ import { useUserSubscription } from '@/hooks/useSubscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { format } from 'date-fns';
 
 const SubscriptionStatus = () => {
   const { data: subscription, isLoading, refetch } = useUserSubscription();
   const { data: profile } = useProfile();
+  const { hasPremiumAccess, subscriptionStatus } = usePremiumAccess();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const [now, setNow] = useState(Date.now());
+
+  // Update current time for real-time expiry detection
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Auto-refresh subscription status every 30 seconds for better responsiveness
   useEffect(() => {
@@ -53,11 +64,24 @@ const SubscriptionStatus = () => {
     );
   }
 
-  // Check if user has active subscription (either via subscription table or profile)
-  const hasActiveSubscription = subscription?.status === 'active' || profile?.subscription_status === 'active';
+  // Use the premium access hook for accurate expiry-aware status
+  const hasActiveSubscription = hasPremiumAccess;
   const subscriptionPlan = subscription?.subscription_plans || null;
+  
+  // Check if subscription is expired but status hasn't updated yet
+  const isExpired = () => {
+    const nowDate = new Date(now);
+    if (subscription?.current_period_end) {
+      return new Date(subscription.current_period_end) <= nowDate;
+    }
+    if (profile?.subscription_expires_at) {
+      return new Date(profile.subscription_expires_at) <= nowDate;
+    }
+    return false;
+  };
 
   if (!hasActiveSubscription) {
+    const wasExpired = isExpired();
     return (
       <Card>
         <CardHeader>
@@ -73,14 +97,21 @@ const SubscriptionStatus = () => {
         </CardHeader>
         <CardContent>
           <div className="text-center py-4">
-            <p className="text-gray-600 mb-4">You don't have an active subscription</p>
-            <Badge variant="outline">Free Plan</Badge>
-            <p className="text-sm text-gray-500 mt-2">
-              If you just made a payment, please wait a moment for it to process and click refresh.
+            <p className="text-gray-600 mb-4">
+              {wasExpired ? 'Your subscription has expired' : 'You don\'t have an active subscription'}
             </p>
-            {profile?.subscription_status && (
+            <Badge variant={wasExpired ? "destructive" : "outline"}>
+              {wasExpired ? 'Expired' : 'Free Plan'}
+            </Badge>
+            <p className="text-sm text-gray-500 mt-2">
+              {wasExpired 
+                ? 'Please renew your subscription to continue accessing premium features.'
+                : 'If you just made a payment, please wait a moment for it to process and click refresh.'
+              }
+            </p>
+            {(subscription?.current_period_end || profile?.subscription_expires_at) && (
               <p className="text-xs text-gray-400 mt-2">
-                Profile status: {profile.subscription_status}
+                Expired: {format(new Date(subscription?.current_period_end || profile?.subscription_expires_at!), 'MMM dd, yyyy HH:mm')}
               </p>
             )}
           </div>
@@ -98,7 +129,9 @@ const SubscriptionStatus = () => {
             Subscription Status
           </span>
           <div className="flex items-center gap-2">
-            <Badge className="bg-green-500">Active</Badge>
+            <Badge className="bg-green-500">
+              {subscriptionStatus === 'active' ? 'Active' : 'Free'}
+            </Badge>
             <Button variant="ghost" size="sm" onClick={handleRefresh}>
               <RefreshCw className="w-4 h-4" />
             </Button>
@@ -133,10 +166,10 @@ const SubscriptionStatus = () => {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600 flex items-center">
                   <Calendar className="w-4 h-4 mr-1" />
-                  Next Billing:
+                  {new Date(subscription.current_period_end) > new Date(now) ? 'Next Billing:' : 'Expired:'}
                 </span>
-                <span className="font-semibold">
-                  {format(new Date(subscription.current_period_end), 'MMM dd, yyyy')}
+                <span className={`font-semibold ${new Date(subscription.current_period_end) <= new Date(now) ? 'text-red-500' : ''}`}>
+                  {format(new Date(subscription.current_period_end), 'MMM dd, yyyy HH:mm')}
                 </span>
               </div>
             )}
@@ -148,8 +181,8 @@ const SubscriptionStatus = () => {
               Premium features are available
             </p>
             {profile?.subscription_expires_at && (
-              <p className="text-xs text-gray-500 mt-1">
-                Expires: {format(new Date(profile.subscription_expires_at), 'MMM dd, yyyy')}
+              <p className={`text-xs mt-1 ${new Date(profile.subscription_expires_at) <= new Date(now) ? 'text-red-500' : 'text-gray-500'}`}>
+                {new Date(profile.subscription_expires_at) > new Date(now) ? 'Expires:' : 'Expired:'} {format(new Date(profile.subscription_expires_at), 'MMM dd, yyyy HH:mm')}
               </p>
             )}
           </div>

@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import GameCard from './GameCard';
@@ -6,11 +7,13 @@ import { Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useInfiniteGames } from '@/hooks/useInfiniteGames';
 import { useInfiniteFilteredGames } from '@/hooks/useFilteredGames';
+
 interface LazyGamesListProps {
   genreFilter?: string;
   deviceFilter?: string;
   genderFilter?: string;
   pageSize?: number;
+  sortType?: string;
 }
 
 const LazyGamesList: React.FC<LazyGamesListProps> = ({
@@ -18,6 +21,7 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
   deviceFilter,
   genderFilter,
   pageSize = 12,
+  sortType = 'popular',
 }) => {
   const hasFilters = (genreFilter && genreFilter !== 'All Genres') || 
                     (deviceFilter && deviceFilter !== 'All Devices') || 
@@ -31,8 +35,8 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
     isFetchingNextPage,
     status,
   } = hasFilters 
-    ? useInfiniteFilteredGames(genreFilter, deviceFilter, genderFilter, pageSize)
-    : useInfiniteGames(pageSize);
+    ? useInfiniteFilteredGames(genreFilter, deviceFilter, genderFilter, pageSize, sortType)
+    : useInfiniteGames(pageSize, sortType);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -88,7 +92,7 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
         Showing {allGames.length} of {totalCount} games
       </div>
       
-      <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
         {allGames.map((game, index) => (
           <GameCard
             key={`${game.Id}-${index}`}

@@ -6,12 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Crown, Star, Zap } from 'lucide-react';
 import { useSubscriptionPlans, useCreateSubscription, useUserSubscription } from '@/hooks/useSubscriptions';
 import { useAuth } from '@/hooks/useAuth';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const SubscriptionPlans = () => {
   const { user } = useAuth();
   const { data: plans, isLoading: plansLoading } = useSubscriptionPlans();
   const { data: userSubscription } = useUserSubscription();
+  const { hasPremiumAccess } = usePremiumAccess();
   const createSubscription = useCreateSubscription();
 
   const handleSubscribe = (planId: string) => {
@@ -60,13 +62,20 @@ const SubscriptionPlans = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {plans?.map((plan, index) => {
-        const isCurrentPlan = userSubscription?.plan_id === plan.id;
+        // If user has premium access, mark their subscribed plan as current
+        // If no premium access, mark Basic plan as current
+        const isCurrentPlan = hasPremiumAccess 
+          ? userSubscription?.plan_id === plan.id 
+          : plan.name.toLowerCase() === 'basic';
         const isPopular = index === 1; // Premium is popular
         
         return (
           <Card 
             key={plan.id} 
-            className={`relative ${getPlanColor(plan.name)} ${isPopular ? 'ring-2 ring-purple-500 transform scale-105' : ''}`}
+            className={`relative ${getPlanColor(plan.name)} ${
+              isPopular ? 'ring-2 ring-purple-500 transform scale-105' : 
+              isCurrentPlan && plan.name.toLowerCase() === 'basic' ? 'ring-2 ring-green-500' : ''
+            }`}
           >
             {isPopular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
@@ -94,7 +103,7 @@ const SubscriptionPlans = () => {
                 <span className="text-lg font-normal text-gray-600">/month</span>
               </div>
               <div className="text-lg font-semibold text-roblox-blue">
-                {plan.robux_monthly.toLocaleString()} kiddocash/month
+                {plan.robux_monthly.toLocaleString()} Robux/month
               </div>
             </CardHeader>
 

@@ -65,7 +65,7 @@ const HelpCenter = () => {
     },
     {
       question: "How do I get Kiddocash?",
-      answer: "Robux can be purchased through our store or earned through our subscription plans. Premium members receive monthly kiddocash allowances."
+      answer: "Kiddocash can be purchased through our store or earned through our subscription plans. Premium members receive monthly kiddocash allowances."
     }
   ];
 

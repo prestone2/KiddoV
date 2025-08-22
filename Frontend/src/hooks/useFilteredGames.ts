@@ -5,9 +5,9 @@ import type { Game } from './useGames';
 import { filterGames } from './useGameFilters';
 
 // Infinite query hook for filtered games
-export const useInfiniteFilteredGames = (genreFilter?: string, deviceFilter?: string, genderFilter?: string, pageSize: number = 12) => {
+export const useInfiniteFilteredGames = (genreFilter?: string, deviceFilter?: string, genderFilter?: string, pageSize: number = 12, sortType: string = 'popular') => {
   return useInfiniteQuery({
-    queryKey: ['filtered-games-infinite', genreFilter, deviceFilter, genderFilter, pageSize],
+    queryKey: ['filtered-games-infinite', genreFilter, deviceFilter, genderFilter, pageSize, sortType],
     queryFn: async ({ pageParam = 0 }) => {
       console.log('Fetching all games for filtering...');
       
@@ -23,9 +23,32 @@ export const useInfiniteFilteredGames = (genreFilter?: string, deviceFilter?: st
       }
 
       // Apply filters
-      const filteredGames = filterGames(allGames || [], genreFilter, deviceFilter, genderFilter);
+      let filteredGames = filterGames(allGames || [], genreFilter, deviceFilter, genderFilter);
       
-      // Apply pagination to filtered results
+      // Apply sorting based on sortType
+      switch (sortType) {
+        case 'recommended':
+          // Shuffle the filtered games
+          filteredGames = [...filteredGames].sort(() => Math.random() - 0.5);
+          break;
+        case 'top-rated':
+          // Sort by title alphabetically
+          filteredGames = [...filteredGames].sort((a, b) => (a.Title || '').localeCompare(b.Title || ''));
+          break;
+        case 'featured':
+          // Sort by premium first, then by creation date
+          filteredGames = [...filteredGames].sort((a, b) => {
+            if (a.is_premium && !b.is_premium) return -1;
+            if (!a.is_premium && b.is_premium) return 1;
+            return new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime();
+          });
+          break;
+        default: // 'popular'
+          // Keep original order (already sorted by created_at desc)
+          break;
+      }
+      
+      // Apply pagination to filtered and sorted results
       const startIndex = pageParam * pageSize;
       const endIndex = startIndex + pageSize;
       const paginatedGames = filteredGames.slice(startIndex, endIndex);

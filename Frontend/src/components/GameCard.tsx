@@ -135,7 +135,6 @@ const GameCard: React.FC<GameCardProps> = ({
           </h3>
         )}
         
-        <p className="text-sm text-gray-600 mb-2">by {creator}</p>
         
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center text-sm text-gray-500">

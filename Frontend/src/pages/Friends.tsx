@@ -163,7 +163,7 @@ const Friends = () => {
                   <div className="flex items-center space-x-4">
                     <div className="relative">
                       <img 
-                        src={friend.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
+                        src={friend.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'}
                         alt={friend.display_name || friend.username} 
                         className="w-12 h-12 rounded-full"
                       />

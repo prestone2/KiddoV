@@ -119,11 +119,12 @@ const Contact = () => {
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 text-roblox-blue mr-3" />
-                  <span></span>
+                  <span>+254 711 468 468</span>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 text-roblox-blue mr-3" />
-                  <span>123 Gaming Street, Tech City, TC 12345</span>
+                  <span>5th Floor, Parklands Plaza,
+                        Chiromo Road, Nairobi, Kenya.</span>
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-5 h-5 text-roblox-blue mr-3" />

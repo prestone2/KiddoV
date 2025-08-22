@@ -150,7 +150,7 @@ const Profile = () => {
             <div className="md:w-1/3 mb-6 md:mb-0 flex flex-col items-center md:items-start">
               <div className="relative mt-[-60px] mb-4">
                 <img 
-                  src={profile.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
+                src={profile.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'}
                   alt={profile.username} 
                   className="w-24 h-24 rounded-full border-4 border-white object-cover"
                 />

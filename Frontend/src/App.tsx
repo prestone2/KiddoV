@@ -32,6 +32,9 @@ import Contact from "./pages/Contact";
 import HelpCenter from "./pages/HelpCenter";
 import Safety from "./pages/Safety";
 import Terms from "./pages/Terms";
+import Privacy from '@/pages/Privacy';
+import Cookies from '@/pages/Cookies';
+import CookieConsent from '@/components/CookieConsent';
 
 const queryClient = new QueryClient();
 
@@ -40,9 +43,11 @@ const App = () => (
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
+      
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <CookieConsent />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/games" element={<Games />} />
@@ -73,6 +78,8 @@ const App = () => (
             <Route path="/community" element={<Community />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
+             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/cookies" element={<Cookies />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
