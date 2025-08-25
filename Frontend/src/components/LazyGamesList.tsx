@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import GameCard from './GameCard';
@@ -52,7 +51,7 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
   if (status === 'pending') {
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4">
           {Array.from({ length: pageSize }).map((_, index) => (
             <div key={index} className="space-y-2">
               <Skeleton className="h-48 w-full rounded-lg" />
@@ -92,7 +91,7 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
         Showing {allGames.length} of {totalCount} games
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4">
         {allGames.map((game, index) => (
           <GameCard
             key={`${game.Id}-${index}`}

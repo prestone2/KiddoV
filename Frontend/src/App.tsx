@@ -35,6 +35,7 @@ import Terms from "./pages/Terms";
 import Privacy from '@/pages/Privacy';
 import Cookies from '@/pages/Cookies';
 import CookieConsent from '@/components/CookieConsent';
+import ResetPassword from '@/pages/ResetPassword';
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => (
             <Route path="/developer-hub" element={<DeveloperHub />} />
             <Route path="/education" element={<Education />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
              <Route path="/privacy" element={<Privacy />} />

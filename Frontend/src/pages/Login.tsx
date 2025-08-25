@@ -17,10 +17,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
    const [showForgotPassword, setShowForgotPassword] = useState(false);
+   const [showResendConfirmation, setShowResendConfirmation] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
+  const [resendEmail, setResendEmail] = useState('');
+  const [resendLoading, setResendLoading] = useState(false);
   const navigate = useNavigate();
-  const { signIn, user } = useAuth();
+  const { signIn, user, resendConfirmation } = useAuth();
    const { toast } = useToast();
 
   // Redirect if already logged in
@@ -36,11 +39,29 @@ const Login = () => {
 
     const { error } = await signIn(email, password);
     
-    if (!error) {
+        // If email not confirmed, show resend confirmation option
+    if (error && (error.message.includes('Email not confirmed') || error.message.includes('not been confirmed'))) {
+      setShowResendConfirmation(true);
+      setResendEmail(email);
+    } else if (!error) {
       navigate('/');
     }
     
     setLoading(false);
+    };
+
+  const handleResendConfirmation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResendLoading(true);
+
+    const { error } = await resendConfirmation(resendEmail);
+    
+    if (!error) {
+      setShowResendConfirmation(false);
+      setResendEmail('');
+    }
+    
+    setResendLoading(false);
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -76,6 +97,53 @@ const Login = () => {
 
     setResetLoading(false);
   };
+   if (showResendConfirmation) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-roblox-blue to-blue-700 flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+          <div className="text-center mb-8">
+            <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
+              KiddoVerse
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Confirm Your Email</h1>
+            <p className="text-gray-600">Resend confirmation email to verify your account</p>
+          </div>
+
+          <form onSubmit={handleResendConfirmation} className="space-y-6">
+            <div>
+              <Label htmlFor="resend-email">Email</Label>
+              <Input
+                id="resend-email"
+                type="email"
+                value={resendEmail}
+                onChange={(e) => setResendEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="mt-1"
+                required
+              />
+            </div>
+
+            <Button
+              type="submit"
+              disabled={resendLoading}
+              className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
+            >
+              {resendLoading ? 'Sending...' : 'Resend Confirmation Email'}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => setShowResendConfirmation(false)}
+              className="text-sm text-roblox-blue hover:text-roblox-blue/80"
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showForgotPassword) {
     return (
@@ -83,7 +151,7 @@ const Login = () => {
         <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
           <div className="text-center mb-8">
             <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
-              ROBLOX
+              KiddoVerse
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Reset Password</h1>
             <p className="text-gray-600">Enter your email to receive reset instructions</p>
