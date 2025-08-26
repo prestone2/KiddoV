@@ -41,15 +41,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="font-bold text-lg mb-4">Resources</h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/help"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-roblox-blue transition-colors group"
-                >
-                  <FaHandsHelping className="text-xl group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300" />
-                  <span>Help</span>
-                </Link>
-              </li>
+              
               <li>
                 <Link
                   to="/developer-hub"
@@ -110,15 +102,7 @@ const Footer: React.FC = () => {
                   <span>Safety</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/terms"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-pink-600 transition-colors group"
-                >
-                  <FaFileContract className="text-xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Terms</span>
-                </Link>
-              </li>
+            
             </ul>
           </div>
           
@@ -158,17 +142,7 @@ const Footer: React.FC = () => {
                   <span>YouTube</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://discord.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-indigo-500 transition-colors group"
-                >
-                  <FaDiscord className="text-xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Discord</span>
-                </a>
-              </li>
+
             </ul>
           </div>
           

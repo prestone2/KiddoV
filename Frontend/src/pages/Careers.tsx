@@ -7,34 +7,34 @@ import { MapPin, Clock, DollarSign } from 'lucide-react';
 
 const Careers = () => {
   const jobListings = [
-    {
-      title: "Senior Software Engineer",
-      department: "Engineering",
-      location: "San Mateo, CA",
-      type: "Full-time",
-      salary: "$150k - $200k"
-    },
-    {
-      title: "Product Manager",
-      department: "Product",
-      location: "Remote",
-      type: "Full-time",
-      salary: "$130k - $180k"
-    },
-    {
-      title: "UX Designer",
-      department: "Design",
-      location: "San Mateo, CA",
-      type: "Full-time",
-      salary: "$120k - $160k"
-    },
-    {
-      title: "Data Scientist",
-      department: "Analytics",
-      location: "Austin, TX",
-      type: "Full-time",
-      salary: "$140k - $190k"
-    }
+    // {
+    //   title: "Senior Software Engineer",
+    //   department: "Engineering",
+    //   location: "San Mateo, CA",
+    //   type: "Full-time",
+    //   salary: "$150k - $200k"
+    // },
+    // {
+    //   title: "Product Manager",
+    //   department: "Product",
+    //   location: "Remote",
+    //   type: "Full-time",
+    //   salary: "$130k - $180k"
+    // },
+    // {
+    //   title: "UX Designer",
+    //   department: "Design",
+    //   location: "San Mateo, CA",
+    //   type: "Full-time",
+    //   salary: "$120k - $160k"
+    // },
+    // {
+    //   title: "Data Scientist",
+    //   department: "Analytics",
+    //   location: "Austin, TX",
+    //   type: "Full-time",
+    //   salary: "$140k - $190k"
+    // }
   ];
 
   return (

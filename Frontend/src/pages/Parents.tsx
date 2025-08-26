@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Shield, Eye, Settings, Users, Clock, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import parentsGuideImg from '@/assets/parentsguide.png';
 
 const Parents = () => {
   const safetyFeatures = [
@@ -140,9 +141,9 @@ const Parents = () => {
             </div>
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1527576539890-dfa815648363?auto=format&fit=crop&q=80&w=600&h=400"
-                alt="Family using computer together"
-                className="rounded-lg shadow-lg"
+                src={parentsGuideImg}
+                alt="Parent guiding child on how to use the site"
+                className="rounded-lg shadow-lg border border-blue-200 w-1/2 max-w-sm mx-auto"
               />
             </div>
           </div>

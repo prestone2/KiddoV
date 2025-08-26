@@ -93,12 +93,7 @@ const GameCard: React.FC<GameCardProps> = ({
               Premium
             </Badge>
           </div>
-        )}
-        
-        {/* Favorite button overlay */}
-        <div className="absolute top-2 right-2">
-          <FavoriteButton gameId={id} size="sm" />
-        </div>
+        )}        
         
         {/* Play button overlay */}
         {canAccessGame ? (
@@ -140,15 +135,6 @@ const GameCard: React.FC<GameCardProps> = ({
           <div className="flex items-center text-sm text-gray-500">
             <Users className="w-4 h-4 mr-1" />
             <span>{players.toLocaleString()}/{maxPlayers}</span>
-          </div>
-          
-          <div className="flex gap-1">
-            {isPremium && (
-              <Badge variant="outline" className="text-xs border-yellow-500 text-yellow-600">
-                <Crown className="w-3 h-3 mr-1" />
-                Premium
-              </Badge>
-            )}
           </div>
         </div>
         

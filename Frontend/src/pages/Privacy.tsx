@@ -127,15 +127,7 @@ const Privacy = () => {
           </section>
 
           {/* Contact Information */}
-          <section className="bg-primary/10 border border-primary/20 p-6 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
-            <div className="space-y-2 text-muted-foreground">
-              <p>If you have questions about this Privacy Policy or our data practices, please contact us:</p>
-              <p>• Email: privacy@example.com</p>
-              <p>• Address: 123 Privacy Street, Data City, DC 12345</p>
-              <p>• Phone: (555) 123-4567</p>
-            </div>
-          </section>
+         
         </div>
       </main>
 
