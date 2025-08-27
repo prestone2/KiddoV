@@ -58,27 +58,27 @@ const Community = () => {
   ];
 
   const communityPosts = [
-    {
-      user: "DevMaster",
-      time: "2 hours ago",
-      content: "Just released my new horror game! Would love feedback from the community 🎮",
-      likes: 234,
-      replies: 45
-    },
-    {
-      user: "ScriptingPro",
-      time: "5 hours ago", 
-      content: "Hosting a free scripting workshop this weekend. Limited spots available!",
-      likes: 156,
-      replies: 23
-    },
-    {
-      user: "DesignGuru",
-      time: "1 day ago",
-      content: "New UI design trends in kiddoverse games - what do you think about minimalist interfaces?",
-      likes: 89,
-      replies: 67
-    }
+    // {
+    //   user: "DevMaster",
+    //   time: "2 hours ago",
+    //   content: "Just released my new horror game! Would love feedback from the community 🎮",
+    //   likes: 234,
+    //   replies: 45
+    // },
+    // {
+    //   user: "ScriptingPro",
+    //   time: "5 hours ago", 
+    //   content: "Hosting a free scripting workshop this weekend. Limited spots available!",
+    //   likes: 156,
+    //   replies: 23
+    // },
+    // {
+    //   user: "DesignGuru",
+    //   time: "1 day ago",
+    //   content: "New UI design trends in kiddoverse games - what do you think about minimalist interfaces?",
+    //   likes: 89,
+    //   replies: 67
+    // }
   ];
 
   return (
@@ -133,7 +133,7 @@ const Community = () => {
         </div>
 
         {/* Featured Creators */}
-        <div className="mb-12">
+        {/* <div className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8">Featured Creators</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {featuredCreators.map((creator, index) => (
@@ -155,7 +155,7 @@ const Community = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Community Feed */}
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
@@ -218,14 +218,14 @@ const Community = () => {
         <div className="text-center bg-gradient-to-r from-roblox-blue to-blue-600 text-white rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
           <p className="mb-6">Be part of the world's largest creative platform. Share, learn, and grow with millions of creators.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="secondary" size="lg">
               Create Account
             </Button>
             <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-roblox-blue">
               Explore Community
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
       

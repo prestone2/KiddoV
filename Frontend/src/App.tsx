@@ -36,6 +36,7 @@ import Privacy from '@/pages/Privacy';
 import Cookies from '@/pages/Cookies';
 import CookieConsent from '@/components/CookieConsent';
 import ResetPassword from '@/pages/ResetPassword';
+import AvatarCustomization from './pages/AvatarCustomization';
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
              <Route path="/privacy" element={<Privacy />} />
             <Route path="/cookies" element={<Cookies />} />
+            <Route path="/avatar-customization" element={<AvatarCustomization />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

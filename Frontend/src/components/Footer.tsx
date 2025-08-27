@@ -84,15 +84,7 @@ const Footer: React.FC = () => {
                   <span>Contact Us</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/help-center"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors group"
-                >
-                  <FaLifeRing className="text-xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Help Center</span>
-                </Link>
-              </li>
+              
               <li>
                 <Link
                   to="/safety"

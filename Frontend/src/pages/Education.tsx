@@ -91,7 +91,7 @@ const Education = () => {
         </div>
 
         {/* Subject Areas */}
-        <div className="mb-12">
+        {/* <div className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8">Subject Areas</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {subjects.map((subject, index) => (
@@ -117,7 +117,7 @@ const Education = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Stats Section */}
         <div className="bg-gradient-to-r from-roblox-blue to-blue-600 text-white rounded-lg p-8 mb-12">
@@ -174,14 +174,14 @@ const Education = () => {
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Transform Learning?</h2>
           <p className="text-gray-600 mb-6">Join thousands of educators bringing creative learning to their classrooms.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
               Get Started for Free
             </Button>
             <Button size="lg" variant="outline">
               Schedule Demo
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
       

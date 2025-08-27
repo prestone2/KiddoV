@@ -105,7 +105,7 @@ const DeveloperHub = () => {
         </div>
 
         {/* Featured Tutorials */}
-        <div className="mb-12">
+        {/* <div className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8">Featured Tutorials</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {featuredTutorials.map((tutorial, index) => (
@@ -131,7 +131,7 @@ const DeveloperHub = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Developer Stats */}
         <div className="bg-gray-50 rounded-lg p-8 mb-12">
@@ -160,14 +160,14 @@ const DeveloperHub = () => {
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Build?</h2>
           <p className="text-gray-600 mb-6">Join millions of developers creating the future of entertainment.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
               Get Started
             </Button>
             <Button size="lg" variant="outline">
               View Documentation
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
       

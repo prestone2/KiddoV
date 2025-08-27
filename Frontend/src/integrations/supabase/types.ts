@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      avatar_templates: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_url: string
+          is_premium: boolean | null
+          name: string
+          style: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url: string
+          is_premium?: boolean | null
+          name: string
+          style: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string
+          is_premium?: boolean | null
+          name?: string
+          style?: string
+        }
+        Relationships: []
+      }
       daily_game_plays: {
         Row: {
           created_at: string
@@ -207,6 +234,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_customization: Json | null
+          avatar_style: string | null
           avatar_url: string | null
           created_at: string
           display_name: string | null
@@ -219,6 +248,8 @@ export type Database = {
           username: string
         }
         Insert: {
+          avatar_customization?: Json | null
+          avatar_style?: string | null
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
@@ -231,6 +262,8 @@ export type Database = {
           username: string
         }
         Update: {
+          avatar_customization?: Json | null
+          avatar_style?: string | null
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null

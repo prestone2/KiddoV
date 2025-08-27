@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -8,6 +9,8 @@ export interface UserProfile {
   username: string;
   display_name: string | null;
   avatar_url: string | null;
+  avatar_style: string | null;
+  avatar_customization: any | null;
   robux_balance: number | null;
   subscription_status: string | null;
   subscription_plan_id: string | null;
@@ -15,16 +18,6 @@ export interface UserProfile {
   created_at: string;
   updated_at: string;
 }
-
-export type UpdateProfileInput = {
-  username?: string;
-  display_name?: string;
-  avatar_url?: string;
-  subscription_status?: string;
-  subscription_plan_id?: string;
-  subscription_expires_at?: string;
-  robux_balance?: number;
-};
 
 export const useProfile = () => {
   const { user } = useAuth();
@@ -57,20 +50,40 @@ export const useProfile = () => {
 };
 
 export const useUpdateProfile = () => {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (updates: UpdateProfileInput) => {
-      const { user } = useAuth();
-      if (!user) throw new Error('User not authenticated');
-      const { error } = await supabase
+    mutationFn: async (updates: Partial<UserProfile>) => {
+      if (!user?.id) throw new Error('User not authenticated');
+
+      const { data, error } = await supabase
         .from('profiles')
-        .update(updates)
-        .eq('id', user.id);
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id)
+        .select()
+        .single();
+
       if (error) throw error;
+      return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been successfully updated.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Update failed",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 };
@@ -112,55 +125,4 @@ export const useCreatedGames = () => {
     },
     enabled: !!user?.id,
   });
-};
-
-export async function updateUserSubscriptionAndBalance({
-  userId,
-  subscriptionStatus,
-  subscriptionPlanId,
-  subscriptionExpiresAt,
-  robuxBalance,
-}: {
-  userId: string;
-  subscriptionStatus: string;
-  subscriptionPlanId: string;
-  subscriptionExpiresAt: string;
-  robuxBalance: number;
-}) {
-  const { error } = await supabase
-    .from('profiles')
-    .update({
-      subscription_status: subscriptionStatus,
-      subscription_plan_id: subscriptionPlanId,
-      subscription_expires_at: subscriptionExpiresAt,
-      robux_balance: robuxBalance,
-    })
-    .eq('id', userId);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-}
-
-// Example usage within a component or a function
-const SomeComponent = () => {
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
-
-  const handleSubscriptionUpdate = async (planId: string, expiresAt: string, newBalance: number) => {
-    if (!user?.id) return;
-
-    await updateUserSubscriptionAndBalance({
-      userId: user.id,
-      subscriptionStatus: 'active',
-      subscriptionPlanId: planId,
-      subscriptionExpiresAt: expiresAt,
-      robuxBalance: newBalance,
-    });
-
-    // Optionally, refetch the profile to update UI
-    queryClient.invalidateQueries({ queryKey: ['profile', user.id] });
-  };
-
-  return null;
 };

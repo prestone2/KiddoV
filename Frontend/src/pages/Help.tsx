@@ -106,9 +106,9 @@ const Help = () => {
           <MessageCircle className="h-12 w-12 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-4">Still Need Help?</h2>
           <p className="mb-6">Can't find what you're looking for? Our support team is here to help.</p>
-          <Button variant="secondary" size="lg">
+          {/* <Button variant="secondary" size="lg">
             Contact Support
-          </Button>
+          </Button> */}
         </div>
       </div>
       

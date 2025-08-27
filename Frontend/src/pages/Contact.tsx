@@ -119,7 +119,7 @@ const Contact = () => {
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 text-roblox-blue mr-3" />
-                  <span>+254 711 468 468</span>
+                  <span>+254 799855480</span>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 text-roblox-blue mr-3" />

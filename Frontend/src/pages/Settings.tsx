@@ -11,11 +11,17 @@ import { Loader2 } from 'lucide-react';
 import { useProfile, useUpdateProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'react-router-dom';
+import { User } from '@supabase/supabase-js';
+import { usePremiumAccess } from '@/hooks/usePremiumAccess';
+import { User as UserType } from '@supabase/supabase-js';
+import { UserProfile } from '@/hooks/useProfile';
+import { User as UserIcon } from 'lucide-react';
 
 const Settings = () => {
   const { user, loading: authLoading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const updateProfile = useUpdateProfile();
+  const { hasPremiumAccess } = usePremiumAccess();
 
   // Form state
   const [username, setUsername] = useState('');
@@ -181,6 +187,55 @@ const Settings = () => {
                 </Link>
               </div>
             </div>
+
+            {/* Avatar Customization Section */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold mb-4">Avatar Customization</h2>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full overflow-hidden">
+                    {profile?.avatar_url ? (
+                      <img 
+                        src={profile.avatar_url} 
+                        alt="Avatar" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <UserIcon className="h-8 w-8 text-gray-400" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Cartoon Avatar</h3>
+                    <p className="text-sm text-gray-600">
+                      {hasPremiumAccess 
+                        ? 'Customize your avatar with premium templates' 
+                        : 'Premium feature - Upgrade to customize your avatar'
+                      }
+                    </p>
+                    {profile?.avatar_style && (
+                      <p className="text-xs text-gray-500">Current style: {profile.avatar_style}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Link to="/avatar-customization">
+                    <Button 
+                      variant={hasPremiumAccess ? "default" : "outline"}
+                      className={hasPremiumAccess ? "bg-roblox-blue hover:bg-roblox-blue/90" : ""}
+                    >
+                      {hasPremiumAccess ? 'Customize Avatar' : 'View Premium'}
+                    </Button>
+                  </Link>
+                  {!hasPremiumAccess && (
+                    <Link to="/subscription">
+                      <Button className="bg-roblox-blue hover:bg-roblox-blue/90">
+                        Upgrade
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="privacy" className="space-y-6">
@@ -299,14 +354,3 @@ const Settings = () => {
 };
 
 export default Settings;
-
-// Add the missing fields to the type
-export type UpdateProfileInput = {
-  username?: string;
-  display_name?: string;
-  avatar_url?: string;
-  subscription_status?: string;
-  subscription_plan_id?: string;
-  subscription_expires_at?: string;
-  robux_balance?: number;
-};
