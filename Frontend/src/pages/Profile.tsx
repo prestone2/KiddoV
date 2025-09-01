@@ -138,23 +138,29 @@ const Profile = () => {
         {/* Hero banner */}
         <div className="relative h-48 md:h-60 bg-gradient-to-r from-roblox-blue to-blue-600 rounded-t-lg overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 p-6 text-white">
-            <h1 className="text-3xl font-bold">{profile.display_name || 'User'}</h1>
-            <p className="text-white/80">@{profile.username}</p>
-          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
+              <div className="mb-4 sm:mb-0">
+                <h1 className="text-3xl font-bold">{profile.display_name || 'User'}</h1>
+                <p className="text-white/80">@{profile.username}</p>
+              </div>
+              {/* Avatar positioned to not overlap text on mobile */}
+              <div className="flex-shrink-0">
+                <img 
+                  src={profile.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'} 
+                  alt={profile.username} 
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white object-cover"
+                />
+              </div>
+            </div>
+        </div>
         </div>
         
         {/* Profile info section */}
         <div className="bg-white border border-gray-200 shadow-sm rounded-b-lg p-6">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-1/3 mb-6 md:mb-0 flex flex-col items-center md:items-start">
-              <div className="relative mt-[-60px] mb-4">
-                <img 
-                src={profile.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'}
-                  alt={profile.username} 
-                  className="w-24 h-24 rounded-full border-4 border-white object-cover"
-                />
-              </div>
+             
               
               <div className="flex space-x-4 mb-6">
                 <div className="text-center">
@@ -196,7 +202,7 @@ const Profile = () => {
                 >
                   Add Friend
                 </Button>
-                <Button variant="outline">Message</Button>
+                {/* <Button variant="outline">Message</Button> */}
                 <Link to="/settings">
                   <Button variant="outline" className="w-full">Edit Profile</Button>
                 </Link>
@@ -204,7 +210,7 @@ const Profile = () => {
               
               <div className="mt-6">
                 <h3 className="font-semibold mb-2">About</h3>
-                <p className="text-gray-700">Welcome to my profile! I love playing and creating games.</p>
+                <p className="text-gray-700">Welcome to my profile! I love playing..</p>
                 <p className="text-gray-500 text-sm mt-2">Member since {joinDate}</p>
                 {profile.robux_balance !== null && (
                   <p className="text-green-600 font-semibold mt-2">
@@ -218,9 +224,9 @@ const Profile = () => {
               <Tabs defaultValue="favorites">
                 <TabsList>
                   <TabsTrigger value="favorites">Favorites</TabsTrigger>
-                  <TabsTrigger value="creations">Creations</TabsTrigger>
+                  {/* <TabsTrigger value="creations">Creations</TabsTrigger>
                   <TabsTrigger value="inventory">Inventory</TabsTrigger>
-                  <TabsTrigger value="groups">Groups</TabsTrigger>
+                  <TabsTrigger value="groups">Groups</TabsTrigger> */}
                 </TabsList>
                 
                 <TabsContent value="favorites" className="pt-6">

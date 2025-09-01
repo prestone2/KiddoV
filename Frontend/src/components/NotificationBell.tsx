@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -14,7 +15,8 @@ import { Badge } from '@/components/ui/badge';
 import { useNotifications } from '@/hooks/useNotifications';
 
 const NotificationBell = () => {
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification } = useNotifications();
+  const navigate = useNavigate();
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -46,31 +48,30 @@ const NotificationBell = () => {
   };
 
   const handleNotificationClick = (notification: any) => {
-    if (!notification.is_read) {
-      markAsRead(notification.id);
-    }
+    // Delete the notification when opened
+    deleteNotification(notification.id);
     
     // Handle different notification actions based on type
     switch (notification.type) {
       case 'friend_request':
-        console.log('Navigate to friend request:', notification.related_id);
-        // You can add navigation logic here
-        break;
       case 'friend_accepted':
-        console.log('Navigate to friends list:', notification.related_id);
-        // You can add navigation logic here
+        navigate('/friends');
         break;
       case 'message':
-        console.log('Navigate to chat with:', notification.related_id);
-        // You can add navigation logic here to open chat
+        navigate('/friends');
         break;
       case 'game_update':
-        console.log('Navigate to game:', notification.related_id);
-        // You can add navigation logic here
+        if (notification.related_id) {
+          navigate(`/games/${notification.related_id}`);
+        } else {
+          navigate('/games');
+        }
         break;
       case 'group_invite':
-        console.log('Navigate to group:', notification.related_id);
-        // You can add navigation logic here
+        navigate('/groups');
+        break;
+      default:
+        // For general notifications, stay on current page
         break;
     }
   };

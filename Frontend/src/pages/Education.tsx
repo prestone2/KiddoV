@@ -142,33 +142,7 @@ const Education = () => {
           </div>
         </div>
 
-        {/* Resources Section */}
-        <div className="bg-gray-50 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Free Resources</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg">
-              <BookOpen className="h-8 w-8 text-roblox-blue mb-3" />
-              <h4 className="font-semibold mb-2">Curriculum Guide</h4>
-              <p className="text-sm text-gray-600 mb-3">Complete guide for implementing Roblox in your classroom</p>
-              <Button size="sm" variant="outline">
-                <Download className="h-4 w-4 mr-2" />
-                Download PDF
-              </Button>
-            </div>
-            <div className="bg-white p-6 rounded-lg">
-              <Users className="h-8 w-8 text-roblox-blue mb-3" />
-              <h4 className="font-semibold mb-2">Teacher Community</h4>
-              <p className="text-sm text-gray-600 mb-3">Connect with educators using kiddoverse worldwide</p>
-              <Button size="sm" variant="outline">Join Community</Button>
-            </div>
-            <div className="bg-white p-6 rounded-lg">
-              <Play className="h-8 w-8 text-roblox-blue mb-3" />
-              <h4 className="font-semibold mb-2">Video Tutorials</h4>
-              <p className="text-sm text-gray-600 mb-3">Step-by-step videos for teachers and students</p>
-              <Button size="sm" variant="outline">Watch Now</Button>
-            </div>
-          </div>
-        </div>
+        
 
         {/* CTA Section */}
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">

@@ -37,6 +37,7 @@ import Cookies from '@/pages/Cookies';
 import CookieConsent from '@/components/CookieConsent';
 import ResetPassword from '@/pages/ResetPassword';
 import AvatarCustomization from './pages/AvatarCustomization';
+import PresenceTracker from '@/components/PresenceTracker';
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <CookieConsent />
+           <PresenceTracker />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/games" element={<Games />} />

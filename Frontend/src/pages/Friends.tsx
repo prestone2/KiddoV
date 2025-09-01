@@ -8,6 +8,9 @@ import { Search, UserPlus, MessageCircle, Users, Loader2, UserMinus } from 'luci
 import { useFriends } from '@/hooks/useFriends';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserSearch } from '@/hooks/useUserSearch';
+import { useOnlineStatus } from '@/hooks/usePresence';
+
+import { formatLastSeen } from '@/utils/timeUtils';
 import { Link, useSearchParams } from 'react-router-dom';
 
 const Friends = () => {
@@ -16,10 +19,13 @@ const Friends = () => {
   const chatFriendId = searchParams.get('chat');
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
+  const [friendFilter, setFriendFilter] = useState('');
   const [selectedFriend, setSelectedFriend] = useState<any>(null);
   const { user } = useAuth();
   const { friends, friendRequests, isLoading, acceptFriendRequest, declineFriendRequest, removeFriend } = useFriends();
   const { searchResults, isSearching, searchUsers } = useUserSearch();
+  const friendIds = friends.map(f => f.id);
+  const { isUserOnline } = useOnlineStatus(friendIds);
 
   // Update tab when URL changes
   useEffect(() => {
@@ -53,6 +59,15 @@ const Friends = () => {
   const handleChatClose = () => {
     setSelectedFriend(null);
   };
+
+  // Filter friends based on name
+  const filteredFriends = friends.filter(friend => {
+    if (!friendFilter.trim()) return true;
+    const displayName = (friend.display_name || '').toLowerCase();
+    const username = friend.username.toLowerCase();
+    const filterTerm = friendFilter.toLowerCase();
+    return displayName.includes(filterTerm) || username.includes(filterTerm);
+  });
 
   if (!user) {
     return (
@@ -135,6 +150,20 @@ const Friends = () => {
             </Button>
           </div>
 
+          {/* Filter form for Friends tab */}
+          {activeTab === 'friends' && friends.length > 0 && (
+            <div className="relative mb-6">
+              <Input 
+                type="text" 
+                placeholder="Filter friends by name..." 
+                className="pl-10"
+                value={friendFilter}
+                onChange={(e) => setFriendFilter(e.target.value)}
+              />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            </div>
+          )}
+
           {/* Search form for Add Friends tab */}
           {activeTab === 'search' && (
             <form onSubmit={handleSearch} className="relative mb-6">
@@ -157,47 +186,67 @@ const Friends = () => {
               <div className="text-center py-8">
                 <p className="text-gray-500">No friends yet. Start making connections!</p>
               </div>
+            ) : filteredFriends.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No friends found matching "{friendFilter}"</p>
+              </div>
             ) : (
-              friends.map(friend => (
-                <div key={friend.id} className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative">
-                      <img 
-                        src={friend.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'}
-                        alt={friend.display_name || friend.username} 
-                        className="w-12 h-12 rounded-full"
-                      />
-                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
-                        friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                      }`}></div>
+              filteredFriends.map(friend => (
+                <div key={friend.id} className="bg-white rounded-lg shadow-md p-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex items-center space-x-4 min-w-0 flex-1">
+                      <div className="relative flex-shrink-0">
+                        <img 
+                          src={friend.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'} 
+                          alt={friend.display_name || friend.username} 
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
+                          isUserOnline(friend.id) ? 'bg-green-500' : 'bg-gray-400'
+                        }`}>
+                          {isUserOnline(friend.id) && (
+                            <div className="w-full h-full bg-green-500 rounded-full animate-pulse"></div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-semibold truncate">{friend.display_name || friend.username}</h3>
+                        <p className="text-sm text-gray-600 truncate">@{friend.username}</p>
+                        <p className="text-xs text-gray-500">
+                          {isUserOnline(friend.id) ? (
+                            <span className="text-green-600 font-medium">Online</span>
+                          ) : (
+                            `Last seen ${formatLastSeen(friend.last_seen)}`
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold">{friend.display_name || friend.username}</h3>
-                      <p className="text-sm text-gray-600">@{friend.username}</p>
-                      <p className="text-xs text-gray-500">{friend.lastSeen}</p>
-                    </div>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => handleChatOpen(friend)}
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                    </Button>
-                    <Link to={`/friends/${friend.id}`}>
-                      <Button size="sm" className="bg-roblox-blue hover:bg-roblox-blue/90">
-                        View Profile
+                    <div className="flex flex-row sm:flex-row gap-2 flex-shrink-0">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleChatOpen(friend)}
+                        className="flex-1 sm:flex-none"
+                      >
+                        <MessageCircle className="w-4 h-4 sm:mr-0" />
+                        <span className="ml-2 sm:hidden">Chat</span>
                       </Button>
-                    </Link>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => removeFriend(friend.id)}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <UserMinus className="w-4 h-4" />
-                    </Button>
+                      <Link to={`/friends/${friend.id}`} className="flex-1 sm:flex-none">
+                        <Button size="sm" className="bg-roblox-blue hover:bg-roblox-blue/90 w-full">
+                          <span className="hidden sm:inline">View Profile</span>
+                          <span className="sm:hidden">Profile</span>
+                        </Button>
+                      </Link>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => removeFriend(friend.id)}
+                        className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                      >
+                        <UserMinus className="w-4 h-4 sm:mr-0" />
+                        <span className="ml-2 sm:hidden">Remove</span>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -217,7 +266,7 @@ const Friends = () => {
                 <div key={request.id} className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img 
-                      src={request.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
+                      src={request.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'} 
                       alt={request.display_name || request.username} 
                       className="w-12 h-12 rounded-full"
                     />
@@ -265,7 +314,7 @@ const Friends = () => {
                 <div key={searchUser.id} className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img 
-                      src={searchUser.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
+                      src={searchUser.avatar_url || 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&q=80&w=150&h=150'} 
                       alt={searchUser.display_name || searchUser.username} 
                       className="w-12 h-12 rounded-full"
                     />

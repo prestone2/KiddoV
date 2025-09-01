@@ -3,14 +3,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
 
 interface Friend {
   id: string;
   username: string;
   display_name: string | null;
   avatar_url: string | null;
-  status: 'online' | 'offline';
-  lastSeen: string;
+  last_seen: string | null;
 }
 
 interface FriendRequest {
@@ -55,7 +55,7 @@ export const useFriends = () => {
       // Get friend profiles
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, username, display_name, avatar_url, last_seen')
         .in('id', friendIds);
 
       if (profilesError) {
@@ -68,12 +68,13 @@ export const useFriends = () => {
         username: profile.username,
         display_name: profile.display_name,
         avatar_url: profile.avatar_url,
-        status: Math.random() > 0.5 ? 'online' : 'offline' as 'online' | 'offline',
-        lastSeen: Math.random() > 0.5 ? 'Online' : `${Math.floor(Math.random() * 24)} hours ago`,
+        last_seen: profile.last_seen,
       })) || [];
     },
     enabled: !!user,
   });
+
+  // No real-time subscriptions - using polling instead
 
   const { data: friendRequests = [], isLoading: requestsLoading } = useQuery({
     queryKey: ['friend-requests', user?.id],

@@ -11,7 +11,6 @@ import { Loader2 } from 'lucide-react';
 import { useProfile, useUpdateProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'react-router-dom';
-import { User } from '@supabase/supaase-js';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { User as UserType } from '@supabase/supabase-js'; 
 import { UserProfile } from '@/hooks/useProfile'; 

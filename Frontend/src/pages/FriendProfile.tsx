@@ -89,8 +89,7 @@ const FriendProfile = () => {
       const { data, error } = await supabase
         .from('user_relationships')
         .select('*')
-        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
-        .or(`requester_id.eq.${id},addressee_id.eq.${id}`)
+        .or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
         .eq('status', 'accepted')
         .maybeSingle();
 
@@ -258,7 +257,7 @@ const FriendProfile = () => {
           </Card>
 
           {/* Created Games */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Created Games</CardTitle>
             </CardHeader>
@@ -302,7 +301,7 @@ const FriendProfile = () => {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
       

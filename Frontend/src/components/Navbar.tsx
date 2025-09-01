@@ -42,7 +42,7 @@ const Navbar = () => {
   const menuItems = [
     { name: 'Home', href: '/' },
     { name: 'Games', href: '/games' },
-    { name: 'Create', href: '/create' },
+    // { name: 'Create', href: '/create' },
     { name: 'Marketplace', href: '/marketplace' },
     { name: 'Friends', href: '/friends' },
   ];

@@ -116,12 +116,12 @@ const Index = () => {
                 With Kiddo Studio, anyone can design, build, and publish immersive 3D experiences. 
                 Join millions of creators and publish your unique experience to reach billions of users.
               </p>
-              <a 
+              {/* <a 
                 href="/create" 
                 className="bg-roblox-blue text-white py-3 px-6 rounded-full font-medium hover:opacity-90 transition-opacity inline-block"
               >
                 Start Creating
-              </a>
+              </a> */}
             </div>
           </div>
         </section>

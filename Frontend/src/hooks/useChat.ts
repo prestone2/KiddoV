@@ -4,7 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { notificationService } from '@/services/notificationService';
-import { useEffect } from 'react';
 
 interface Message {
   id: string;
@@ -45,40 +44,19 @@ export const useChat = (friendId: string) => {
       ) || [];
     },
     enabled: !!user && !!friendId,
+    refetchInterval: 3000, // Poll for new messages every 3 seconds
   });
 
-  // Real-time subscription for new messages
-  useEffect(() => {
-    if (!user || !friendId) return;
-
-    const channel = supabase
-      .channel('messages')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-          filter: `or(and(sender_id.eq.${user.id},receiver_id.eq.${friendId}),and(sender_id.eq.${friendId},receiver_id.eq.${user.id}))`
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['messages', user.id, friendId] });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user, friendId, queryClient]);
+  // No real-time subscriptions - using polling instead
 
   const sendMessage = useMutation({
     mutationFn: async (content: string) => {
       if (!user || !friendId) throw new Error('User not authenticated or friend not selected');
 
-      console.log('Sending message to:', friendId);
+      console.log('Sending message to:', friendId, 'from user:', user.id);
 
-      const { error } = await supabase
+      // Insert the message first
+      const { error: messageError } = await supabase
         .from('messages')
         .insert([{
           sender_id: user.id,
@@ -86,32 +64,59 @@ export const useChat = (friendId: string) => {
           content: content.trim()
         }]);
 
-      if (error) throw error;
+      if (messageError) {
+        console.error('Error inserting message:', messageError);
+        throw messageError;
+      }
+
+      console.log('Message sent successfully, now creating notification...');
 
       // Get sender's profile info for the notification
-      const { data: senderProfile } = await supabase
+      const { data: senderProfile, error: profileError } = await supabase
         .from('profiles')
         .select('username, display_name')
         .eq('id', user.id)
         .single();
 
+      if (profileError) {
+        console.error('Error fetching sender profile:', profileError);
+        // Don't throw error here, message was sent successfully
+        return;
+      }
+
+      if (!senderProfile) {
+        console.warn('No sender profile found, skipping notification');
+        return;
+      }
+
+      console.log('Sender profile found:', senderProfile);
+
       // Create notification for the receiver
-      if (senderProfile) {
-        const senderName = senderProfile.display_name || senderProfile.username;
-        await notificationService.createNotification({
-          userId: friendId,
-          type: 'general',
-          title: 'New Message',
-          message: `${senderName} sent you a message: "${content.length > 50 ? content.substring(0, 50) + '...' : content}"`,
-          relatedId: user.id
-        });
+      const senderName = senderProfile.display_name || senderProfile.username;
+      console.log('Creating notification for receiver:', friendId, 'from sender:', senderName);
+      
+      try {
+        const notificationResult = await notificationService.createMessageNotification(
+          friendId,
+          senderName,
+          content,
+          user.id
+        );
+        console.log('Notification created successfully:', notificationResult);
+      } catch (notificationError) {
+        console.error('Failed to create notification:', notificationError);
+        // Don't throw error here, message was sent successfully
+        // The notification failure shouldn't block the message sending
       }
     },
     onSuccess: () => {
+      console.log('Message mutation completed successfully');
       queryClient.invalidateQueries({ queryKey: ['messages', user.id, friendId] });
+      // Also invalidate notifications to show the new notification
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
     },
     onError: (error) => {
-      console.error('Error sending message:', error);
+      console.error('Error in sendMessage mutation:', error);
       toast({
         title: "Error",
         description: "Failed to send message.",

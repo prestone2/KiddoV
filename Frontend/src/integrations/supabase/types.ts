@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -240,6 +240,7 @@ export type Database = {
           created_at: string
           display_name: string | null
           id: string
+          last_seen: string | null
           robux_balance: number | null
           subscription_expires_at: string | null
           subscription_plan_id: string | null
@@ -254,6 +255,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           id: string
+          last_seen?: string | null
           robux_balance?: number | null
           subscription_expires_at?: string | null
           subscription_plan_id?: string | null
@@ -268,6 +270,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           id?: string
+          last_seen?: string | null
           robux_balance?: number | null
           subscription_expires_at?: string | null
           subscription_plan_id?: string | null
@@ -510,7 +513,11 @@ export type Database = {
         Returns: undefined
       }
       increment_robux: {
-        Args: { user_id: string; amount: number }
+        Args: { amount: number; user_id: string }
+        Returns: undefined
+      }
+      update_user_last_seen: {
+        Args: { user_id_param: string }
         Returns: undefined
       }
     }

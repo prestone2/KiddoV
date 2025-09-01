@@ -14,6 +14,8 @@ interface CreateNotificationParams {
 export const notificationService = {
   async createNotification({ userId, type, title, message, relatedId }: CreateNotificationParams) {
     try {
+      console.log('Creating notification:', { userId, type, title, message, relatedId });
+      
       const { data, error } = await supabase
         .from('notifications')
         .insert({
@@ -29,13 +31,14 @@ export const notificationService = {
 
       if (error) {
         console.error('Error creating notification:', error);
-        return null;
+        throw error;
       }
 
+      console.log('Notification created successfully:', data);
       return data;
     } catch (error) {
       console.error('Error in createNotification:', error);
-      return null;
+      throw error;
     }
   },
 
@@ -61,11 +64,16 @@ export const notificationService = {
   },
 
   async createMessageNotification(userId: string, senderName: string, messageContent: string, senderId: string) {
+    // Truncate message content if too long
+    const truncatedContent = messageContent.length > 50 
+      ? messageContent.substring(0, 50) + '...' 
+      : messageContent;
+    
     return this.createNotification({
       userId,
       type: 'message',
       title: 'New Message',
-      message: `${senderName} sent you a message: "${messageContent.length > 50 ? messageContent.substring(0, 50) + '...' : messageContent}"`,
+      message: `${senderName}: ${truncatedContent}`,
       relatedId: senderId
     });
   },

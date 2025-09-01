@@ -61,18 +61,18 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link
+                {/* <Link
                   to="/community"
                   className="flex items-center space-x-2 text-gray-600 hover:text-pink-600 transition-colors group"
                 >
                   <FaUsers className="text-xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" />
                   <span>Community</span>
-                </Link>
+                </Link> */}
               </li>
             </ul>
           </div>
           
-          <div>
+          <div> 
             <h3 className="font-bold text-lg mb-4">Support</h3>
             <ul className="space-y-2">
               <li>

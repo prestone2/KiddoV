@@ -58,11 +58,15 @@ const RecentGames = () => {
                   Sign Up Free
                 </Button>
               </Link>
-              <Link to="/login">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-roblox-blue font-semibold px-8">
+                <Link to="/login">
+                <Button size="lg" className="relative overflow-hidden px-8 group">
+                  <span className="relative z-10 text-white group-hover:text-roblox-blue transition-colors duration-200 font-semibold">
                   Already have an account? Log In
+                  </span>
+                  {/* background fill that animates on hover but stays behind the text before hover */}
+                  <span className="absolute inset-0 bg-white transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-200 z-0" />
                 </Button>
-              </Link>
+                </Link>
             </div>
           </div>
         </div>
