@@ -1,17 +1,20 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Crown, User } from 'lucide-react';
+import { Crown, User, Upload } from 'lucide-react';
 import { useAvatarTemplates, AvatarTemplate } from '@/hooks/useAvatarTemplates';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { useToast } from '@/hooks/use-toast';
+import { getAvatarImageUrl } from '@/utils/avatarAssets';
+import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 
 interface AvatarSelectorProps {
   currentAvatarStyle: string;
   currentAvatarUrl: string | null;
   onAvatarChange: (template: AvatarTemplate) => void;
+  onCustomAvatarUpload?: (avatarUrl: string) => void;
   disabled?: boolean;
 }
 
@@ -19,11 +22,14 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
   currentAvatarStyle,
   currentAvatarUrl,
   onAvatarChange,
+  onCustomAvatarUpload,
   disabled = false
 }) => {
   const { data: templates, isLoading } = useAvatarTemplates();
   const { hasPremiumAccess } = usePremiumAccess();
   const { toast } = useToast();
+  const { uploadAvatar, uploading } = useAvatarUpload();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleTemplateSelect = (template: AvatarTemplate) => {
     if (template.is_premium && !hasPremiumAccess) {
@@ -36,6 +42,41 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
     }
     
     onAvatarChange(template);
+  };
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please select an image file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 2MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const uploadedUrl = await uploadAvatar(file);
+    if (uploadedUrl && onCustomAvatarUpload) {
+      onCustomAvatarUpload(uploadedUrl);
+    }
+
+    // Clear the input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   if (isLoading) {
@@ -53,7 +94,14 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
       {/* Current Avatar Display */}
       <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={currentAvatarUrl || undefined} alt="Current avatar" />
+          <AvatarImage 
+            src={getAvatarImageUrl(currentAvatarUrl || '/avatars/cartoon-01.png')} 
+            alt="Current avatar"
+            onError={(e) => {
+              console.log('Current avatar failed to load:', currentAvatarUrl);
+              (e.currentTarget as HTMLImageElement).src = getAvatarImageUrl('/avatars/cartoon-01.png');
+            }}
+          />
           <AvatarFallback>
             <User className="h-8 w-8" />
           </AvatarFallback>
@@ -63,6 +111,35 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
           <p className="text-xs text-gray-500">Style: {currentAvatarStyle}</p>
         </div>
       </div>
+
+      {/* Upload Custom Avatar Section */}
+      {onCustomAvatarUpload && (
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/*"
+            className="hidden"
+          />
+          <div className="space-y-2">
+            <Upload className="h-8 w-8 text-gray-400 mx-auto" />
+            <div>
+              <Button
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={disabled || uploading}
+                size="sm"
+              >
+                {uploading ? 'Uploading...' : 'Upload Custom Avatar'}
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500">
+              Max 2MB • JPG, PNG, GIF supported
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Avatar Templates Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -82,7 +159,16 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
             >
               <div className="text-center space-y-2">
                 <Avatar className="h-12 w-12 mx-auto">
-                  <AvatarImage src={template.image_url} alt={template.name} />
+                  <AvatarImage 
+                    src={getAvatarImageUrl(template.image_url)}
+                    alt={template.name}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      console.log('Avatar image failed to load:', template.image_url);
+                      (e.currentTarget as HTMLImageElement).src = getAvatarImageUrl('/avatars/cartoon-01.png');
+                    }}
+                  />
                   <AvatarFallback>
                     <User className="h-6 w-6" />
                   </AvatarFallback>

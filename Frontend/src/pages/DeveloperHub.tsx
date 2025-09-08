@@ -76,7 +76,7 @@ const DeveloperHub = () => {
               <h2 className="text-3xl font-bold">Quick Start</h2>
             </div>
             <p className="text-lg mb-6">Ready to start creating? Download kiddoverse Studio and begin your development journey.</p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="secondary" size="lg" className="flex items-center">
                 <Download className="h-5 w-5 mr-2" />
                 Download kiddo Studio
@@ -86,7 +86,7 @@ const DeveloperHub = () => {
                   Start Creating
                 </Button>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -97,9 +97,9 @@ const DeveloperHub = () => {
               <resource.icon className="h-12 w-12 text-roblox-blue mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
               <p className="text-gray-600 mb-4">{resource.description}</p>
-              <Button variant="outline" size="sm">
+              {/* <Button variant="outline" size="sm">
                 Explore
-              </Button>
+              </Button> */}
             </div>
           ))}
         </div>

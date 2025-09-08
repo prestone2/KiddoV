@@ -32,11 +32,11 @@ const About = () => {
         {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="text-center">
-            <div className="text-3xl font-bold text-roblox-blue mb-2">200M+</div>
+            <div className="text-3xl font-bold text-roblox-blue mb-2">1M+</div>
             <div className="text-gray-600">Monthly Active Users</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-roblox-blue mb-2">50M+</div>
+            <div className="text-3xl font-bold text-roblox-blue mb-2">50k+</div>
             <div className="text-gray-600">Daily Active Users</div>
           </div>
           <div className="text-center">
@@ -52,11 +52,11 @@ const About = () => {
         {/* Features Section */}
         <div className="grid md:grid-cols-2 gap-12 mb-12">
           <div>
-            <img 
+            {/* <img 
               src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=600&h=400"
               alt="Creating on Roblox"
               className="rounded-lg shadow-lg mb-6"
-            />
+            /> */}
             <h3 className="text-2xl font-bold mb-4">Create</h3>
             <p className="text-gray-600">
               Build immersive 3D experiences with Kiddo Studio, our free desktop design tool. 
@@ -64,11 +64,11 @@ const About = () => {
             </p>
           </div>
           <div>
-            <img 
+            {/* <img 
               src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600&h=400"
               alt="Playing on Roblox"
               className="rounded-lg shadow-lg mb-6"
-            />
+            /> */}
             <h3 className="text-2xl font-bold mb-4">Play</h3>
             <p className="text-gray-600">
               Discover millions of immersive experiences created by our global community. 

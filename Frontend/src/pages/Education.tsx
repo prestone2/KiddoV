@@ -85,7 +85,7 @@ const Education = () => {
                   </li>
                 ))}
               </ul>
-              <Button variant="outline">Learn More</Button>
+              {/* <Button variant="outline">Learn More</Button> */}
             </div>
           ))}
         </div>

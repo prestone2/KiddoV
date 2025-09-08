@@ -27,6 +27,14 @@ const AvatarCustomization = () => {
     setSelectedTemplate(template);
   };
 
+  const handleCustomAvatarUpload = (avatarUrl: string) => {
+    // Update profile directly with custom avatar
+    updateProfile.mutate({
+      avatar_url: avatarUrl,
+      avatar_style: 'custom'
+    });
+  };
+
   const handleSave = async () => {
     if (!selectedTemplate || !profile) return;
 
@@ -162,12 +170,13 @@ const AvatarCustomization = () => {
               <CardTitle>Customize Your Avatar</CardTitle>
             </CardHeader>
             <CardContent>
-              <AvatarSelector
-                currentAvatarStyle={profile?.avatar_style || 'cartoon_1'}
-                currentAvatarUrl={profile?.avatar_url}
-                onAvatarChange={handleAvatarChange}
-                disabled={updateProfile.isPending}
-              />
+            <AvatarSelector
+              currentAvatarStyle={profile?.avatar_style || 'cartoon_1'}
+              currentAvatarUrl={profile?.avatar_url}
+              onAvatarChange={handleAvatarChange}
+              onCustomAvatarUpload={handleCustomAvatarUpload}
+              disabled={updateProfile.isPending}
+            />
             </CardContent>
           </Card>
         </div>

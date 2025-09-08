@@ -156,15 +156,7 @@ const Settings = () => {
                   />
                   <p className="text-sm text-gray-500 mt-1">Email cannot be changed here</p>
                 </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="avatarUrl">Avatar URL</Label>
-                  <Input 
-                    id="avatarUrl" 
-                    value={avatarUrl}
-                    onChange={(e) => setAvatarUrl(e.target.value)}
-                    placeholder="Enter avatar image URL"
-                  />
-                </div>
+              
               </div>
               <div className="flex gap-4 mt-6">
                 <Button 

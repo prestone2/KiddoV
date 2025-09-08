@@ -4,6 +4,23 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+const deriveNameFromEmail = (email: string): string => {
+  const local = email.split('@')[0] ?? '';
+  const cleaned = local.replace(/[._-]+/g, ' ').trim();
+  if (!cleaned) return 'User';
+  return cleaned
+    .split(' ')
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+};
+
+const deriveUsernameFromEmail = (email: string): string => {
+  const local = email.split('@')[0] ?? '';
+  const sanitized = local.toLowerCase().replace(/[^a-z0-9_]/g, '_') || 'user';
+  return sanitized.slice(0, 30);
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -23,6 +40,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
+  const ensureProfileName = async (u: User) => {
+    try {
+      const email = u.email;
+      if (!email) return;
+      const desiredName = deriveNameFromEmail(email);
+      const desiredUsername = deriveUsernameFromEmail(email);
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('id, display_name')
+        .eq('id', u.id)
+        .maybeSingle();
+      if (error) {
+        console.error('Fetch profile error:', error);
+        return;
+      }
+      if (!profile) {
+        const { error: insertErr } = await supabase.from('profiles').insert([
+          { id: u.id, username: desiredUsername, display_name: desiredName }
+        ]);
+        if (insertErr) {
+          console.error('Insert profile error:', insertErr);
+        }
+        return;
+      }
+      if (!profile.display_name || profile.display_name.trim() === '' || profile.display_name === 'New User') {
+        const { error: updateErr } = await supabase
+          .from('profiles')
+          .update({ display_name: desiredName })
+          .eq('id', u.id);
+        if (updateErr) {
+          console.error('Update profile error:', updateErr);
+        }
+      }
+    } catch (e) {
+      console.error('ensureProfileName error:', e);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -31,6 +86,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        if (session?.user?.email) {
+          setTimeout(() => {
+            ensureProfileName(session.user!);
+          }, 0);
+        }
       }
     );
 
@@ -39,6 +99,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user?.email) {
+        setTimeout(() => {
+          ensureProfileName(session.user!);
+        }, 0);
+      }
     });
 
     return () => subscription.unsubscribe();

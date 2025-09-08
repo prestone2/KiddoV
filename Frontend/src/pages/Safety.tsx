@@ -117,14 +117,14 @@ const Safety = () => {
             <p className="text-red-700 mb-6">
               If you encounter inappropriate behavior, feel unsafe, or need immediate help, don't hesitate to report it.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-red-600 hover:bg-red-700">
                 Report User
               </Button>
               <Button variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
                 Safety Report
               </Button>
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -170,17 +170,17 @@ const Safety = () => {
             <div className="bg-white rounded-lg shadow p-6 text-center">
               <h3 className="text-lg font-semibold mb-3">Community Guidelines</h3>
               <p className="text-gray-600 mb-4">Learn about our community standards and what behavior is expected.</p>
-              <Button variant="outline">Read Guidelines</Button>
+              {/* <Button variant="outline">Read Guidelines</Button> */}
             </div>
             <div className="bg-white rounded-lg shadow p-6 text-center">
               <h3 className="text-lg font-semibold mb-3">Digital Citizenship</h3>
               <p className="text-gray-600 mb-4">Resources for being a responsible and respectful digital citizen.</p>
-              <Button variant="outline">Learn More</Button>
+              {/* <Button variant="outline">Learn More</Button> */}
             </div>
             <div className="bg-white rounded-lg shadow p-6 text-center">
               <h3 className="text-lg font-semibold mb-3">Safety Education</h3>
               <p className="text-gray-600 mb-4">Interactive lessons and activities about online safety.</p>
-              <Button variant="outline">Start Learning</Button>
+              {/* <Button variant="outline">Start Learning</Button> */}
             </div>
           </div>
         </section>
