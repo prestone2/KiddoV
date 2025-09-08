@@ -149,7 +149,7 @@ const SubscriptionStatus = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Monthly Robux:</span>
+              <span className="text-sm text-gray-600">Monthly Kiddocash:</span>
               <span className="font-semibold text-roblox-blue">
                 {subscriptionPlan.robux_monthly.toLocaleString()} R$
               </span>

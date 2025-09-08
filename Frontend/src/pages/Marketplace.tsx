@@ -94,7 +94,7 @@ const Marketplace = () => {
             </CardContent>
           </Card>
           
-          <div className="flex gap-4 items-center mb-6">
+          {/* <div className="flex gap-4 items-center mb-6">
             <div className="relative flex-1 max-w-md">
               <Input 
                 type="text" 
@@ -113,7 +113,7 @@ const Marketplace = () => {
               <option>Pets</option>
               <option>Magic Items</option>
             </select>
-          </div>
+          </div> */}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

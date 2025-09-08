@@ -1,6 +1,5 @@
-
 import React, { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SubscriptionPlans from '@/components/SubscriptionPlans';
@@ -14,6 +13,14 @@ const Subscription = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  // Redirect to home if user signs out
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   // Check for payment success in URL parameters
   useEffect(() => {

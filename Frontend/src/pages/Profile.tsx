@@ -212,11 +212,11 @@ const Profile = () => {
                 <h3 className="font-semibold mb-2">About</h3>
                 <p className="text-gray-700">Welcome to my profile! I love playing..</p>
                 <p className="text-gray-500 text-sm mt-2">Member since {joinDate}</p>
-                {profile.robux_balance !== null && (
+                {/* {profile.robux_balance !== null && (
                   <p className="text-green-600 font-semibold mt-2">
                     Kiddocash: {profile.robux_balance?.toLocaleString() ?? 0}
                   </p>
-                )}
+                )} */}
               </div>
             </div>
             
@@ -230,7 +230,6 @@ const Profile = () => {
                 </TabsList>
                 
                 <TabsContent value="favorites" className="pt-6">
-                  <h2 className="text-xl font-bold mb-4">Favorite Games</h2>
                   {favoritesLoading ? (
                     <div className="flex items-center justify-center py-8">
                       <Loader2 className="h-6 w-6 animate-spin mr-2" />

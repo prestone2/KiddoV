@@ -88,7 +88,6 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <FavoriteButton gameId={gameId} size="default" />
             <Button className="w-full" variant="outline" onClick={onShareGame}>
               <Share className="mr-2 h-4 w-4" />
               Share Game

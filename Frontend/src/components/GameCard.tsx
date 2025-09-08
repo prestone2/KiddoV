@@ -29,7 +29,7 @@ const GameCard: React.FC<GameCardProps> = ({
   description,
   assets,
   players = Math.floor(Math.random() * 1000) + 1,
-  maxPlayers = 100,
+  maxPlayers = 1000,
   isPublic = true,
   tags,
   isPremium = false,
