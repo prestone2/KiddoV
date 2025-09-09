@@ -204,7 +204,7 @@ const Parents = () => {
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-gray-600 mb-6">Create a safe account for your child and explore kiddoverse together.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
               <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
                 Create Account
@@ -213,7 +213,7 @@ const Parents = () => {
             <Button size="lg" variant="outline">
               Learn More About Safety
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
       

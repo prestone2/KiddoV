@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -221,7 +220,7 @@ const FriendProfile = () => {
                   <span>Loading favorites...</span>
                 </div>
               ) : favoriteGames && favoriteGames.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                   {favoriteGames.map(game => {
                     let gameAssets = null;
                     if (game.Assets) {
@@ -244,6 +243,7 @@ const FriendProfile = () => {
                         creator={game.Developer}
                         description={game.Description}
                         assets={gameAssets}
+                        size="small" // 👈 compact version
                       />
                     );
                   })}
@@ -256,7 +256,7 @@ const FriendProfile = () => {
             </CardContent>
           </Card>
 
-          {/* Created Games */}
+          {/* Created Games (still commented for now) */}
           {/* <Card>
             <CardHeader>
               <CardTitle>Created Games</CardTitle>
@@ -291,6 +291,7 @@ const FriendProfile = () => {
                         creator={game.Developer}
                         description={game.Description}
                         assets={gameAssets}
+                        size="small"
                       />
                     );
                   })}

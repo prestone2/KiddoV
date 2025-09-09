@@ -163,7 +163,7 @@ const Terms = () => {
             </ul>
           </section>
 
-          <section className="mb-8">
+          {/* <section className="mb-8">
             <h2 className="text-2xl font-bold mb-4">10. Contact Information</h2>
             <p className="text-gray-700 mb-4">
               If you have questions about these Terms, please contact us:
@@ -173,7 +173,7 @@ const Terms = () => {
               <li>Address: 123 Gaming Street, Tech City, TC 12345</li>
               <li>Phone:</li>
             </ul>
-          </section>
+          </section> */}
         </div>
 
         {/* Agreement Section */}

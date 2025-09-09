@@ -1,11 +1,13 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth'; // import auth hook
 
 const About = () => {
+  const { user } = useAuth(); // get logged-in user
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -52,11 +54,6 @@ const About = () => {
         {/* Features Section */}
         <div className="grid md:grid-cols-2 gap-12 mb-12">
           <div>
-            {/* <img 
-              src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=600&h=400"
-              alt="Creating on Roblox"
-              className="rounded-lg shadow-lg mb-6"
-            /> */}
             <h3 className="text-2xl font-bold mb-4">Create</h3>
             <p className="text-gray-600">
               Build immersive 3D experiences with Kiddo Studio, our free desktop design tool. 
@@ -64,11 +61,6 @@ const About = () => {
             </p>
           </div>
           <div>
-            {/* <img 
-              src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600&h=400"
-              alt="Playing on Roblox"
-              className="rounded-lg shadow-lg mb-6"
-            /> */}
             <h3 className="text-2xl font-bold mb-4">Play</h3>
             <p className="text-gray-600">
               Discover millions of immersive experiences created by our global community. 
@@ -82,11 +74,14 @@ const About = () => {
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-gray-600 mb-6">Join millions of creators and players on Kiddoverse today!</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/signup">
-              <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
-                Sign Up Free
-              </Button>
-            </Link>
+            {/* Show Sign Up button only if NOT logged in */}
+            {!user && (
+              <Link to="/signup">
+                <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
+                  Sign Up Free
+                </Button>
+              </Link>
+            )}
             <Link to="/games">
               <Button size="lg" variant="outline">
                 Explore Games
