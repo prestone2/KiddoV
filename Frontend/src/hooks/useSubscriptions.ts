@@ -117,3 +117,27 @@ export const useCreateSubscription = () => {
     },
   });
 };
+
+export const useCancelSubscription = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!user?.id) throw new Error('User not authenticated');
+      const { data, error } = await supabase.functions.invoke('cancel-subscription', { body: {} });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast({ title: 'Subscription canceled', description: 'Your subscription was canceled immediately.' });
+      queryClient.invalidateQueries({ queryKey: ['user-subscription', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
+    },
+    onError: (error: any) => {
+      console.error('Cancellation failed:', error);
+      toast({ title: 'Cancellation failed', description: error.message, variant: 'destructive' });
+    },
+  });
+};

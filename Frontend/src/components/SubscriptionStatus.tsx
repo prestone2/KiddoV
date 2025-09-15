@@ -4,12 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Calendar, RefreshCw } from 'lucide-react';
-import { useUserSubscription } from '@/hooks/useSubscriptions';
+import { useUserSubscription, useCancelSubscription } from '@/hooks/useSubscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { format } from 'date-fns';
+import { 
+  AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, 
+  AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, 
+  AlertDialogCancel, AlertDialogAction 
+} from '@/components/ui/alert-dialog';
 
 const SubscriptionStatus = () => {
   const { data: subscription, isLoading, refetch } = useUserSubscription();
@@ -17,6 +22,7 @@ const SubscriptionStatus = () => {
   const { hasPremiumAccess, subscriptionStatus } = usePremiumAccess();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const { mutate: cancelNow, isPending: isCanceling } = useCancelSubscription();
   const [now, setNow] = useState(Date.now());
 
   // Update current time for real-time expiry detection
@@ -132,6 +138,27 @@ const SubscriptionStatus = () => {
             <Badge className="bg-green-500">
               {subscriptionStatus === 'active' ? 'Active' : 'Free'}
             </Badge>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm" disabled={isCanceling}>
+                  {isCanceling ? 'Canceling...' : 'Cancel'}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Cancel subscription immediately?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will end your premium access right now. You can subscribe again anytime.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Keep subscription</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => cancelNow()} disabled={isCanceling}>
+                    Confirm cancel
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <Button variant="ghost" size="sm" onClick={handleRefresh}>
               <RefreshCw className="w-4 h-4" />
             </Button>
@@ -148,12 +175,6 @@ const SubscriptionStatus = () => {
               </Badge>
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Monthly Kiddocash:</span>
-              <span className="font-semibold text-roblox-blue">
-                {subscriptionPlan.robux_monthly.toLocaleString()} R$
-              </span>
-            </div>
 
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">Monthly Cost:</span>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Crown, Star, Zap } from 'lucide-react';
-import { useSubscriptionPlans, useCreateSubscription, useUserSubscription } from '@/hooks/useSubscriptions';
+import { useSubscriptionPlans, useCreateSubscription, useUserSubscription, useCancelSubscription } from '@/hooks/useSubscriptions';
 import { useAuth } from '@/hooks/useAuth';
 import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,10 +15,25 @@ const SubscriptionPlans = () => {
   const { data: userSubscription } = useUserSubscription();
   const { hasPremiumAccess } = usePremiumAccess();
   const createSubscription = useCreateSubscription();
+  const cancelSubscription = useCancelSubscription();
+  const [processingPlan, setProcessingPlan] = React.useState<string | null>(null);
 
-  const handleSubscribe = (planId: string) => {
+  const handleSubscribe = async (planId: string, planName: string) => {
     if (!user?.email) return;
-    createSubscription.mutate({ planId, email: user.email });
+    
+    setProcessingPlan(planId);
+    
+    try {
+      // If clicking on Basic plan and user has premium access, cancel subscription
+      if (planName.toLowerCase() === 'basic' && hasPremiumAccess) {
+        await cancelSubscription.mutateAsync();
+      } else if (planName.toLowerCase() !== 'basic') {
+        // For paid plans, create subscription
+        await createSubscription.mutateAsync({ planId, email: user.email });
+      }
+    } finally {
+      setProcessingPlan(null);
+    }
   };
 
   const getPlanIcon = (planName: string) => {
@@ -102,9 +117,9 @@ const SubscriptionPlans = () => {
                 {plan.price_ksh === 0 ? 'Free' : `KSH ${plan.price_ksh}`}
                 {plan.price_ksh > 0 && <span className="text-lg font-normal text-gray-600">/month</span>}
               </div>
-              <div className="text-lg font-semibold text-roblox-blue">
-                {plan.robux_monthly.toLocaleString()} Kiddocash/month
-              </div>
+              {/* <div className="text-lg font-semibold text-roblox-blue">
+                {plan.robux_monthly.toLocaleString()} Robux/month
+              </div> */}
             </CardHeader>
 
             <CardContent className="space-y-4">
@@ -130,14 +145,16 @@ const SubscriptionPlans = () => {
                       ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600' 
                       : 'bg-roblox-blue hover:bg-roblox-blue/90'
                 } text-white`}
-                onClick={() => handleSubscribe(plan.id)}
-                disabled={isCurrentPlan || createSubscription.isPending || !user}
+                onClick={() => handleSubscribe(plan.id, plan.name)}
+                disabled={isCurrentPlan || processingPlan === plan.id || !user}
               >
                 {isCurrentPlan 
                   ? 'Current Plan' 
-                  : createSubscription.isPending 
+                  : processingPlan === plan.id
                     ? 'Processing...' 
-                    : `Subscribe to ${plan.name}`
+                    : plan.name.toLowerCase() === 'basic' && hasPremiumAccess
+                      ? 'Cancel Subscription'
+                      : `Subscribe to ${plan.name}`
                 }
               </Button>
 
