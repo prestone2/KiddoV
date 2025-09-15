@@ -99,8 +99,8 @@ const SubscriptionPlans = () => {
               </div>
               <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
               <div className="text-3xl font-bold text-gray-900">
-                KSH {plan.price_ksh}
-                <span className="text-lg font-normal text-gray-600">/month</span>
+                {plan.price_ksh === 0 ? 'Free' : `KSH ${plan.price_ksh}`}
+                {plan.price_ksh > 0 && <span className="text-lg font-normal text-gray-600">/month</span>}
               </div>
               <div className="text-lg font-semibold text-roblox-blue">
                 {plan.robux_monthly.toLocaleString()} Kiddocash/month
