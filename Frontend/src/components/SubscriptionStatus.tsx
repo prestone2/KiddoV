@@ -117,7 +117,7 @@ const SubscriptionStatus = () => {
             </p>
             {(subscription?.current_period_end || profile?.subscription_expires_at) && (
               <p className="text-xs text-gray-400 mt-2">
-                Expired: {format(new Date(subscription?.current_period_end || profile?.subscription_expires_at!), 'MMM dd, yyyy HH:mm')}
+                Expired: {format(new Date(subscription?.current_period_end || profile?.subscription_expires_at!), 'MMM dd, yyyy')}
               </p>
             )}
           </div>
@@ -190,7 +190,7 @@ const SubscriptionStatus = () => {
                   {new Date(subscription.current_period_end) > new Date(now) ? 'Next Billing:' : 'Expired:'}
                 </span>
                 <span className={`font-semibold ${new Date(subscription.current_period_end) <= new Date(now) ? 'text-red-500' : ''}`}>
-                  {format(new Date(subscription.current_period_end), 'MMM dd, yyyy HH:mm')}
+                  {format(new Date(subscription.current_period_end), 'MMM dd, yyyy')}
                 </span>
               </div>
             )}
@@ -203,7 +203,7 @@ const SubscriptionStatus = () => {
             </p>
             {profile?.subscription_expires_at && (
               <p className={`text-xs mt-1 ${new Date(profile.subscription_expires_at) <= new Date(now) ? 'text-red-500' : 'text-gray-500'}`}>
-                {new Date(profile.subscription_expires_at) > new Date(now) ? 'Expires:' : 'Expired:'} {format(new Date(profile.subscription_expires_at), 'MMM dd, yyyy HH:mm')}
+                {new Date(profile.subscription_expires_at) > new Date(now) ? 'Expires:' : 'Expired:'} {format(new Date(profile.subscription_expires_at), 'MMM dd, yyyy')}
               </p>
             )}
           </div>

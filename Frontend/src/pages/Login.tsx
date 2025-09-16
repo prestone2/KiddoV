@@ -31,7 +31,18 @@ const Login = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      navigate('/');
+      // Check for return URL in search params
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnUrl = urlParams.get('returnUrl');
+      
+      if (returnUrl) {
+        // Clean the URL by removing the returnUrl parameter
+        window.history.replaceState({}, '', window.location.pathname);
+        // Navigate to the return URL
+        navigate(decodeURIComponent(returnUrl));
+      } else {
+        navigate('/');
+      }
     }
   }, [user, navigate]);
 

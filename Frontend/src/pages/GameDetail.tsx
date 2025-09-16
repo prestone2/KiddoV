@@ -47,13 +47,20 @@ const GameDetail = () => {
 
   const handlePlayGame = () => {
     // Check if game is premium and user has access
-    if (game?.is_premium && !hasPremiumAccess) {
-      toast({
-        title: "Premium Required",
-        description: "This is a premium game. Please upgrade your subscription to play.",
-        variant: "destructive",
-      });
-      return;
+   // Check if game is premium
+    if (game?.is_premium) {
+      // If not authenticated, redirect to login with return URL
+      if (!isAuthenticated) {
+        const returnUrl = encodeURIComponent(window.location.pathname);
+        window.location.href = `/login?returnUrl=${returnUrl}`;
+        return;
+      }
+      
+      // If authenticated but no premium access, redirect to subscription
+      if (!hasPremiumAccess) {
+        window.location.href = '/subscription';
+        return;
+      }
     }
 
     if (game?.GameURL) {

@@ -113,9 +113,15 @@ const GameCard: React.FC<GameCardProps> = ({
             <div className="text-center text-white">
               <Lock className="w-6 h-6 mx-auto mb-1" />
               <p className="text-xs font-medium">Premium Required</p>
-              <Link to="/subscription" className="text-xs underline hover:no-underline">
-                Upgrade Now
-              </Link>
+              {!isAuthenticated ? (
+                <Link to={`/login?returnUrl=${encodeURIComponent(`/games/${id}`)}`} className="text-xs underline hover:no-underline">
+                  Sign In to Continue
+                </Link>
+              ) : (
+                <Link to="/subscription" className="text-xs underline hover:no-underline">
+                  Upgrade Now
+                </Link>
+              )}
             </div>
           </div>
         )}

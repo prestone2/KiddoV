@@ -42,7 +42,6 @@ const Navbar = () => {
   const menuItems = [
     { name: 'Home', href: '/' },
     { name: 'Games', href: '/games' },
-    // { name: 'Create', href: '/create' },
     { name: 'Marketplace', href: '/marketplace' },
     { name: 'Friends', href: '/friends' },
   ];
@@ -92,21 +91,22 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            
+
+            {/* Premium always visible */}
+            <Link to="/subscription">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-purple-600 border-purple-600 hover:bg-purple-50"
+              >
+                <Crown className="w-4 h-4 mr-1" />
+                Premium
+              </Button>
+            </Link>
+
             {user ? (
-              <div className="flex items-center space-x-4">
+              <>
                 <NotificationBell />
-                 <Link to="/subscription">
-                  <Button variant="outline" size="sm" className="text-purple-600 border-purple-600 hover:bg-purple-50">
-                    <Crown className="w-4 h-4 mr-1" />
-                    Premium
-                  </Button>
-                </Link>
-                {/* <Link to="/robux">
-                  <Button variant="outline" size="sm" className="text-green-600 border-green-600 hover:bg-green-50">
-                    Buy Robux
-                  </Button>
-                </Link> */}
                 <Link to="/profile">
                   <Button variant="outline" size="sm">
                     Profile
@@ -115,9 +115,9 @@ const Navbar = () => {
                 <Button variant="outline" size="sm" onClick={() => signOut()}>
                   Sign Out
                 </Button>
-              </div>
+              </>
             ) : (
-              <div className="flex items-center space-x-2">
+              <>
                 <Link to="/login">
                   <Button variant="outline" size="sm">
                     Log In
@@ -128,7 +128,7 @@ const Navbar = () => {
                     Sign Up
                   </Button>
                 </Link>
-              </div>
+              </>
             )}
           </div>
 
@@ -183,6 +183,18 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Premium always visible */}
+              <Link to="/subscription" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-purple-600 border-purple-600"
+                >
+                  <Crown className="w-4 h-4 mr-1" />
+                  Premium
+                </Button>
+              </Link>
               
               {user ? (
                 <div className="pt-4 space-y-2 border-t">
@@ -190,17 +202,6 @@ const Navbar = () => {
                     <span className="text-sm text-gray-600">Notifications</span>
                     <NotificationBell />
                   </div>
-                  <Link to="/subscription" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full text-purple-600 border-purple-600">
-                      <Crown className="w-4 h-4 mr-1" />
-                      Premium
-                    </Button>
-                  </Link>
-                  {/* <Link to="/robux" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full text-green-600 border-green-600">
-                      Buy Robux
-                    </Button>
-                  </Link> */}
                   <Link to="/profile" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full">
                       Profile
