@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import GameCard from './GameCard';
@@ -51,7 +52,7 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
   if (status === 'pending') {
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
           {Array.from({ length: pageSize }).map((_, index) => (
             <div key={index} className="space-y-2">
               <Skeleton className="h-48 w-full rounded-lg" />
@@ -73,7 +74,11 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
     );
   }
 
-  const allGames = data?.pages.flatMap(page => page.games) || [];
+  // Flatten all games and remove duplicates based on game Id
+  const allGamesFlat = data?.pages.flatMap(page => page.games) || [];
+  const allGames = allGamesFlat.filter((game, index, array) => 
+    array.findIndex(g => g.Id === game.Id) === index
+  );
   const totalCount = data?.pages[0]?.totalCount || 0;
 
   if (allGames.length === 0) {
@@ -91,10 +96,10 @@ const LazyGamesList: React.FC<LazyGamesListProps> = ({
         Showing {allGames.length} of {totalCount} games
       </div>
       
-      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4">
-        {allGames.map((game, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        {allGames.map((game) => (
           <GameCard
-            key={`${game.Id}-${index}`}
+            key={game.Id}
             id={game.Id}
             title={game.Title || 'Untitled Game'}
             creator={game.Developer || 'Unknown Developer'}

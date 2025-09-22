@@ -184,7 +184,15 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              {/* Premium always visible */}
+              
+              
+              {user ? (
+                <div className="pt-4 space-y-2 border-t">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Notifications</span>
+                    <NotificationBell />
+                  </div>
+                  {/* Premium always visible */}
               <Link to="/subscription" onClick={() => setIsOpen(false)}>
                 <Button
                   variant="outline"
@@ -195,13 +203,6 @@ const Navbar = () => {
                   Premium
                 </Button>
               </Link>
-              
-              {user ? (
-                <div className="pt-4 space-y-2 border-t">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Notifications</span>
-                    <NotificationBell />
-                  </div>
                   <Link to="/profile" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full">
                       Profile

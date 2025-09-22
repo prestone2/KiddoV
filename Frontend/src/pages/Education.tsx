@@ -61,7 +61,7 @@ const Education = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">kiddoverse Education</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">KiddoVase Education</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Empower the next generation with hands-on learning experiences that inspire creativity, 
             collaboration, and computational thinking.

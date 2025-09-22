@@ -20,7 +20,7 @@ const ResetPassword = () => {
     const run = async () => {
       try {
         // Basic SEO
-        document.title = "Reset Password | KiddoVerse";
+        document.title = "Reset Password | KiddoVase";
         const meta = document.querySelector('meta[name="description"]');
         if (meta) meta.setAttribute('content', 'Reset your account password securely.');
       } catch {}
@@ -169,7 +169,7 @@ const ResetPassword = () => {
       <div className="min-h-screen bg-gradient-to-br from-roblox-blue to-blue-700 flex items-center justify-center px-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
           <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
-            KiddoVerse
+            KiddoVase
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Validating Reset Link</h1>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-roblox-blue mx-auto"></div>
@@ -184,7 +184,7 @@ const ResetPassword = () => {
       <div className="min-h-screen bg-gradient-to-br from-roblox-blue to-blue-700 flex items-center justify-center px-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
           <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
-            KiddoVerse
+            KiddoVase
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Invalid Reset Link</h1>
           <p className="text-gray-600 mb-6">This password reset link is invalid or has expired. You will be redirected to the login page shortly.</p>
@@ -201,7 +201,7 @@ const ResetPassword = () => {
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
         <div className="text-center mb-8">
           <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
-            KiddoVerse
+            KiddoVase
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Reset Your Password</h1>
           <p className="text-gray-600">Enter your new password below</p>

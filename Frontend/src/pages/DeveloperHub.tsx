@@ -37,13 +37,13 @@ const DeveloperHub = () => {
   const featuredTutorials = [
     {
       title: "Your First Game",
-      description: "Learn the basics of creating your first kiddoverse game",
+      description: "Learn the basics of creating your first KiddoVase game",
       image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=400&h=200",
       duration: "30 min"
     },
     {
       title: "Scripting Fundamentals",
-      description: "Master Lua scripting for kiddoverse development",
+      description: "Master Lua scripting for KiddoVase development",
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=400&h=200",
       duration: "45 min"
     },
@@ -64,7 +64,7 @@ const DeveloperHub = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Developer Hub</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Everything you need to create amazing experiences on kiddoverse. From tutorials to API documentation.
+            Everything you need to create amazing experiences on KiddoVase. From tutorials to API documentation.
           </p>
         </div>
 
@@ -75,7 +75,7 @@ const DeveloperHub = () => {
               <Zap className="h-8 w-8 mr-3" />
               <h2 className="text-3xl font-bold">Quick Start</h2>
             </div>
-            <p className="text-lg mb-6">Ready to start creating? Download kiddoverse Studio and begin your development journey.</p>
+            <p className="text-lg mb-6">Ready to start creating? Download KiddoVase Studio and begin your development journey.</p>
             {/* <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="secondary" size="lg" className="flex items-center">
                 <Download className="h-5 w-5 mr-2" />

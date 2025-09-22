@@ -458,37 +458,58 @@ export type Database = {
       }
       user_subscriptions: {
         Row: {
+          auto_renewal: boolean | null
+          cancellation_details: Json | null
+          cancellation_reason: string | null
           created_at: string
           current_period_end: string | null
           current_period_start: string | null
+          customer_email: string | null
           id: string
+          next_billing_date: string | null
           paystack_customer_code: string | null
+          paystack_email_token: string | null
           paystack_subscription_code: string | null
           plan_id: string
+          reference: string | null
           status: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          auto_renewal?: boolean | null
+          cancellation_details?: Json | null
+          cancellation_reason?: string | null
           created_at?: string
           current_period_end?: string | null
           current_period_start?: string | null
+          customer_email?: string | null
           id?: string
+          next_billing_date?: string | null
           paystack_customer_code?: string | null
+          paystack_email_token?: string | null
           paystack_subscription_code?: string | null
           plan_id: string
+          reference?: string | null
           status?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          auto_renewal?: boolean | null
+          cancellation_details?: Json | null
+          cancellation_reason?: string | null
           created_at?: string
           current_period_end?: string | null
           current_period_start?: string | null
+          customer_email?: string | null
           id?: string
+          next_billing_date?: string | null
           paystack_customer_code?: string | null
+          paystack_email_token?: string | null
           paystack_subscription_code?: string | null
           plan_id?: string
+          reference?: string | null
           status?: string
           updated_at?: string
           user_id?: string

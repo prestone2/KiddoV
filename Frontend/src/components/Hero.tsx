@@ -18,13 +18,13 @@ const Hero: React.FC = () => {
               className="text-4xl md:text-5xl font-bold leading-tight animate-fade-in"
               style={{ color: '#8d0b41' }}
             >
-              Reimagine the Impossible with Kiddoverse
+              Reimagine the Impossible with KiddoVase
             </h1>
             <p
               className="text-xl opacity-100 animate-fade-in"
               style={{ animationDelay: '0.2s', color: '#000' }} // Change '#444' to any color you prefer
             >
-              KiddoVerse is the ultimate platform for immersive experiences. 
+              KiddoVase is the ultimate platform for immersive experiences. 
               Play, create, and share with a global community.
             </p>
             <div className="pt-4 flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>

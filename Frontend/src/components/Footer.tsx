@@ -146,13 +146,13 @@ const Footer: React.FC = () => {
                 className="h-20 w-auto rounded"
               />
             </div>
-            <p className="text-gray-600 mb-4">Kiddoverse is a global platform that brings people together through play.</p>
+            <p className="text-gray-600 mb-4">KiddoVase is a global platform that brings people together through play.</p>
           </div>
         </div>
         
         <div className="border-t border-gray-200 mt-10 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm mb-4 md:mb-0">&copy; {new Date().getFullYear()} Kiddoverse. All rights reserved.</p>
+            <p className="text-gray-500 text-sm mb-4 md:mb-0">&copy; {new Date().getFullYear()} KiddoVase. All rights reserved.</p>
             <div className="flex space-x-6">
               <Link to="/privacy" className="text-gray-500 text-sm hover:text-gray-900">Privacy</Link>
               <Link to="/terms" className="text-gray-500 text-sm hover:text-gray-900">Terms</Link>

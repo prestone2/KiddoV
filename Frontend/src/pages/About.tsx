@@ -15,9 +15,9 @@ const About = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">About Kiddoverse</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">About KiddoVase</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Kiddoverse is a global platform that brings people together through play. We enable anyone to imagine, create, and have fun with friends as they explore millions of immersive 3D experiences.
+            KiddoVase is a global platform that brings people together through play. We enable anyone to imagine, create, and have fun with friends as they explore millions of immersive 3D experiences.
           </p>
         </div>
 
@@ -72,7 +72,7 @@ const About = () => {
         {/* CTA Section */}
         <div className="text-center bg-gray-50 rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-gray-600 mb-6">Join millions of creators and players on Kiddoverse today!</p>
+          <p className="text-gray-600 mb-6">Join millions of creators and players on KiddoVase today!</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {/* Show Sign Up button only if NOT logged in */}
             {!user && (
