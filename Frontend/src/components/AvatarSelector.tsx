@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -150,15 +149,28 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
           return (
             <div
               key={template.id}
-              className={`relative p-3 border rounded-lg cursor-pointer transition-all ${
-                isSelected 
-                  ? 'border-roblox-blue bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'
-              } ${isPremiumRequired ? 'opacity-60' : ''}`}
-              onClick={() => !disabled && handleTemplateSelect(template)}
+              className={`
+                relative p-3 border rounded-lg cursor-pointer transition-all
+                ${isSelected ? 'ring-2 ring-roblox-blue border-roblox-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}
+                ${isPremiumRequired ? 'opacity-60' : ''}
+                ${disabled ? 'cursor-not-allowed' : 'hover:shadow-md active:scale-95'}
+                transform transition-transform duration-100
+              `}
+              onClick={(event) => {
+                if (!disabled) {
+                  // Add ripple effect
+                  const ripple = document.createElement('div');
+                  ripple.className = 'absolute inset-0 bg-white/30 rounded-lg animate-ripple';
+                  const target = event.currentTarget as HTMLElement;
+                  target.appendChild(ripple);
+                  setTimeout(() => ripple.remove(), 1000);
+                  
+                  handleTemplateSelect(template);
+                }
+              }}
             >
               <div className="text-center space-y-2">
-                <Avatar className="h-12 w-12 mx-auto">
+                <Avatar className={`h-12 w-12 mx-auto ${isSelected ? 'ring-4 ring-blue-100' : ''}`}>
                   <AvatarImage 
                     src={getAvatarImageUrl(template.image_url)}
                     alt={template.name}
@@ -175,9 +187,11 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
                 </Avatar>
                 
                 <div className="space-y-1">
-                  <p className="text-xs font-medium truncate">{template.name}</p>
+                  <p className={`text-xs font-medium truncate ${isSelected ? 'text-roblox-blue' : ''}`}>
+                    {template.name}
+                  </p>
                   {template.is_premium && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant={isSelected ? "default" : "secondary"} className="text-xs">
                       <Crown className="h-3 w-3 mr-1" />
                       Premium
                     </Badge>
@@ -186,8 +200,10 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
               </div>
               
               {isSelected && (
-                <div className="absolute -top-1 -right-1 bg-roblox-blue text-white rounded-full p-1">
-                  <div className="h-2 w-2 bg-white rounded-full"></div>
+                <div className="absolute -top-2 -right-2 bg-roblox-blue text-white rounded-full p-1.5 shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
                 </div>
               )}
             </div>
@@ -215,3 +231,21 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
 };
 
 export default AvatarSelector;
+
+<style>{`
+  @keyframes ripple {
+    0% {
+      transform: scale(0);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+  
+  .animate-ripple {
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+  }
+`}</style>

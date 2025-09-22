@@ -130,8 +130,16 @@ export const useCancelSubscription = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      toast({ title: 'Subscription canceled', description: 'Your subscription was canceled immediately.' });
+    onSuccess: (data) => {
+      const message = data?.paystack_cancelled 
+        ? 'Your subscription was canceled on both our platform and Paystack.' 
+        : 'Your subscription was canceled locally. If you had an active Paystack subscription, please check your Paystack account.';
+      
+      toast({ 
+        title: 'Subscription canceled', 
+        description: message,
+        variant: data?.paystack_cancelled ? 'default' : 'destructive'
+      });
       queryClient.invalidateQueries({ queryKey: ['user-subscription', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
     },
