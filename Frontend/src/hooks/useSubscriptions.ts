@@ -133,7 +133,7 @@ export const useCancelSubscription = () => {
     onSuccess: (data) => {
       const message = data?.paystack_cancelled 
         ? 'Your subscription was canceled on both our platform and Paystack.' 
-        : 'Your subscription was canceled locally. If you had an active Paystack subscription, please check your Paystack account.';
+        : 'Please check your Email to cancel subscription.';
       
       toast({ 
         title: 'Subscription canceled', 
