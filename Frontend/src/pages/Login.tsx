@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import bgImage from '@/assets/bg-solid-yellow.png';
 import logo from '@/assets/logo.png';
 import FancyCursor from '@/components/FancyCursor';
+import { isTouchDevice } from '@/lib/utils';
 
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -214,7 +215,7 @@ const Login = () => {
 
   return (
     <>
-      <FancyCursor />
+      {!isTouchDevice() && <FancyCursor />}
       <div
         className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImage})` }}

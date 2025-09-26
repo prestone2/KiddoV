@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { motion } from 'framer-motion';
 import FancyCursor from '@/components/FancyCursor'; // <-- Add this import
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { isTouchDevice } from '@/lib/utils';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -52,12 +53,13 @@ const Signup = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
+    <>
+      {!isTouchDevice() && <FancyCursor />}
+      <div
+        className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
       
-      <FancyCursor /> {/* <-- Add the fancy cursor here */}
       <motion.div
         className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 bg-opacity-90"
         initial={{ opacity: 0, scale: 0.95, y: 40 }}
@@ -244,6 +246,7 @@ const Signup = () => {
         </div>
       </motion.div>
     </div>
+    </>
   );
 };
 
