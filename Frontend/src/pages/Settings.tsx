@@ -119,7 +119,6 @@ const Settings = () => {
                     <TabsList
               className="
                 flex sm:grid sm:grid-cols-4
-                w-full overflow-x-auto sm:overflow-visible
                 bg-white rounded-md shadow-sm p-1
                 space-x-2 sm:space-x-0
               "
