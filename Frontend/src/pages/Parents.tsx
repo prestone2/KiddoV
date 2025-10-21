@@ -193,10 +193,7 @@ const Parents = () => {
               <h3 className="font-semibold mb-2">Can I limit my child's spending?</h3>
               <p className="text-gray-600">Yes, you can set spending limits, require approval for purchases, and monitor all transactions through parental controls.</p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">What age is appropriate for KiddoVase?</h3>
-              <p className="text-gray-600">KiddoVase is designed for users 9 and older, with additional safety features for younger children and parental oversight.</p>
-            </div>
+            
           </div>
         </div>
 

@@ -117,10 +117,10 @@ const Contact = () => {
                   <Mail className="w-5 h-5 text-roblox-blue mr-3" />
                   <span>support@kiddovase.com</span>
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <Phone className="w-5 h-5 text-roblox-blue mr-3" />
                   <span>+254 799855480</span>
-                </div>
+                </div> */}
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 text-roblox-blue mr-3 flex-shrink-0" />
                     <span className="whitespace-normal text-base">
