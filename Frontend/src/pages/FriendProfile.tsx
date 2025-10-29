@@ -1,15 +1,16 @@
-import React from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Loader2, ArrowLeft, MessageCircle, UserMinus } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/hooks/useAuth';
-import { useFriends } from '@/hooks/useFriends';
-import GameCard from '@/components/GameCard';
+import React from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Loader2, ArrowLeft, MessageCircle, UserMinus } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/hooks/useAuth";
+import { useFriends } from "@/hooks/useFriends";
+import GameCard from "@/components/GameCard";
+import Seo from "@/components/Seo";
 
 const FriendProfile = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,14 +20,14 @@ const FriendProfile = () => {
 
   // Fetch friend's profile
   const { data: friendProfile, isLoading: profileLoading } = useQuery({
-    queryKey: ['friend-profile', id],
+    queryKey: ["friend-profile", id],
     queryFn: async () => {
-      if (!id) throw new Error('Friend ID is required');
-      
+      if (!id) throw new Error("Friend ID is required");
+
       const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', id)
+        .from("profiles")
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (error) throw error;
@@ -37,22 +38,22 @@ const FriendProfile = () => {
 
   // Fetch friend's favorite games
   const { data: favoriteGames, isLoading: favoritesLoading } = useQuery({
-    queryKey: ['friend-favorites', id],
+    queryKey: ["friend-favorites", id],
     queryFn: async () => {
       if (!id) return [];
-      
+
       const { data: favorites, error: favError } = await supabase
-        .from('user_favorites')
-        .select('game_id')
-        .eq('user_id', id);
+        .from("user_favorites")
+        .select("game_id")
+        .eq("user_id", id);
 
       if (favError || !favorites || favorites.length === 0) return [];
 
-      const gameIds = favorites.map(f => f.game_id);
+      const gameIds = favorites.map((f) => f.game_id);
       const { data: games, error: gamesError } = await supabase
-        .from('games')
-        .select('*')
-        .in('Id', gameIds)
+        .from("games")
+        .select("*")
+        .in("Id", gameIds)
         .limit(6);
 
       if (gamesError) throw gamesError;
@@ -63,14 +64,14 @@ const FriendProfile = () => {
 
   // Fetch friend's created games
   const { data: createdGames, isLoading: createdLoading } = useQuery({
-    queryKey: ['friend-created-games', id],
+    queryKey: ["friend-created-games", id],
     queryFn: async () => {
       if (!id) return [];
-      
+
       const { data, error } = await supabase
-        .from('games')
-        .select('*')
-        .eq('creator_id', id)
+        .from("games")
+        .select("*")
+        .eq("creator_id", id)
         .limit(6);
 
       if (error) throw error;
@@ -81,15 +82,17 @@ const FriendProfile = () => {
 
   // Check if current user is friends with this profile
   const { data: friendshipStatus, isLoading: friendshipLoading } = useQuery({
-    queryKey: ['friendship-status', user?.id, id],
+    queryKey: ["friendship-status", user?.id, id],
     queryFn: async () => {
       if (!user?.id || !id) return null;
-      
+
       const { data, error } = await supabase
-        .from('user_relationships')
-        .select('*')
-        .or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
-        .eq('status', 'accepted')
+        .from("user_relationships")
+        .select("*")
+        .or(
+          `and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`
+        )
+        .eq("status", "accepted")
         .maybeSingle();
 
       if (error) throw error;
@@ -101,7 +104,7 @@ const FriendProfile = () => {
   const handleRemoveFriend = () => {
     if (id) {
       removeFriend(id);
-      navigate('/friends');
+      navigate("/friends");
     }
   };
 
@@ -132,7 +135,9 @@ const FriendProfile = () => {
         <div className="container mx-auto px-4 py-8 flex-grow">
           <div className="text-center py-12">
             <h1 className="text-2xl font-bold mb-4">Profile Not Found</h1>
-            <p className="text-gray-600 mb-4">This user profile could not be found.</p>
+            <p className="text-gray-600 mb-4">
+              This user profile could not be found.
+            </p>
             <Link to="/friends">
               <Button>Back to Friends</Button>
             </Link>
@@ -143,23 +148,33 @@ const FriendProfile = () => {
     );
   }
 
-  const joinDate = new Date(friendProfile.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long'
-  });
+  const joinDate = new Date(friendProfile.created_at).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+    }
+  );
 
   const isFriend = !!friendshipStatus;
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Friend Profile – Safe Social Play for Kids"
+        description="View your Kiddovase friends’ profiles, activities, and shared games in a secure and friendly digital environment where children connect positively and safely."
+        keywords="friend profile, safe online community, kids social play, child-friendly platform, Kiddovase"
+        canonicalUrl={`https://kiddovase.com/friends/${friendProfile?.id}`}
+      />
+
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Back button */}
         <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/friends')}
+          <Button
+            variant="outline"
+            onClick={() => navigate("/friends")}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -171,9 +186,12 @@ const FriendProfile = () => {
         <Card className="mb-8">
           <CardHeader>
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <img 
-                src={friendProfile.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 
-                alt={friendProfile.display_name || friendProfile.username} 
+              <img
+                src={
+                  friendProfile.avatar_url ||
+                  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150"
+                }
+                alt={friendProfile.display_name || friendProfile.username}
                 className="w-24 h-24 rounded-full object-cover"
               />
               <div className="text-center md:text-left flex-grow">
@@ -185,15 +203,15 @@ const FriendProfile = () => {
               </div>
               {isFriend && (
                 <div className="flex flex-col gap-2">
-                  <Button 
+                  <Button
                     onClick={handleSendMessage}
                     className="bg-roblox-blue hover:bg-roblox-blue/90"
                   >
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Message
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={handleRemoveFriend}
                     className="text-red-600 hover:text-red-700"
                   >
@@ -221,12 +239,12 @@ const FriendProfile = () => {
                 </div>
               ) : favoriteGames && favoriteGames.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                  {favoriteGames.map(game => {
+                  {favoriteGames.map((game) => {
                     let gameAssets = null;
                     if (game.Assets) {
                       if (Array.isArray(game.Assets)) {
                         gameAssets = game.Assets;
-                      } else if (typeof game.Assets === 'string') {
+                      } else if (typeof game.Assets === "string") {
                         try {
                           gameAssets = JSON.parse(game.Assets);
                         } catch {
@@ -234,7 +252,7 @@ const FriendProfile = () => {
                         }
                       }
                     }
-                    
+
                     return (
                       <GameCard
                         key={game.Id}
@@ -305,7 +323,7 @@ const FriendProfile = () => {
           </Card> */}
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

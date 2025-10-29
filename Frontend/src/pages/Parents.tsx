@@ -27,6 +27,7 @@ const Parents = () => {
         title="Parents Guide | Keeping Your Child Safe on KiddoVase"
         description="Discover how KiddoVase helps parents protect their children online with content filters, chat restrictions, and age-appropriate gaming experiences."
         keywords="parents guide, kid safety, online games for kids, parental controls, child privacy, internet safety, family-friendly games"
+        canonicalUrl="https://kiddovase.com/parents"
       >
         <script type="application/ld+json">{`{
           "@context": "https://schema.org",

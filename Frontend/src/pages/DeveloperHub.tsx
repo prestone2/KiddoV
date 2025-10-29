@@ -1,10 +1,10 @@
-
-import React from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Code, BookOpen, Video, Users, Download, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Code, BookOpen, Video, Users, Download, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
+import Seo from "@/components/Seo";
 
 const DeveloperHub = () => {
   const resources = [
@@ -12,59 +12,70 @@ const DeveloperHub = () => {
       icon: Code,
       title: "API Documentation",
       description: "Complete reference for kiddo APIs and services",
-      link: "#"
+      link: "#",
     },
     {
       icon: BookOpen,
       title: "Tutorials & Guides",
       description: "Step-by-step tutorials for game development",
-      link: "#"
+      link: "#",
     },
     {
       icon: Video,
       title: "Video Courses",
       description: "Learn through comprehensive video tutorials",
-      link: "#"
+      link: "#",
     },
     {
       icon: Users,
       title: "Developer Forum",
       description: "Connect with other developers and get help",
-      link: "#"
-    }
+      link: "#",
+    },
   ];
 
   const featuredTutorials = [
     {
       title: "Your First Game",
       description: "Learn the basics of creating your first KiddoVase game",
-      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=400&h=200",
-      duration: "30 min"
+      image:
+        "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=400&h=200",
+      duration: "30 min",
     },
     {
       title: "Scripting Fundamentals",
       description: "Master Lua scripting for KiddoVase development",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=400&h=200",
-      duration: "45 min"
+      image:
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=400&h=200",
+      duration: "45 min",
     },
     {
       title: "Monetization Strategies",
       description: "Learn how to monetize your games effectively",
-      image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?auto=format&fit=crop&q=80&w=400&h=200",
-      duration: "25 min"
-    }
+      image:
+        "https://images.unsplash.com/photo-1556075798-4825dfaaf498?auto=format&fit=crop&q=80&w=400&h=200",
+      duration: "25 min",
+    },
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Developer Hub"
+        description="Access Kiddovase developer tools and APIs to build fun, safe, and educational experiences for kids. Join our mission to make child-friendly gaming universal."
+        keywords="developer hub, API, build safe apps, kids education platform"
+        canonicalUrl="https://kiddovase.com/developer-hub"
+      />
+
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Developer Hub</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Everything you need to create amazing experiences on KiddoVase. From tutorials to API documentation.
+            Everything you need to create amazing experiences on KiddoVase. From
+            tutorials to API documentation.
           </p>
         </div>
 
@@ -75,7 +86,10 @@ const DeveloperHub = () => {
               <Zap className="h-8 w-8 mr-3" />
               <h2 className="text-3xl font-bold">Quick Start</h2>
             </div>
-            <p className="text-lg mb-6">Ready to start creating? Download KiddoVase Studio and begin your development journey.</p>
+            <p className="text-lg mb-6">
+              Ready to start creating? Download KiddoVase Studio and begin your
+              development journey.
+            </p>
             {/* <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="secondary" size="lg" className="flex items-center">
                 <Download className="h-5 w-5 mr-2" />
@@ -93,7 +107,10 @@ const DeveloperHub = () => {
         {/* Resources Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {resources.map((resource, index) => (
-            <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow text-center">
+            <div
+              key={index}
+              className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow text-center"
+            >
               <resource.icon className="h-12 w-12 text-roblox-blue mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
               <p className="text-gray-600 mb-4">{resource.description}</p>
@@ -135,22 +152,32 @@ const DeveloperHub = () => {
 
         {/* Developer Stats */}
         <div className="bg-gray-50 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Developer Community</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Developer Community
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-roblox-blue mb-2">2M+</div>
+              <div className="text-3xl font-bold text-roblox-blue mb-2">
+                2M+
+              </div>
               <div className="text-gray-600">Active Developers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-roblox-blue mb-2">40M+</div>
+              <div className="text-3xl font-bold text-roblox-blue mb-2">
+                40M+
+              </div>
               <div className="text-gray-600">Experiences Created</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-roblox-blue mb-2">$500M+</div>
+              <div className="text-3xl font-bold text-roblox-blue mb-2">
+                $500M+
+              </div>
               <div className="text-gray-600">Paid to Developers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-roblox-blue mb-2">180+</div>
+              <div className="text-3xl font-bold text-roblox-blue mb-2">
+                180+
+              </div>
               <div className="text-gray-600">Countries Reached</div>
             </div>
           </div>
@@ -159,7 +186,9 @@ const DeveloperHub = () => {
         {/* CTA Section */}
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Build?</h2>
-          <p className="text-gray-600 mb-6">Join millions of developers creating the future of entertainment.</p>
+          <p className="text-gray-600 mb-6">
+            Join millions of developers creating the future of entertainment.
+          </p>
           {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
               Get Started
@@ -170,7 +199,7 @@ const DeveloperHub = () => {
           </div> */}
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

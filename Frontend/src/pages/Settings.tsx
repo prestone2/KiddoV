@@ -1,81 +1,89 @@
-import React, { useState, useEffect } from "react"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Switch } from "@/components/ui/switch"
-import { Separator } from "@/components/ui/separator"
-import { Loader2, User as UserIcon } from "lucide-react"
-import { useProfile, useUpdateProfile } from "@/hooks/useProfile"
-import { useAuth } from "@/hooks/useAuth"
-import { Link } from "react-router-dom"
-import { usePremiumAccess } from "@/hooks/usePremiumAccess"
-import { MobileSwitch } from "@/components/ui/mobile-switch"
+import React, { useState, useEffect } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { Loader2, User as UserIcon } from "lucide-react";
+import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
+import { usePremiumAccess } from "@/hooks/usePremiumAccess";
+import { MobileSwitch } from "@/components/ui/mobile-switch";
+import Seo from "@/components/Seo";
 
 const Settings = () => {
-  const { user, loading: authLoading } = useAuth()
-  const { data: profile, isLoading: profileLoading } = useProfile()
-  const updateProfile = useUpdateProfile()
-  const { hasPremiumAccess } = usePremiumAccess()
+  const { user, loading: authLoading } = useAuth();
+  const { data: profile, isLoading: profileLoading } = useProfile();
+  const updateProfile = useUpdateProfile();
+  const { hasPremiumAccess } = usePremiumAccess();
 
   // Form state
-  const [username, setUsername] = useState("")
-  const [displayName, setDisplayName] = useState("")
-  const [avatarUrl, setAvatarUrl] = useState("")
+  const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   // Settings state
-  const [emailNotifications, setEmailNotifications] = useState(true)
-  const [pushNotifications, setPushNotifications] = useState(false)
-  const [twoFactor, setTwoFactor] = useState(false)
-  const [showOnlineStatus, setShowOnlineStatus] = useState(true)
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(false);
+  const [twoFactor, setTwoFactor] = useState(false);
+  const [showOnlineStatus, setShowOnlineStatus] = useState(true);
 
   // Password change state
-  const [currentPassword, setCurrentPassword] = useState("")
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // Update form when profile loads
   useEffect(() => {
     if (profile) {
-      setUsername(profile.username || "")
-      setDisplayName(profile.display_name || "")
-      setAvatarUrl(profile.avatar_url || "")
+      setUsername(profile.username || "");
+      setDisplayName(profile.display_name || "");
+      setAvatarUrl(profile.avatar_url || "");
     }
-  }, [profile])
+  }, [profile]);
 
   const handleSaveProfile = async () => {
-    if (!profile) return
+    if (!profile) return;
 
     updateProfile.mutate({
       username: username.trim(),
       display_name: displayName.trim(),
       avatar_url: avatarUrl.trim() || null,
-    })
-  }
+    });
+  };
 
   const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
-      alert("New passwords do not match")
-      return
+      alert("New passwords do not match");
+      return;
     }
 
     if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters long")
-      return
+      alert("Password must be at least 6 characters long");
+      return;
     }
 
     // TODO: Implement password change functionality
-    console.log("Password change requested")
-    setCurrentPassword("")
-    setNewPassword("")
-    setConfirmPassword("")
-  }
+    console.log("Password change requested");
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  };
 
   if (authLoading || profileLoading) {
     return (
       <div className="min-h-screen flex flex-col">
+        <Seo
+          title="Settings & Privacy"
+          description="Manage your Kiddovase account, privacy, and parental settings in one place. Configure safe chat, content filters, and notification preferences designed with families in mind."
+          keywords="privacy settings, parental controls, kids safety, family preferences"
+          canonicalUrl="https://kiddovase.com/settings"
+        />
+
         <Navbar />
         <div className="container mx-auto px-4 py-8 flex-grow">
           <div className="flex items-center justify-center py-12">
@@ -85,7 +93,7 @@ const Settings = () => {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   if (!user || !profile) {
@@ -105,7 +113,7 @@ const Settings = () => {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -116,28 +124,38 @@ const Settings = () => {
         <h1 className="text-3xl font-bold mb-8">Settings</h1>
 
         <Tabs defaultValue="account" className="space-y-6">
-                    <TabsList
-              className="
+          <TabsList
+            className="
                 flex sm:grid sm:grid-cols-4
                 bg-white rounded-md shadow-sm p-1
                 space-x-2 sm:space-x-0
               "
+          >
+            <TabsTrigger
+              value="account"
+              className="px-3 py-2 whitespace-nowrap"
             >
-              <TabsTrigger value="account" className="px-3 py-2 whitespace-nowrap">
-                Account
-              </TabsTrigger>
-              <TabsTrigger value="privacy" className="px-3 py-2 whitespace-nowrap">
-                Privacy
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="px-3 py-2 whitespace-nowrap">
-                Notifications
-              </TabsTrigger>
-              <TabsTrigger value="security" className="px-3 py-2 whitespace-nowrap">
-                Security
-              </TabsTrigger>
-            </TabsList>
-
-
+              Account
+            </TabsTrigger>
+            <TabsTrigger
+              value="privacy"
+              className="px-3 py-2 whitespace-nowrap"
+            >
+              Privacy
+            </TabsTrigger>
+            <TabsTrigger
+              value="notifications"
+              className="px-3 py-2 whitespace-nowrap"
+            >
+              Notifications
+            </TabsTrigger>
+            <TabsTrigger
+              value="security"
+              className="px-3 py-2 whitespace-nowrap"
+            >
+              Security
+            </TabsTrigger>
+          </TabsList>
 
           {/* Account Tab */}
           <TabsContent value="account" className="space-y-6">
@@ -267,7 +285,9 @@ const Settings = () => {
                 {/* Profile Visibility */}
                 <div className="flex flex-col space-y-4">
                   <div className="flex-1">
-                    <h3 className="font-medium text-base">Profile Visibility</h3>
+                    <h3 className="font-medium text-base">
+                      Profile Visibility
+                    </h3>
                     <p className="text-sm text-gray-600 mt-1">
                       Who can see your profile
                     </p>
@@ -287,7 +307,9 @@ const Settings = () => {
                     <div className="hidden sm:block">
                       <div className="flex justify-between items-center">
                         <div className="flex-1">
-                          <h3 className="font-medium text-base">Show Online Status</h3>
+                          <h3 className="font-medium text-base">
+                            Show Online Status
+                          </h3>
                           <p className="text-sm text-gray-600">
                             Let others see when you're online
                           </p>
@@ -327,7 +349,9 @@ const Settings = () => {
                     <div className="hidden sm:block">
                       <div className="flex justify-between items-center">
                         <div className="flex-1">
-                          <h3 className="font-medium text-base">Email Notifications</h3>
+                          <h3 className="font-medium text-base">
+                            Email Notifications
+                          </h3>
                           <p className="text-sm text-gray-600">
                             Receive updates via email
                           </p>
@@ -359,7 +383,9 @@ const Settings = () => {
                     <div className="hidden sm:block">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
-                          <h3 className="font-medium text-base">Push Notifications</h3>
+                          <h3 className="font-medium text-base">
+                            Push Notifications
+                          </h3>
                           <p className="text-sm text-gray-600 mt-1">
                             Receive push notifications
                           </p>
@@ -389,8 +415,6 @@ const Settings = () => {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">Security Settings</h2>
               <div className="space-y-6">
-              
-
                 <Separator />
 
                 {/* Password Change */}
@@ -434,7 +458,7 @@ const Settings = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

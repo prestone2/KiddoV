@@ -1,27 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import LazyGamesList from '@/components/LazyGamesList';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import LazyGamesList from "@/components/LazyGamesList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from '@/components/ui/button';
-import { Filter } from 'lucide-react';
-import { useGenres } from '@/hooks/useGenres';
-import Seo from '@/components/Seo';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
+import { useGenres } from "@/hooks/useGenres";
+import Seo from "@/components/Seo";
 
 const Games = () => {
   const [searchParams] = useSearchParams();
   const [filterOpen, setFilterOpen] = useState(false);
-  const [genreFilter, setGenreFilter] = useState<string>('All Genres');
-  const [deviceFilter, setDeviceFilter] = useState<string>('All Devices');
-  const [genderFilter, setGenderFilter] = useState<string>('All Genders');
+  const [genreFilter, setGenreFilter] = useState<string>("All Genres");
+  const [deviceFilter, setDeviceFilter] = useState<string>("All Devices");
+  const [genderFilter, setGenderFilter] = useState<string>("All Genders");
 
   const { data: genres } = useGenres();
 
   // Set genre filter from URL parameter
   useEffect(() => {
-    const genre = searchParams.get('genre');
+    const genre = searchParams.get("genre");
     if (genre && genres?.includes(genre)) {
       setGenreFilter(genre);
       setFilterOpen(true);
@@ -31,18 +37,19 @@ const Games = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Play Free Online Games for Kids | Fun & Safe Games"
-        description="Explore hundreds of fun, safe, and educational games for kids! Filter by genre, device, or age group. New popular and featured games added weekly."
-        keywords="kids games, online games, free games for children, safe games, fun learning games, browser games"
+        title="Fun & Educational Games for Kids"
+        description="Explore hundreds of safe and fun games for children on Kiddovase. Each game is carefully designed to inspire creativity, improve learning, and provide a joyful, secure experience for kids of all ages."
+        keywords="kids games, educational games, safe play, fun learning, learning through games, child development games"
+        canonicalUrl="https://kiddovase.com/games"
       />
 
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Games</h1>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="flex items-center gap-2"
             onClick={() => setFilterOpen(!filterOpen)}
           >
@@ -50,7 +57,7 @@ const Games = () => {
             <span>Filter</span>
           </Button>
         </div>
-        
+
         {filterOpen && (
           <div className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -62,8 +69,10 @@ const Games = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="All Genres">All Genres</SelectItem>
-                    {genres?.map(genre => (
-                      <SelectItem key={genre} value={genre}>{genre}</SelectItem>
+                    {genres?.map((genre) => (
+                      <SelectItem key={genre} value={genre}>
+                        {genre}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -97,10 +106,14 @@ const Games = () => {
               </div>
             </div>
             <div className="mt-4 flex justify-end">
-              <Button 
+              <Button
                 className="bg-roblox-blue hover:bg-roblox-blue/90"
                 onClick={() => {
-                  console.log('Filters applied:', { genreFilter, deviceFilter, genderFilter });
+                  console.log("Filters applied:", {
+                    genreFilter,
+                    deviceFilter,
+                    genderFilter,
+                  });
                 }}
               >
                 Apply Filters
@@ -108,7 +121,7 @@ const Games = () => {
             </div>
           </div>
         )}
-        
+
         <Tabs defaultValue="popular">
           <TabsList className="mb-8">
             <TabsTrigger value="popular">Popular</TabsTrigger>
@@ -116,36 +129,36 @@ const Games = () => {
             <TabsTrigger value="top-rated">Top Rated</TabsTrigger>
             <TabsTrigger value="featured">Featured</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="popular" className="mt-0">
-            <LazyGamesList 
+            <LazyGamesList
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
               sortType="popular"
             />
           </TabsContent>
-          
+
           <TabsContent value="recommended">
-            <LazyGamesList 
+            <LazyGamesList
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
               sortType="recommended"
             />
           </TabsContent>
-          
+
           <TabsContent value="top-rated">
-            <LazyGamesList 
+            <LazyGamesList
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
               sortType="top-rated"
             />
           </TabsContent>
-          
+
           <TabsContent value="featured">
-            <LazyGamesList 
+            <LazyGamesList
               genreFilter={genreFilter}
               deviceFilter={deviceFilter}
               genderFilter={genderFilter}
@@ -155,7 +168,7 @@ const Games = () => {
           </TabsContent>
         </Tabs>
       </div>
-      
+
       <Footer />
     </div>
   );

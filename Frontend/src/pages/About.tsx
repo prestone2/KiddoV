@@ -12,9 +12,10 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="About KiddoVase - Kids Online Gaming & Learning Platform"
-        description="Learn about KiddoVase — the global kids gaming platform where creativity meets fun. Discover how millions of children play, learn, and create in safe online environments."
-        keywords="kids games, online games for kids, educational games, child safety, play and learn, 3D experiences, gaming community"
+        title="About Kiddovase"
+        description="Kiddovase was created to make digital play safe, joyful, and educational. Our mission is to help children learn through games while giving parents peace of mind through transparency and control."
+        keywords="about Kiddovase, mission, kids education, online safety, family platform"
+        canonicalUrl="https://kiddovase.com/about"
       />
 
       <Navbar />

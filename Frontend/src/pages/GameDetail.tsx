@@ -169,21 +169,32 @@ const GameDetail = () => {
       <div className="min-h-screen flex flex-col">
         <Seo
           title={
-            game ? `${game.Title} | Play Online on KiddoVase` : "Game Details"
+            game
+              ? `${game.Title} – Play Safe & Educational Games for Kids | Kiddovase`
+              : "Play Safe & Educational Games for Kids | Kiddovase"
           }
           description={
             game
-              ? `Play ${game.Title} — ${
-                  game.Description || "a fun online game for kids!"
-                }. Available on KiddoVase.`
-              : "Play fun online games for kids on KiddoVase."
+              ? `Play ${game.Title} on Kiddovase — a ${
+                  game.Genres
+                } game designed for children to learn, explore, and have fun safely online. ${
+                  game.Description ||
+                  "Enjoy interactive learning experiences and creative play in a secure environment built just for kids."
+                }`
+              : "Discover Kiddovase’s library of safe, educational, and fun online games for children. Learn through play and enjoy a secure, family-friendly experience."
           }
           keywords={
             game
-              ? `${game.Title}, kids game, ${game.Genres}, play online, kiddo vase`
-              : "kids games, fun games, online play"
+              ? `${game.Title}, ${game.Genres}, kids games, educational games, learning through play, safe online games, child-friendly platform, Kiddovase`
+              : "kids games, educational games, safe learning, online play, fun for children, Kiddovase games"
+          }
+          canonicalUrl={
+            game
+              ? `https://kiddovase.com/games/${game.Id}`
+              : "https://kiddovase.com/games"
           }
         />
+
         <Navbar />
 
         <div className="container mx-auto px-4 py-8 flex-grow">

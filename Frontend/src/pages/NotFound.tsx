@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import Seo from "@/components/Seo";
 
 const NotFound = () => {
   const location = useLocation();
@@ -13,6 +14,14 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <Seo
+        title="Page Not Found"
+        description="Oops! This page doesn’t exist. Explore Kiddovase to discover fun, safe, and educational games that your child will love."
+        ogDescription="Find your way back to kid-friendly fun on Kiddovase — where learning and play come together safely."
+        keywords="404, page not found, kids games, safe learning platform"
+        canonicalUrl="https://kiddovase.com/404"
+      />
+
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">404</h1>
         <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>

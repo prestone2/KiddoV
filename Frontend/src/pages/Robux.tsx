@@ -1,10 +1,10 @@
-
-import React from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Coins, CreditCard, Gift } from 'lucide-react';
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Coins, CreditCard, Gift } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const Robux = () => {
   const robuxPackages = [
@@ -12,18 +12,27 @@ const Robux = () => {
     { amount: 800, price: 9.99, bonus: 0 },
     { amount: 1700, price: 19.99, bonus: 0 },
     { amount: 4500, price: 49.99, bonus: 450 },
-    { amount: 10000, price: 99.99, bonus: 1000 }
+    { amount: 10000, price: 99.99, bonus: 1000 },
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Robux & Tokens"
+        description="Learn how Kiddovase handles in-game currency safely and transparently. Our parent-approved token system teaches kids about value, responsibility, and safe digital transactions."
+        keywords="robux for kids, safe tokens, in-game currency, parental approved transactions"
+        canonicalUrl="https://kiddovase.com/robux"
+      />
+
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">Get Kiddokash</h1>
           <p className="text-xl text-gray-600">
-            Kiddokash is the virtual currency of Kiddoverse that allows you to buy upgrades or accessories for your avatar and buy special abilities in experiences.
+            Kiddokash is the virtual currency of Kiddoverse that allows you to
+            buy upgrades or accessories for your avatar and buy special
+            abilities in experiences.
           </p>
         </div>
 
@@ -44,7 +53,10 @@ const Robux = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {robuxPackages.map((pkg, index) => (
-            <Card key={index} className="relative hover:shadow-lg transition-shadow">
+            <Card
+              key={index}
+              className="relative hover:shadow-lg transition-shadow"
+            >
               {pkg.bonus > 0 && (
                 <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
                   <span className="bg-roblox-red text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -58,7 +70,8 @@ const Robux = () => {
                 </CardTitle>
                 {pkg.bonus > 0 && (
                   <p className="text-sm text-gray-600">
-                    ({(pkg.amount - pkg.bonus).toLocaleString()} + {pkg.bonus} bonus)
+                    ({(pkg.amount - pkg.bonus).toLocaleString()} + {pkg.bonus}{" "}
+                    bonus)
                   </p>
                 )}
               </CardHeader>
@@ -87,14 +100,18 @@ const Robux = () => {
                 <p className="text-sm text-gray-600 mb-2">
                   Get monthly Robux stipend and other benefits
                 </p>
-                <Button variant="outline" size="sm">Learn More</Button>
+                <Button variant="outline" size="sm">
+                  Learn More
+                </Button>
               </div>
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold mb-2">Create & Sell</h3>
                 <p className="text-sm text-gray-600 mb-2">
                   Earn Robux by creating and selling items
                 </p>
-                <Button variant="outline" size="sm">Get Started</Button>
+                <Button variant="outline" size="sm">
+                  Get Started
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -109,7 +126,9 @@ const Robux = () => {
                 <span>Credit/Debit Card</span>
               </div>
               <div className="flex items-center space-x-3 p-3 border rounded-lg">
-                <div className="w-5 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">P</div>
+                <div className="w-5 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">
+                  P
+                </div>
                 <span>PayPal</span>
               </div>
               <div className="flex items-center space-x-3 p-3 border rounded-lg">
@@ -120,7 +139,7 @@ const Robux = () => {
           </Card>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

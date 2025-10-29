@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import logo from '@/assets/logo.png';
-import bgImage from '@/assets/bg-solid-yellow.png';
-import { useAuth } from '@/hooks/useAuth';
-import { motion } from 'framer-motion';
-import FancyCursor from '@/components/FancyCursor'; // <-- Add this import
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { isTouchDevice } from '@/lib/utils';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import logo from "@/assets/logo.png";
+import bgImage from "@/assets/bg-solid-yellow.png";
+import { useAuth } from "@/hooks/useAuth";
+import { motion } from "framer-motion";
+import FancyCursor from "@/components/FancyCursor"; // <-- Add this import
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { isTouchDevice } from "@/lib/utils";
+import Seo from "@/components/Seo";
 
 const Signup = () => {
-  const [username, setUsername] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
- const { signUp, signInWithProvider, user } = useAuth();
+  const { signUp, signInWithProvider, user } = useAuth();
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -45,152 +46,167 @@ const Signup = () => {
     }
 
     setLoading(false);
-     };
+  };
 
-  const handleOAuthSignIn = async (provider: 'google' | 'facebook') => {
+  const handleOAuthSignIn = async (provider: "google" | "facebook") => {
     const { error } = await signInWithProvider(provider);
     // OAuth redirect will handle success case
   };
 
   return (
     <>
+      <Seo
+        title="Sign Up"
+        description="Create a Kiddovase account for your child or family. Join a fun, safe, and educational gaming world built for kids and trusted by parents."
+        keywords="signup, create account, child registration, family-safe gaming"
+        canonicalUrl="https://kiddovase.com/signup"
+      />
+
       {!isTouchDevice() && <FancyCursor />}
       <div
         className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
-      
-      <motion.div
-        className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 bg-opacity-90"
-        initial={{ opacity: 0, scale: 0.95, y: 40 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
-      >
-        <div className="text-center mb-8">
-           <div className="flex items-center mb-6">
-          <Link 
-            to="/" 
-            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Home
-          </Link>
-        </div>
-          <motion.div
-            className="inline-block mb-4"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7, type: 'spring', stiffness: 120 }}
-          >
-            <img
-              src={logo}
-              alt="Your Logo"
-              className="h-20 mx-auto rounded"
-            />
-          </motion.div>
-          
-          <motion.h1
-            className="text-2xl font-bold text-gray-900"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            Join KiddoVase
-          </motion.h1>
-          <motion.p
-            className="text-gray-600"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
-            Create your account and start playing!
-          </motion.p>
-        </div>
+        <motion.div
+          className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 bg-opacity-90"
+          initial={{ opacity: 0, scale: 0.95, y: 40 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          <div className="text-center mb-8">
+            <div className="flex items-center mb-6">
+              <Link
+                to="/"
+                className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Home
+              </Link>
+            </div>
+            <motion.div
+              className="inline-block mb-4"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.2,
+                duration: 0.7,
+                type: "spring",
+                stiffness: 120,
+              }}
+            >
+              <img
+                src={logo}
+                alt="Your Logo"
+                className="h-20 mx-auto rounded"
+              />
+            </motion.div>
 
-        <form onSubmit={handleSignup} className="space-y-6">
-          <div>
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Choose a unique username"
-              className="mt-1"
-              required
-            />
+            <motion.h1
+              className="text-2xl font-bold text-gray-900"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              Join KiddoVase
+            </motion.h1>
+            <motion.p
+              className="text-gray-600"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              Create your account and start playing!
+            </motion.p>
           </div>
 
-          <div>
-            <Label htmlFor="displayName">Display Name</Label>
-            <Input
-              id="displayName"
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Your display name"
-              className="mt-1"
-              required
-            />
-          </div>
+          <form onSubmit={handleSignup} className="space-y-6">
+            <div>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Choose a unique username"
+                className="mt-1"
+                required
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="mt-1"
-              required
-            />
-          </div>
+            <div>
+              <Label htmlFor="displayName">Display Name</Label>
+              <Input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Your display name"
+                className="mt-1"
+                required
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password"
-              className="mt-1"
-              required
-            />
-          </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="mt-1"
+                required
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm your password"
-              className="mt-1"
-              required
-            />
-            {password !== confirmPassword && confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
-            )}
-          </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Create a password"
+                className="mt-1"
+                required
+              />
+            </div>
 
-          <Button
-            type="submit"
-            disabled={loading || password !== confirmPassword}
-            className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
-          >
-            {loading ? 'Creating Account...' : 'Create Account'}
-          </Button>
-        </form>
+            <div>
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                className="mt-1"
+                required
+              />
+              {password !== confirmPassword && confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  Passwords do not match
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              disabled={loading || password !== confirmPassword}
+              className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+            </Button>
+          </form>
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white text-gray-500">
+                  Or continue with
+                </span>
               </div>
             </div>
 
@@ -199,7 +215,7 @@ const Signup = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => handleOAuthSignIn('google')}
+                onClick={() => handleOAuthSignIn("google")}
                 className="w-64" // Fixed width for better appearance
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -225,16 +241,19 @@ const Signup = () => {
             </div>
           </div>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-roblox-blue hover:text-roblox-blue/80">
-              Sign in
-            </Link>
-          </p>
-        </div>
-      </motion.div>
-    </div>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-roblox-blue hover:text-roblox-blue/80"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </motion.div>
+      </div>
     </>
   );
 };

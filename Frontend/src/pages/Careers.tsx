@@ -1,9 +1,9 @@
-
-import React from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { MapPin, Clock, DollarSign } from 'lucide-react';
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { MapPin, Clock, DollarSign } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const Careers = () => {
   const jobListings = [
@@ -39,15 +39,24 @@ const Careers = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Careers at Kiddovase"
+        description="Join our passionate team shaping the future of safe online play for kids. Kiddovase offers opportunities to create meaningful technology that makes a difference in children’s digital lives."
+        keywords="careers, edtech jobs, kids safety technology, family tech roles"
+        canonicalUrl="https://kiddovase.com/careers"
+      />
+
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Careers at kiddoverse</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Careers at kiddoverse
+          </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join our mission to connect a billion people with optimism and civility. 
-            Help us build the future of human co-experience.
+            Join our mission to connect a billion people with optimism and
+            civility. Help us build the future of human co-experience.
           </p>
         </div>
 
@@ -58,53 +67,74 @@ const Careers = () => {
               <span className="text-white font-bold text-2xl">R</span>
             </div>
             <h3 className="text-xl font-bold mb-2">Respect the Community</h3>
-            <p className="text-gray-600">We treat everyone with kindness, dignity, and respect.</p>
+            <p className="text-gray-600">
+              We treat everyone with kindness, dignity, and respect.
+            </p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-roblox-blue rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white font-bold text-2xl">O</span>
             </div>
             <h3 className="text-xl font-bold mb-2">Own the Results</h3>
-            <p className="text-gray-600">We take ownership and deliver results that matter.</p>
+            <p className="text-gray-600">
+              We take ownership and deliver results that matter.
+            </p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-roblox-blue rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white font-bold text-2xl">B</span>
             </div>
             <h3 className="text-xl font-bold mb-2">Be Bold</h3>
-            <p className="text-gray-600">We take calculated risks and innovate boldly.</p>
+            <p className="text-gray-600">
+              We take calculated risks and innovate boldly.
+            </p>
           </div>
         </div>
 
         {/* Benefits Section */}
         <div className="bg-gray-50 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Why Work at Kiddoverse?</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Why Work at Kiddoverse?
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <h4 className="font-semibold mb-2">Health & Wellness</h4>
-              <p className="text-sm text-gray-600">Comprehensive medical, dental, and vision coverage</p>
+              <p className="text-sm text-gray-600">
+                Comprehensive medical, dental, and vision coverage
+              </p>
             </div>
             <div className="text-center">
               <h4 className="font-semibold mb-2">Flexible Work</h4>
-              <p className="text-sm text-gray-600">Hybrid and remote work options available</p>
+              <p className="text-sm text-gray-600">
+                Hybrid and remote work options available
+              </p>
             </div>
             <div className="text-center">
               <h4 className="font-semibold mb-2">Growth</h4>
-              <p className="text-sm text-gray-600">Learning and development opportunities</p>
+              <p className="text-sm text-gray-600">
+                Learning and development opportunities
+              </p>
             </div>
             <div className="text-center">
               <h4 className="font-semibold mb-2">Equity</h4>
-              <p className="text-sm text-gray-600">Stock options for all employees</p>
+              <p className="text-sm text-gray-600">
+                Stock options for all employees
+              </p>
             </div>
           </div>
         </div>
 
         {/* Job Listings */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Open Positions</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Open Positions
+          </h2>
           <div className="space-y-4">
             {jobListings.map((job, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div
+                key={index}
+                className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+              >
                 <div className="flex flex-col md:flex-row md:items-center justify-between">
                   <div className="mb-4 md:mb-0">
                     <h3 className="text-xl font-semibold mb-2">{job.title}</h3>
@@ -140,13 +170,15 @@ const Careers = () => {
         {/* CTA Section */}
         <div className="text-center bg-roblox-light-gray rounded-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Don't See the Right Role?</h2>
-          <p className="text-gray-600 mb-6">We're always looking for talented people to join our team.</p>
+          <p className="text-gray-600 mb-6">
+            We're always looking for talented people to join our team.
+          </p>
           <Button size="lg" className="bg-roblox-blue hover:bg-roblox-blue/90">
             Send Us Your Resume
           </Button>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

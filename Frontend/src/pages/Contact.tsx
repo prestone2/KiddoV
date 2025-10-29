@@ -38,6 +38,7 @@ const Contact = () => {
         title="Contact KiddoVase - Get in Touch with Our Support Team"
         description="Need help or have questions about KiddoVase? Contact our support team for assistance with games, safety, or account issues. We're here to help!"
         keywords="contact kiddovase, kiddovase support, kids gaming help, parental support, report issue, kids games contact"
+        canonicalUrl="https://kiddovase.com/contact"
       >
         <script type="application/ld+json">
           {`{

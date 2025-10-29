@@ -1,99 +1,115 @@
-
-import React, { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Search, Filter, ShoppingCart } from 'lucide-react';
+import React, { useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, Filter, ShoppingCart } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const Catalog = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   const categories = [
-    { id: 'all', name: 'All Items' },
-    { id: 'hats', name: 'Hats' },
-    { id: 'shirts', name: 'Shirts' },
-    { id: 'pants', name: 'Pants' },
-    { id: 'accessories', name: 'Accessories' },
-    { id: 'gear', name: 'Gear' },
-    { id: 'faces', name: 'Faces' }
+    { id: "all", name: "All Items" },
+    { id: "hats", name: "Hats" },
+    { id: "shirts", name: "Shirts" },
+    { id: "pants", name: "Pants" },
+    { id: "accessories", name: "Accessories" },
+    { id: "gear", name: "Gear" },
+    { id: "faces", name: "Faces" },
   ];
 
   const catalogItems = [
     {
       id: 1,
-      name: 'Dragon Crown',
+      name: "Dragon Crown",
       price: 500,
-      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=300&h=300',
-      category: 'hats',
-      creator: 'Roblox',
-      limited: true
+      image:
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=300&h=300",
+      category: "hats",
+      creator: "Roblox",
+      limited: true,
     },
     {
       id: 2,
-      name: 'Ninja Mask',
+      name: "Ninja Mask",
       price: 75,
-      image: 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80&w=300&h=300',
-      category: 'accessories',
-      creator: 'BuildInc',
-      limited: false
+      image:
+        "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80&w=300&h=300",
+      category: "accessories",
+      creator: "BuildInc",
+      limited: false,
     },
     {
       id: 3,
-      name: 'Space Helmet',
+      name: "Space Helmet",
       price: 200,
-      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&q=80&w=300&h=300',
-      category: 'hats',
-      creator: 'SpaceStudio',
-      limited: false
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&q=80&w=300&h=300",
+      category: "hats",
+      creator: "SpaceStudio",
+      limited: false,
     },
     {
       id: 4,
-      name: 'Royal Cape',
+      name: "Royal Cape",
       price: 350,
-      image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=300&h=300',
-      category: 'accessories',
-      creator: 'RoyalItems',
-      limited: true
+      image:
+        "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=300&h=300",
+      category: "accessories",
+      creator: "RoyalItems",
+      limited: true,
     },
     {
       id: 5,
-      name: 'Cool Sunglasses',
+      name: "Cool Sunglasses",
       price: 50,
-      image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=300&h=300',
-      category: 'accessories',
-      creator: 'StyleCorp',
-      limited: false
+      image:
+        "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=300&h=300",
+      category: "accessories",
+      creator: "StyleCorp",
+      limited: false,
     },
     {
       id: 6,
-      name: 'Magic Wand',
+      name: "Magic Wand",
       price: 125,
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=300&h=300',
-      category: 'gear',
-      creator: 'MagicItems',
-      limited: false
-    }
+      image:
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=300&h=300",
+      category: "gear",
+      creator: "MagicItems",
+      limited: false,
+    },
   ];
 
-  const filteredItems = selectedCategory === 'all' 
-    ? catalogItems 
-    : catalogItems.filter(item => item.category === selectedCategory);
+  const filteredItems =
+    selectedCategory === "all"
+      ? catalogItems
+      : catalogItems.filter((item) => item.category === selectedCategory);
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Game Catalog"
+        description="Explore Kiddovase’s full catalog of fun, safe, and educational games for children. Filter by age, skill, or subject to find the perfect activity for your child’s development."
+        keywords="kids game catalog, educational games, safe online games, age appropriate games"
+        canonicalUrl="https://kiddovase.com/catalog"
+      />
+
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Catalog</h1>
-          <p className="text-gray-600 mb-6">Browse and purchase items for your avatar</p>
-          
+          <p className="text-gray-600 mb-6">
+            Browse and purchase items for your avatar
+          </p>
+
           <div className="flex flex-col lg:flex-row gap-4 mb-6">
             <div className="relative flex-1">
-              <Input 
-                type="text" 
-                placeholder="Search catalog..." 
+              <Input
+                type="text"
+                placeholder="Search catalog..."
                 className="pl-10"
               />
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
@@ -105,13 +121,19 @@ const Catalog = () => {
           </div>
 
           <div className="flex flex-wrap gap-2 mb-6">
-            {categories.map(category => (
+            {categories.map((category) => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? 'default' : 'outline'}
+                variant={
+                  selectedCategory === category.id ? "default" : "outline"
+                }
                 size="sm"
                 onClick={() => setSelectedCategory(category.id)}
-                className={selectedCategory === category.id ? 'bg-roblox-blue hover:bg-roblox-blue/90' : ''}
+                className={
+                  selectedCategory === category.id
+                    ? "bg-roblox-blue hover:bg-roblox-blue/90"
+                    : ""
+                }
               >
                 {category.name}
               </Button>
@@ -120,12 +142,15 @@ const Catalog = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {filteredItems.map(item => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          {filteredItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+            >
               <div className="relative">
-                <img 
-                  src={item.image} 
-                  alt={item.name} 
+                <img
+                  src={item.image}
+                  alt={item.name}
                   className="w-full h-48 object-cover"
                 />
                 {item.limited && (
@@ -137,11 +162,18 @@ const Catalog = () => {
                 )}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-sm mb-1 truncate">{item.name}</h3>
+                <h3 className="font-semibold text-sm mb-1 truncate">
+                  {item.name}
+                </h3>
                 <p className="text-xs text-gray-500 mb-2">By {item.creator}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-roblox-blue font-bold text-sm">{item.price} R$</span>
-                  <Button size="sm" className="bg-roblox-blue hover:bg-roblox-blue/90 p-2">
+                  <span className="text-roblox-blue font-bold text-sm">
+                    {item.price} R$
+                  </span>
+                  <Button
+                    size="sm"
+                    className="bg-roblox-blue hover:bg-roblox-blue/90 p-2"
+                  >
                     <ShoppingCart className="w-3 h-3" />
                   </Button>
                 </div>
@@ -150,7 +182,7 @@ const Catalog = () => {
           ))}
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

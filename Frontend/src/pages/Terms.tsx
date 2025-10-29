@@ -11,6 +11,7 @@ const Terms = () => {
         title="Terms of Service"
         description="Read KiddoVase's Terms of Service to understand our rules, user responsibilities, and platform policies for a safe gaming experience for kids."
         keywords="KiddoVase terms, gaming terms, kids online safety, user policy, children's games rules, KiddoVase legal, parental consent"
+        canonicalUrl="https://kiddovase.com/terms"
       >
         <script type="application/ld+json">{`{
           "@context": "https://schema.org",

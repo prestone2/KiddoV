@@ -9,9 +9,10 @@ const Privacy = () => {
     <div className="min-h-screen bg-background">
       {/* ✅ SEO Metadata */}
       <Seo
-        title="Privacy Policy - KiddoVase | Protecting Kids' Data & Online Safety"
+        title="Privacy Policy - Protecting Kids' Data & Online Safety"
         description="Learn how KiddoVase protects your privacy. We collect minimal data, ensure child safety, and comply with COPPA and global data protection laws."
         keywords="kiddovase privacy, kids data protection, online safety for kids, COPPA compliance, GDPR for children, secure gaming platform"
+        canonicalUrl="https://kiddovase.com/privacy"
       >
         <script type="application/ld+json">
           {`{

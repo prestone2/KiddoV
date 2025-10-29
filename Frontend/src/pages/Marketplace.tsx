@@ -1,20 +1,27 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Search,
+  User,
+  Crown,
+  Palette,
+  Zap,
+  Trophy,
+  Star,
+  Flame,
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
+import { usePremiumAccess } from "@/hooks/usePremiumAccess";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import Seo from "@/components/Seo";
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, User, Crown, Palette, Zap, Trophy, Star, Flame } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useProfile } from '@/hooks/useProfile';
-import { usePremiumAccess } from '@/hooks/usePremiumAccess';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-
-const marketplaceItems = [
-
-];
+const marketplaceItems = [];
 
 const Marketplace = () => {
   const navigate = useNavigate();
@@ -24,12 +31,21 @@ const Marketplace = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Marketplace"
+        description="Browse Kiddovase’s safe, parent-approved marketplace for creative items, fun cosmetics, and educational add-ons that make gameplay more rewarding and safe."
+        keywords="marketplace for kids, safe purchases, educational items, parent approved store"
+        canonicalUrl="https://kiddovase.com/marketplace"
+      />
+
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8 flex-grow">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Gaming Marketplace</h1>
-          <p className="text-gray-600 mb-6">Power up your gaming experience with awesome items!</p>
+          <p className="text-gray-600 mb-6">
+            Power up your gaming experience with awesome items!
+          </p>
 
           {/* Avatar Customization Section */}
           <Card className="mb-8 border-2 border-roblox-blue/20 bg-gradient-to-r from-blue-50 to-purple-50">
@@ -43,24 +59,29 @@ const Marketplace = () => {
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src={profile?.avatar_url || undefined} alt="Your avatar" />
+                    <AvatarImage
+                      src={profile?.avatar_url || undefined}
+                      alt="Your avatar"
+                    />
                     <AvatarFallback>
                       <User className="h-8 w-8" />
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className="font-semibold text-lg">Customize Your Avatar</h3>
+                    <h3 className="font-semibold text-lg">
+                      Customize Your Avatar
+                    </h3>
                     <p className="text-gray-600 text-sm">
                       Choose from our collection of cartoon avatars
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex-1 flex justify-end">
                   {user ? (
                     hasPremiumAccess ? (
-                      <Button 
-                        onClick={() => navigate('/avatar-customization')}
+                      <Button
+                        onClick={() => navigate("/avatar-customization")}
                         className="bg-roblox-blue hover:bg-roblox-blue/90"
                       >
                         <Palette className="h-4 w-4 mr-2" />
@@ -70,10 +91,12 @@ const Marketplace = () => {
                       <div className="text-center">
                         <div className="flex items-center gap-2 text-amber-600 mb-2">
                           <Crown className="h-4 w-4" />
-                          <span className="text-sm font-medium">Premium Feature</span>
+                          <span className="text-sm font-medium">
+                            Premium Feature
+                          </span>
                         </div>
-                        <Button 
-                          onClick={() => navigate('/subscription')}
+                        <Button
+                          onClick={() => navigate("/subscription")}
                           variant="outline"
                           className="border-amber-500 text-amber-600 hover:bg-amber-50"
                         >
@@ -82,8 +105,8 @@ const Marketplace = () => {
                       </div>
                     )
                   ) : (
-                    <Button 
-                      onClick={() => navigate('/login')}
+                    <Button
+                      onClick={() => navigate("/login")}
                       variant="outline"
                     >
                       Sign In to Customize
@@ -93,7 +116,7 @@ const Marketplace = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* <div className="flex gap-4 items-center mb-6">
             <div className="relative flex-1 max-w-md">
               <Input 
@@ -117,12 +140,15 @@ const Marketplace = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {marketplaceItems.map(item => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border">
+          {marketplaceItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border"
+            >
               <div className="relative">
-                <img 
-                  src={item.image} 
-                  alt={item.name} 
+                <img
+                  src={item.image}
+                  alt={item.name}
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-2 right-2 bg-white/90 rounded-full p-1">
@@ -143,12 +169,12 @@ const Marketplace = () => {
                   <span className="text-roblox-blue font-bold text-lg">
                     {item.price} R$
                   </span>
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     className="bg-roblox-blue hover:bg-roblox-blue/90"
                     disabled={!user}
                   >
-                    {user ? 'Buy Now' : 'Sign In'}
+                    {user ? "Buy Now" : "Sign In"}
                   </Button>
                 </div>
               </div>
@@ -168,7 +194,9 @@ const Marketplace = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
                 <Zap className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-                <h4 className="font-semibold mb-1">Use Power-ups Strategically</h4>
+                <h4 className="font-semibold mb-1">
+                  Use Power-ups Strategically
+                </h4>
                 <p className="text-sm text-gray-600">
                   Save your best power-ups for challenging levels or boss fights
                 </p>
@@ -191,7 +219,7 @@ const Marketplace = () => {
           </CardContent>
         </Card>
       </div>
-      
+
       <Footer />
     </div>
   );
