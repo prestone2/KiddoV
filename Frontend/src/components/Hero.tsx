@@ -33,14 +33,6 @@ const Hero: React.FC = () => {
                 Play Now
               </Button>
             </Link>
-            <Link to="/parents">
-              <Button
-                variant="outline"
-                className="border-2 border-[#8d0b41] text-[#8d0b41] bg-white font-semibold px-6 py-3 rounded-full hover:bg-[#8d0b41]/10 transition-all"
-              >
-                Parents Guide
-              </Button>
-            </Link>
           </div>
           <p className="text-sm text-gray-600 mt-2 italic">
             Trusted by parents. Loved by kids. Powered by creativity.
