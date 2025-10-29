@@ -123,103 +123,219 @@ const Login = () => {
   };
   if (showResendConfirmation) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-roblox-blue to-blue-700 flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
-          <div className="text-center mb-8">
-            <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
-              KiddoVerse
+      <>
+        {!isTouchDevice() && <FancyCursor />}
+        <div
+          className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bgImage})` }}
+        >
+          <Seo
+            title="Confirm Your Email"
+            description="Resend your Kiddovase email confirmation to verify your account and start your safe, playful experience."
+            keywords="email verification, confirm account, resend verification, kiddovase login"
+            canonicalUrl="https://kiddovase.com/confirm-email"
+          />
+
+          <motion.div
+            className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="flex items-center mb-6">
+                <button
+                  onClick={() => setShowResendConfirmation(false)}
+                  className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Back to Login
+                </button>
+              </div>
+
+              <motion.div
+                className="inline-block mb-4"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 12,
+                  delay: 0.2,
+                }}
+              >
+                <img
+                  src={logo}
+                  alt="Kiddovase"
+                  className="h-20 mx-auto rounded animate-bounce"
+                />
+              </motion.div>
+
+              <h1 className="text-2xl font-bold text-gray-900">
+                Confirm Your Email
+              </h1>
+              <p className="text-gray-600 mt-2">
+                It looks like your email hasn’t been verified yet. Please enter
+                your email address below to resend the confirmation link.
+              </p>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Confirm Your Email
-            </h1>
-            <p className="text-gray-600">
-              Resend confirmation email to verify your account
-            </p>
-          </div>
 
-          <form onSubmit={handleResendConfirmation} className="space-y-6">
-            <div>
-              <Label htmlFor="resend-email">Email</Label>
-              <Input
-                id="resend-email"
-                type="email"
-                value={resendEmail}
-                onChange={(e) => setResendEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="mt-1"
-                required
-              />
+            {/* Resend Confirmation Form */}
+            <form onSubmit={handleResendConfirmation} className="space-y-6">
+              <div>
+                <Label htmlFor="resend-email" className="text-gray-700">
+                  Email Address
+                </Label>
+                <Input
+                  id="resend-email"
+                  type="email"
+                  value={resendEmail}
+                  onChange={(e) => setResendEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="mt-1"
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={resendLoading}
+                className="w-full bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] hover:from-[#750935] hover:to-[#8d0b41] text-white font-semibold rounded-full py-3 transition-all duration-200 shadow-lg"
+              >
+                {resendLoading ? "Sending..." : "Resend Confirmation Email"}
+              </Button>
+            </form>
+
+            {/* Help Section */}
+            <div className="mt-10 bg-roblox-blue text-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-3">
+                Need Help Verifying?
+              </h3>
+              <p className="text-sm mb-4">
+                Still not receiving your verification email? Visit our Help
+                Center for troubleshooting steps.
+              </p>
+              <Link to="/help-center" className="w-full">
+                <Button
+                  variant="secondary"
+                  className="w-full bg-white text-roblox-blue hover:bg-gray-100 font-semibold transition"
+                >
+                  Visit Help Center
+                </Button>
+              </Link>
             </div>
-
-            <Button
-              type="submit"
-              disabled={resendLoading}
-              className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
-            >
-              {resendLoading ? "Sending..." : "Resend Confirmation Email"}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setShowResendConfirmation(false)}
-              className="text-sm text-roblox-blue hover:text-roblox-blue/80"
-            >
-              Back to Login
-            </button>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (showForgotPassword) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-roblox-blue to-blue-700 flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
-          <div className="text-center mb-8">
-            <div className="bg-roblox-red text-white font-bold text-2xl px-4 py-2 rounded inline-block mb-4">
-              KiddoVerse
+      <>
+        {!isTouchDevice() && <FancyCursor />}
+        <div
+          className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bgImage})` }}
+        >
+          <Seo
+            title="Reset Password"
+            description="Reset your Kiddovase account password securely and regain access to your games, friends, and safe online experiences."
+            keywords="reset password, account recovery, forgot password, kids login help"
+            canonicalUrl="https://kiddovase.com/reset-password"
+          />
+
+          <motion.div
+            className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="flex items-center mb-6">
+                <button
+                  onClick={() => setShowForgotPassword(false)}
+                  className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Back to Login
+                </button>
+              </div>
+
+              <motion.div
+                className="inline-block mb-4"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 12,
+                  delay: 0.2,
+                }}
+              >
+                <img
+                  src={logo}
+                  alt="Kiddovase"
+                  className="h-20 mx-auto rounded animate-bounce"
+                />
+              </motion.div>
+
+              <h1 className="text-2xl font-bold text-gray-900">
+                Forgot Password?
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Don’t worry! Enter your registered email and we’ll send you
+                reset instructions.
+              </p>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Reset Password</h1>
-            <p className="text-gray-600">
-              Enter your email to receive reset instructions
-            </p>
-          </div>
 
-          <form onSubmit={handleForgotPassword} className="space-y-6">
-            <div>
-              <Label htmlFor="reset-email">Email</Label>
-              <Input
-                id="reset-email"
-                type="email"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="mt-1"
-                required
-              />
+            {/* Reset Form */}
+            <form onSubmit={handleForgotPassword} className="space-y-6">
+              <div>
+                <Label htmlFor="reset-email" className="text-gray-700">
+                  Email Address
+                </Label>
+                <Input
+                  id="reset-email"
+                  type="email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="mt-1"
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={resetLoading}
+                className="w-full bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] hover:from-[#750935] hover:to-[#8d0b41] text-white font-semibold rounded-full py-3 transition-all duration-200 shadow-lg"
+              >
+                {resetLoading ? "Sending..." : "Send Password Reset Email"}
+              </Button>
+            </form>
+
+            {/* Help Section */}
+            <div className="mt-10 bg-roblox-blue text-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-3">Need More Help?</h3>
+              <p className="text-sm mb-4">
+                If you didn’t receive the email or still can’t sign in, visit
+                our Help Center for guidance.
+              </p>
+              <Link to="/help-center" className="w-full">
+                <Button
+                  variant="secondary"
+                  className="w-full bg-white text-roblox-blue hover:bg-gray-100 font-semibold transition"
+                >
+                  Visit Help Center
+                </Button>
+              </Link>
             </div>
-
-            <Button
-              type="submit"
-              disabled={resetLoading}
-              className="w-full bg-roblox-blue hover:bg-roblox-blue/90 text-white"
-            >
-              {resetLoading ? "Sending..." : "Send Reset Email"}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setShowForgotPassword(false)}
-              className="text-sm text-roblox-blue hover:text-roblox-blue/80"
-            >
-              Back to Login
-            </button>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -419,6 +535,25 @@ const Login = () => {
                 Sign up
               </Link>
             </p>
+          </div>
+          <div className="mt-10">
+            <div className="bg-roblox-blue text-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-4">
+                Need Immediate Help?
+              </h3>
+              <p className="mb-4">
+                For urgent issues or technical support, visit our Help Center
+                for quick answers and safety information.
+              </p>
+              <Link to="/help-center" className="w-full">
+                <Button
+                  variant="secondary"
+                  className="w-full bg-white text-roblox-blue hover:bg-gray-100 font-semibold transition"
+                >
+                  Visit Help Center
+                </Button>
+              </Link>
+            </div>
           </div>
         </motion.div>
       </div>

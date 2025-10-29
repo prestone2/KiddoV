@@ -1,27 +1,91 @@
-import React from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Shield, AlertTriangle, Users, Eye, Lock, MessageSquare, UserX, Flag } from 'lucide-react';
-import Seo from '@/components/Seo';
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import {
+  Shield,
+  AlertTriangle,
+  Users,
+  Eye,
+  Lock,
+  MessageSquare,
+  UserX,
+  Flag,
+} from "lucide-react";
+import Seo from "@/components/Seo";
+import { Link } from "react-router-dom";
 
 const Safety = () => {
   const safetyFeatures = [
-    { icon: Shield, title: "Content Moderation", description: "Our AI-powered moderation system reviews all content 24/7 to ensure a safe environment for all users." },
-    { icon: MessageSquare, title: "Chat Filtering", description: "Advanced chat filters automatically block inappropriate language and personal information sharing." },
-    { icon: UserX, title: "Blocking & Reporting", description: "Easy-to-use tools allow users to block others and report inappropriate behavior instantly." },
-    { icon: Eye, title: "Parental Controls", description: "Comprehensive parental controls help parents manage their child's online experience." },
-    { icon: Lock, title: "Privacy Protection", description: "Strong privacy settings ensure personal information stays private and secure." },
-    { icon: Flag, title: "Community Guidelines", description: "Clear community guidelines help users understand what behavior is expected and acceptable." }
+    {
+      icon: Shield,
+      title: "Content Moderation",
+      description:
+        "Our AI-powered moderation system reviews all content 24/7 to ensure a safe environment for all users.",
+    },
+    {
+      icon: MessageSquare,
+      title: "Chat Filtering",
+      description:
+        "Advanced chat filters automatically block inappropriate language and personal information sharing.",
+    },
+    {
+      icon: UserX,
+      title: "Blocking & Reporting",
+      description:
+        "Easy-to-use tools allow users to block others and report inappropriate behavior instantly.",
+    },
+    {
+      icon: Eye,
+      title: "Parental Controls",
+      description:
+        "Comprehensive parental controls help parents manage their child's online experience.",
+    },
+    {
+      icon: Lock,
+      title: "Privacy Protection",
+      description:
+        "Strong privacy settings ensure personal information stays private and secure.",
+    },
+    {
+      icon: Flag,
+      title: "Community Guidelines",
+      description:
+        "Clear community guidelines help users understand what behavior is expected and acceptable.",
+    },
   ];
 
   const safetyTips = [
-    { title: "Never Share Personal Information", description: "Don't share your real name, address, phone number, school, or other personal details with strangers online." },
-    { title: "Use Strong Passwords", description: "Create unique, strong passwords and enable two-factor authentication to protect your account." },
-    { title: "Be Respectful", description: "Treat others with kindness and respect. Bullying, harassment, and hate speech are not tolerated." },
-    { title: "Report Suspicious Behavior", description: "If someone makes you uncomfortable or breaks the rules, report them immediately using our reporting tools." },
-    { title: "Think Before You Share", description: "Consider the consequences before sharing content or information. Once online, it can be difficult to remove." },
-    { title: "Talk to Trusted Adults", description: "If you're unsure about something or feel unsafe, talk to a parent, teacher, or other trusted adult." }
+    {
+      title: "Never Share Personal Information",
+      description:
+        "Don't share your real name, address, phone number, school, or other personal details with strangers online.",
+    },
+    {
+      title: "Use Strong Passwords",
+      description:
+        "Create unique, strong passwords and enable two-factor authentication to protect your account.",
+    },
+    {
+      title: "Be Respectful",
+      description:
+        "Treat others with kindness and respect. Bullying, harassment, and hate speech are not tolerated.",
+    },
+    {
+      title: "Report Suspicious Behavior",
+      description:
+        "If someone makes you uncomfortable or breaks the rules, report them immediately using our reporting tools.",
+    },
+    {
+      title: "Think Before You Share",
+      description:
+        "Consider the consequences before sharing content or information. Once online, it can be difficult to remove.",
+    },
+    {
+      title: "Talk to Trusted Adults",
+      description:
+        "If you're unsure about something or feel unsafe, talk to a parent, teacher, or other trusted adult.",
+    },
   ];
 
   return (
@@ -63,17 +127,25 @@ const Safety = () => {
           <div className="flex justify-center mb-6">
             <Shield className="w-16 h-16 text-blue-600" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Safety & Security</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Safety & Security
+          </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Your safety is our top priority. Learn about our safety features and how to stay safe while gaming and socializing online.
+            Your safety is our top priority. Learn about our safety features and
+            how to stay safe while gaming and socializing online.
           </p>
         </header>
 
         <section aria-label="Safety Features" className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Our Safety Features</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Our Safety Features
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {safetyFeatures.map((feature, index) => (
-              <article key={index} className="bg-white rounded-lg shadow-lg p-6 text-center">
+              <article
+                key={index}
+                className="bg-white rounded-lg shadow-lg p-6 text-center"
+              >
                 <feature.icon className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -86,7 +158,10 @@ const Safety = () => {
           <h2 className="text-3xl font-bold text-center mb-8">Safety Tips</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {safetyTips.map((tip, index) => (
-              <article key={index} className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border-l-4 border-blue-600">
+              <article
+                key={index}
+                className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border-l-4 border-blue-600"
+              >
                 <h3 className="text-lg font-semibold mb-2">{tip.title}</h3>
                 <p className="text-gray-700">{tip.description}</p>
               </article>
@@ -97,9 +172,12 @@ const Safety = () => {
         <section aria-label="Report Safety Concerns" className="mb-12">
           <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
             <AlertTriangle className="w-12 h-12 text-red-600 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-red-800 mb-4">Report Safety Concerns</h2>
+            <h2 className="text-2xl font-bold text-red-800 mb-4">
+              Report Safety Concerns
+            </h2>
             <p className="text-red-700 mb-6">
-              If you encounter inappropriate behavior, feel unsafe, or need immediate help, don't hesitate to report it.
+              If you encounter inappropriate behavior, feel unsafe, or need
+              immediate help, don't hesitate to report it.
             </p>
           </div>
         </section>
@@ -112,7 +190,9 @@ const Safety = () => {
             </div>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-lg font-semibold mb-3 text-green-800">Parental Controls</h3>
+                <h3 className="text-lg font-semibold mb-3 text-green-800">
+                  Parental Controls
+                </h3>
                 <ul className="space-y-2 text-green-700 list-disc list-inside">
                   <li>Set account restrictions and privacy settings</li>
                   <li>Control who can contact your child</li>
@@ -121,7 +201,9 @@ const Safety = () => {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-3 text-green-800">Stay Involved</h3>
+                <h3 className="text-lg font-semibold mb-3 text-green-800">
+                  Stay Involved
+                </h3>
                 <ul className="space-y-2 text-green-700 list-disc list-inside">
                   <li>Talk to your child about online safety</li>
                   <li>Review their gaming activity regularly</li>
@@ -131,25 +213,75 @@ const Safety = () => {
               </div>
             </div>
             <div className="mt-6">
-              <Button className="bg-green-600 hover:bg-green-700">Parental Controls Guide</Button>
+              <Button className="bg-green-600 hover:bg-green-700">
+                Parental Controls Guide
+              </Button>
             </div>
           </div>
         </section>
 
         <section aria-label="Additional Resources">
-          <h2 className="text-3xl font-bold text-center mb-8">Additional Resources</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Additional Resources
+          </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { title: "Community Guidelines", desc: "Learn about our community standards and what behavior is expected.", link: "/guidelines" },
-              { title: "Digital Citizenship", desc: "Resources for being a responsible and respectful digital citizen.", link: "/citizenship" },
-              { title: "Safety Education", desc: "Interactive lessons and activities about online safety.", link: "/education" }
+              {
+                title: "Community Guidelines",
+                desc: "Learn about our community standards and what behavior is expected.",
+                link: "/guidelines",
+              },
+              {
+                title: "Digital Citizenship",
+                desc: "Resources for being a responsible and respectful digital citizen.",
+                link: "/citizenship",
+              },
+              {
+                title: "Safety Education",
+                desc: "Interactive lessons and activities about online safety.",
+                link: "/education",
+              },
             ].map((r, i) => (
-              <article key={i} className="bg-white rounded-lg shadow p-6 text-center">
+              <article
+                key={i}
+                className="bg-white rounded-lg shadow p-6 text-center"
+              >
                 <h3 className="text-lg font-semibold mb-3">{r.title}</h3>
                 <p className="text-gray-600 mb-4">{r.desc}</p>
-                <a href={r.link} className="text-blue-600 hover:underline font-semibold">Learn More</a>
+                <a
+                  href={r.link}
+                  className="text-blue-600 hover:underline font-semibold"
+                >
+                  Learn More
+                </a>
               </article>
             ))}
+          </div>
+        </section>
+
+        {/* Help & Support Section */}
+        <section
+          aria-label="Help and Support"
+          className="mt-8 mb-8 text-center"
+        >
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] text-white rounded-2xl p-8 shadow-lg">
+            <h2 className="text-3xl font-bold mb-4">Need More Guidance?</h2>
+            <p className="text-base mb-6">
+              Whether you’re setting up parental controls or learning how to
+              monitor activity, our Help Center has step-by-step guides, FAQs,
+              and safety resources for families.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/help-center">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-[#8d0b41] hover:bg-pink-100 font-semibold px-8 py-3 transition-all rounded-full"
+                >
+                  Visit Help Center
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>

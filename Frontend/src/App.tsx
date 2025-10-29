@@ -38,6 +38,7 @@ import CookieConsent from '@/components/CookieConsent';
 import ResetPassword from '@/pages/ResetPassword';
 import AvatarCustomization from './pages/AvatarCustomization';
 import PresenceTracker from '@/components/PresenceTracker';
+import HelpWidget from "./components/HelpWidget";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +88,7 @@ const App = () => (
             <Route path="/cookies" element={<Cookies />} />
             <Route path="/avatar-customization" element={<AvatarCustomization />} />
           </Routes>
+          <HelpWidget />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

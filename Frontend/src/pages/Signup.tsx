@@ -252,6 +252,22 @@ const Signup = () => {
               </Link>
             </p>
           </div>
+          {/* Help Section */}
+          <div className="mt-10 bg-roblox-blue text-white rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-3">Need Help Verifying?</h3>
+            <p className="text-sm mb-4">
+              Still not receiving your verification email? Visit our Help Center
+              for troubleshooting steps.
+            </p>
+            <Link to="/help-center" className="w-full">
+              <Button
+                variant="secondary"
+                className="w-full bg-white text-roblox-blue hover:bg-gray-100 font-semibold transition"
+              >
+                Visit Help Center
+              </Button>
+            </Link>
+          </div>
         </motion.div>
       </div>
     </>

@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
-import Seo from '@/components/Seo';
+import React, { useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import Seo from "@/components/Seo";
+import { Link } from "react-router-dom";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const handleInputChange = (
@@ -21,14 +22,14 @@ const Contact = () => {
   ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    console.log("Form submitted:", formData);
+    setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
@@ -64,7 +65,8 @@ const Contact = () => {
         <section className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have a question or need help? Our team is always happy to assist you. Reach out through our form or use the contact details below.
+            Have a question or need help? Our team is always happy to assist
+            you. Reach out through our form or use the contact details below.
           </p>
         </section>
 
@@ -162,19 +164,31 @@ const Contact = () => {
             </div>
 
             <div className="bg-roblox-blue text-white rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Need Immediate Help?</h3>
+              <h3 className="text-xl font-semibold mb-4">
+                Need Immediate Help?
+              </h3>
               <p className="mb-4">
-                For urgent issues or technical support, Contact Us for quick solutions and safety information.
+                For urgent issues or technical support, Contact Us for quick
+                solutions and safety information.
               </p>
-              {/* <Button variant="secondary" className="w-full">
-                Visit Help Center
-              </Button> */}
+              <Link to="/help-center" className="w-full">
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                >
+                  Visit Help Center
+                </Button>
+              </Link>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4 text-green-800">Safety First</h3>
+              <h3 className="text-xl font-semibold mb-4 text-green-800">
+                Safety First
+              </h3>
               <p className="text-green-700">
-                KiddoVase prioritizes child safety. If you encounter any suspicious or inappropriate behavior, please report it immediately. Our team will respond within 24 hours.
+                KiddoVase prioritizes child safety. If you encounter any
+                suspicious or inappropriate behavior, please report it
+                immediately. Our team will respond within 24 hours.
               </p>
             </div>
           </aside>

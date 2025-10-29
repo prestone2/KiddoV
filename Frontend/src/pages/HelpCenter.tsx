@@ -1,234 +1,261 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  ChevronDown,
   Search,
-  MessageCircle,
-  Book,
   Shield,
   Settings,
   Users,
-  ChevronDown,
+  Mail,
+  HeartHandshake,
+  Home,
 } from "lucide-react";
 import Seo from "@/components/Seo";
 
 const HelpCenter = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const location = useLocation();
 
-  const helpCategories = [
-    {
-      icon: Settings,
-      title: "Account & Settings",
-      description: "Manage your account, privacy settings, and preferences",
-      articles: [
-        "Change Password",
-        "Privacy Settings",
-        "Account Recovery",
-        "Parental Controls",
-      ],
-    },
-    {
-      icon: Shield,
-      title: "Safety & Civility",
-      description: "Learn about our safety features and reporting tools",
-      articles: [
-        "Reporting Users",
-        "Blocking Players",
-        "Chat Safety",
-        "Age Verification",
-      ],
-    },
-    {
-      icon: Users,
-      title: "Social Features",
-      description: "Friends, groups, and social interaction help",
-      articles: [
-        "Adding Friends",
-        "Creating Groups",
-        "Voice Chat",
-        "Trading Items",
-      ],
-    },
-    {
-      icon: Book,
-      title: "Game Development",
-      description: "Resources for creating and publishing games",
-      articles: [
-        "kiddo Studio Basics",
-        "Scripting Help",
-        "Publishing Games",
-        "Monetization",
-      ],
-    },
-  ];
-
-  const popularArticles = [
-    "How to reset my password",
-    "How to report inappropriate behavior",
-    "Why can't I log in to my account?",
-    "How to enable two-step verification",
-    "How to change my username",
-    "How to get kiddocash",
-  ];
-
+  // ✅ Categorized FAQs
   const faqs = [
     {
-      question: "How do I create an account?",
+      category: "Account & Settings",
+      question: "How do I reset my password?",
       answer:
-        "Click the 'Sign Up' button in the top right corner of any page and fill out the required information. You'll need a valid email address to verify your account.",
+        "Go to Settings → Account → Change Password. Enter your current and new password to update securely.",
     },
     {
-      question: "Is the platform safe for children?",
+      category: "Account & Settings",
+      question: "How can I recover my account?",
       answer:
-        "Yes, we have comprehensive safety measures including content moderation, chat filters, parental controls, and reporting systems to ensure a safe environment for all users.",
+        "Click 'Forgot Password' on the login page and follow the email recovery instructions.",
     },
     {
-      question: "How do I report inappropriate content or behavior?",
+      category: "Safety & Civility",
+      question: "How do I report inappropriate behavior?",
       answer:
-        "Use the report button available on user profiles, games, and chat messages. Our moderation team reviews all reports within 24 hours.",
+        "Click on the user's profile → Select 'Report User' → Choose the reason. Our moderators review reports 24/7.",
     },
     {
-      question: "Can I play games without creating an account?",
+      category: "Safety & Civility",
+      question: "What parental controls are available?",
       answer:
-        "Yes, you can browse and play many games without an account, but creating an account unlocks features like saving favorites, tracking progress, and connecting with friends.",
+        "Parents can restrict chat, screen time, and purchases via the Kiddovase Parents Dashboard.",
     },
     {
-      question: "How do I get Kiddocash?",
+      category: "Social Features",
+      question: "How do I add friends safely?",
       answer:
-        "Kiddocash can be purchased through our store or earned through our subscription plans. Premium members receive monthly kiddocash allowances.",
+        "You can send friend requests only to verified accounts. All friend interactions are monitored for safety.",
+    },
+    {
+      category: "Social Features",
+      question: "Why can’t I send a message?",
+      answer:
+        "Messages are restricted if the recipient’s chat settings or parental controls are active.",
     },
   ];
 
-  const toggleFaq = (index: number) => {
-    setExpandedFaq(expandedFaq === index ? null : index);
-  };
+  const categories = [
+    { name: "All", icon: <Search className="w-5 h-5 text-[#8d0b41]" /> },
+    { name: "Account & Settings", icon: <Settings className="w-5 h-5 text-[#8d0b41]" /> },
+    { name: "Safety & Civility", icon: <Shield className="w-5 h-5 text-[#8d0b41]" /> },
+    { name: "Social Features", icon: <Users className="w-5 h-5 text-[#8d0b41]" /> },
+  ];
+
+  // ✅ Parse category from URL query (e.g. /help-center?category=safety)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categoryParam = params.get("category");
+
+    if (categoryParam) {
+      const formatted =
+        categoryParam === "account"
+          ? "Account & Settings"
+          : categoryParam === "safety"
+          ? "Safety & Civility"
+          : categoryParam === "social"
+          ? "Social Features"
+          : "all";
+
+      setSelectedCategory(formatted);
+
+      // Smooth scroll to FAQ section after preselection
+      setTimeout(() => {
+        const faqSection = document.getElementById("faq-section");
+        if (faqSection) faqSection.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  }, [location.search]);
+
+  // ✅ Filter + search logic
+  const filteredFaqs = useMemo(() => {
+    return faqs.filter(
+      (f) =>
+        (selectedCategory === "all" || f.category === selectedCategory) &&
+        (f.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          f.answer.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  }, [searchQuery, selectedCategory]);
+
+  // ✅ Dynamic search suggestions
+  const suggestions = useMemo(() => {
+    if (!searchQuery) return [];
+    return faqs
+      .filter((f) =>
+        f.question.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .slice(0, 5)
+      .map((f) => f.question);
+  }, [searchQuery]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Seo
-        title="Help Center"
-        description="Get help with Kiddovase — from parental setup to account recovery. Explore guides, tutorials, and FAQs for parents, teachers, and young gamers."
-        keywords="help center, support, parental guide, tutorials, kids gaming help"
+        title="Help Center – Safe Play & Support for Families"
+        description="Search FAQs, browse help categories, and learn how Kiddovase keeps your child’s gaming experience safe, educational, and fun."
+        keywords="help center, support, FAQ, child safety, parental guide, Kiddovase"
         canonicalUrl="https://kiddovase.com/help-center"
       />
-
       <Navbar />
 
-      <div className="container mx-auto px-4 py-8 flex-grow">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Help Center</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Get answers to your questions and learn how to make the most of our
-            platform
-          </p>
+      {/* Hero */}
+      <section className="bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] py-16 text-white text-center relative">
+        <h1 className="text-4xl font-bold mb-3">Help Center</h1>
+        <p className="text-lg opacity-90 mb-6">
+          Find answers, safety tips, and guides for parents and players.
+        </p>
 
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto relative">
-            <Search className="absolute left-4 top-3 h-5 w-5 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search for help articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 text-lg"
-            />
-            <Button className="absolute right-2 top-1.5 bg-roblox-blue hover:bg-roblox-blue/90">
-              Search
-            </Button>
-          </div>
+        {/* Back to Help Page */}
+        <Link
+          to="/help"
+          className="inline-flex items-center justify-center text-white hover:underline mb-6"
+        >
+          <Home className="w-4 h-4 mr-2" /> Back to Help Page
+        </Link>
+
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto mt-4 relative">
+          <Search className="absolute left-4 top-3 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search help articles..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 py-3 rounded-full text-gray-800"
+          />
+          {suggestions.length > 0 && (
+            <div className="absolute left-0 right-0 bg-white mt-2 rounded-xl shadow-lg text-gray-800 text-sm z-10 border">
+              {suggestions.map((s, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSearchQuery(s)}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+      </section>
 
-        {/* Help Categories */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {helpCategories.map((category, index) => (
+      {/* Category Filters */}
+      <section className="bg-white border-b py-6 px-6 md:px-12 lg:px-20 flex flex-wrap gap-4 justify-center">
+        {categories.map((cat) => (
+          <button
+            key={cat.name}
+            onClick={() =>
+              setSelectedCategory(cat.name === "All" ? "all" : cat.name)
+            }
+            className={`flex items-center gap-2 px-5 py-2 rounded-full border transition-all duration-200 ${
+              selectedCategory === cat.name ||
+              (cat.name === "All" && selectedCategory === "all")
+                ? "bg-[#8d0b41] text-white border-[#8d0b41]"
+                : "bg-white text-gray-700 border-gray-300 hover:border-[#8d0b41]"
+            }`}
+          >
+            {cat.icon}
+            <span className="font-medium">{cat.name}</span>
+          </button>
+        ))}
+      </section>
+
+      {/* FAQs */}
+      <section
+        id="faq-section"
+        className="flex-1 py-16 px-6 md:px-12 lg:px-20 bg-gray-50"
+      >
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-10">
+          {selectedCategory === "all" ? "All FAQs" : `${selectedCategory} FAQs`}
+        </h2>
+
+        <div className="max-w-3xl mx-auto space-y-4">
+          {filteredFaqs.map((faq, idx) => (
             <div
-              key={index}
-              className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+              key={idx}
+              className="border border-gray-200 rounded-xl shadow-sm bg-white"
             >
-              <div className="flex items-center mb-4">
-                <category.icon className="h-8 w-8 text-roblox-blue mr-3" />
-                <h3 className="text-xl font-semibold">{category.title}</h3>
-              </div>
-              <p className="text-gray-600 mb-4">{category.description}</p>
-              <ul className="space-y-2">
-                {category.articles.map((article, articleIndex) => (
-                  <li key={articleIndex}>
-                    <a href="#" className="text-roblox-blue hover:underline">
-                      {article}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <button
+                className="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-gray-800"
+                onClick={() =>
+                  setExpandedFaq(expandedFaq === idx ? null : idx)
+                }
+              >
+                {faq.question}
+                <ChevronDown
+                  className={`w-5 h-5 transition-transform ${
+                    expandedFaq === idx ? "rotate-180 text-[#8d0b41]" : ""
+                  }`}
+                />
+              </button>
+              {expandedFaq === idx && (
+                <div className="px-6 pb-4 text-gray-600 border-t bg-gray-50 transition-all duration-300 ease-in">
+                  {faq.answer}
+                </div>
+              )}
             </div>
           ))}
+          {filteredFaqs.length === 0 && (
+            <p className="text-center text-gray-500 mt-10">
+              No results found for "{searchQuery}".
+            </p>
+          )}
         </div>
+      </section>
 
-        {/* Popular Articles */}
-        <div className="bg-gray-50 rounded-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold mb-6">Popular Articles</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {popularArticles.map((article, index) => (
-              <a
-                key={index}
-                href="#"
-                className="flex items-center p-3 bg-white rounded border hover:shadow-sm transition-shadow"
-              >
-                <Book className="h-5 w-5 text-roblox-blue mr-3 flex-shrink-0" />
-                <span className="text-gray-700 hover:text-roblox-blue">
-                  {article}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
+      {/* Additional Help Section */}
+      <section className="bg-white border-t py-16 px-6 md:px-12 lg:px-20 text-center">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Still Need Help?
+        </h2>
+        <p className="text-gray-600 mb-8 max-w-xl mx-auto">
+          If you can’t find what you’re looking for, our team is here to help.
+          Reach out for additional support, report issues, or get advice on
+          child safety.
+        </p>
 
-        {/* FAQ Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-white border border-gray-200 rounded-lg"
-              >
-                <button
-                  onClick={() => toggleFaq(index)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <span className="font-semibold">{faq.question}</span>
-                  <ChevronDown
-                    className={`h-5 w-5 transform transition-transform ${
-                      expandedFaq === index ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {expandedFaq === index && (
-                  <div className="px-4 pb-4 text-gray-600">{faq.answer}</div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <a
+            href="mailto:support@kiddovase.com"
+            className="flex items-center justify-center gap-2 bg-[#8d0b41] text-white px-6 py-3 rounded-full shadow hover:bg-[#a60e4d] transition"
+          >
+            <Mail className="w-5 h-5" /> Email Support
+          </a>
 
-        {/* Contact Support */}
-        <div className="text-center bg-roblox-blue text-white rounded-lg p-8">
-          <MessageCircle className="h-12 w-12 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold mb-4">Still Need Help?</h2>
-          <p className="mb-6">
-            Can't find what you're looking for? Our support team is here to
-            help.
-          </p>
-          <Button variant="secondary" size="lg">
-            Contact Support
-          </Button>
+          <Link
+            to="/parents"
+            className="flex items-center justify-center gap-2 bg-pink-100 text-[#8d0b41] px-6 py-3 rounded-full shadow hover:bg-pink-200 transition"
+          >
+            <HeartHandshake className="w-5 h-5" /> Parents’ Guide
+          </Link>
         </div>
-      </div>
+      </section>
 
       <Footer />
     </div>
@@ -236,5 +263,3 @@ const HelpCenter = () => {
 };
 
 export default HelpCenter;
-// This code defines a Help Center page with a search bar, categorized help sections, popular articles, FAQs, and a contact support button.
-// It uses React hooks for state management and includes icons from Lucide for visual enhancement. The
