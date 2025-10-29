@@ -63,9 +63,18 @@ const HelpCenter = () => {
 
   const categories = [
     { name: "All", icon: <Search className="w-5 h-5 text-[#8d0b41]" /> },
-    { name: "Account & Settings", icon: <Settings className="w-5 h-5 text-[#8d0b41]" /> },
-    { name: "Safety & Civility", icon: <Shield className="w-5 h-5 text-[#8d0b41]" /> },
-    { name: "Social Features", icon: <Users className="w-5 h-5 text-[#8d0b41]" /> },
+    {
+      name: "Account & Settings",
+      icon: <Settings className="w-5 h-5 text-[#8d0b41]" />,
+    },
+    {
+      name: "Safety & Civility",
+      icon: <Shield className="w-5 h-5 text-[#8d0b41]" />,
+    },
+    {
+      name: "Social Features",
+      icon: <Users className="w-5 h-5 text-[#8d0b41]" />,
+    },
   ];
 
   // ✅ Parse category from URL query (e.g. /help-center?category=safety)
@@ -167,23 +176,34 @@ const HelpCenter = () => {
 
       {/* Category Filters */}
       <section className="bg-white border-b py-6 px-6 md:px-12 lg:px-20 flex flex-wrap gap-4 justify-center">
-        {categories.map((cat) => (
-          <button
-            key={cat.name}
-            onClick={() =>
-              setSelectedCategory(cat.name === "All" ? "all" : cat.name)
-            }
-            className={`flex items-center gap-2 px-5 py-2 rounded-full border transition-all duration-200 ${
-              selectedCategory === cat.name ||
-              (cat.name === "All" && selectedCategory === "all")
-                ? "bg-[#8d0b41] text-white border-[#8d0b41]"
-                : "bg-white text-gray-700 border-gray-300 hover:border-[#8d0b41]"
-            }`}
-          >
-            {cat.icon}
-            <span className="font-medium">{cat.name}</span>
-          </button>
-        ))}
+        {categories.map((cat) => {
+          const isActive =
+            selectedCategory === cat.name ||
+            (cat.name === "All" && selectedCategory === "all");
+
+          const Icon = cat.icon;
+
+          return (
+            <button
+              key={cat.name}
+              onClick={() =>
+                setSelectedCategory(cat.name === "All" ? "all" : cat.name)
+              }
+              className={`flex items-center gap-2 px-5 py-2 rounded-full border transition-all duration-200 ${
+                isActive
+                  ? "bg-[#8d0b41] text-white border-[#8d0b41]"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-[#8d0b41]"
+              }`}
+            >
+              <cat.icon.type
+                className={`w-5 h-5 transition-colors duration-200 ${
+                  isActive ? "text-white" : "text-[#8d0b41]"
+                }`}
+              />
+              <span className="font-medium">{cat.name}</span>
+            </button>
+          );
+        })}
       </section>
 
       {/* FAQs */}
@@ -203,9 +223,7 @@ const HelpCenter = () => {
             >
               <button
                 className="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-gray-800"
-                onClick={() =>
-                  setExpandedFaq(expandedFaq === idx ? null : idx)
-                }
+                onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
               >
                 {faq.question}
                 <ChevronDown

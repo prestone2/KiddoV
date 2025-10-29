@@ -62,9 +62,18 @@ const HelpWidget = () => {
 
   const categories = [
     { name: "All", icon: <Search className="w-4 h-4 text-[#8d0b41]" /> },
-    { name: "Account & Settings", icon: <Settings className="w-4 h-4 text-[#8d0b41]" /> },
-    { name: "Safety & Civility", icon: <Shield className="w-4 h-4 text-[#8d0b41]" /> },
-    { name: "Social Features", icon: <Users className="w-4 h-4 text-[#8d0b41]" /> },
+    {
+      name: "Account & Settings",
+      icon: <Settings className="w-4 h-4 text-[#8d0b41]" />,
+    },
+    {
+      name: "Safety & Civility",
+      icon: <Shield className="w-4 h-4 text-[#8d0b41]" />,
+    },
+    {
+      name: "Social Features",
+      icon: <Users className="w-4 h-4 text-[#8d0b41]" />,
+    },
   ];
 
   // ✅ Filter FAQs by category + search
@@ -85,7 +94,11 @@ const HelpWidget = () => {
         className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] text-white rounded-full p-4 shadow-lg hover:scale-105 transition-all duration-200"
         aria-label="Open Help Widget"
       >
-        {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
+        {open ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <MessageCircle className="w-6 h-6" />
+        )}
       </button>
 
       {/* Widget Panel */}
@@ -119,25 +132,32 @@ const HelpWidget = () => {
 
             {/* Category Filters */}
             <div className="flex flex-wrap gap-2 justify-center">
-              {categories.map((cat) => (
-                <button
-                  key={cat.name}
-                  onClick={() =>
-                    setSelectedCategory(
-                      cat.name === "All" ? "all" : cat.name
-                    )
-                  }
-                  className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs transition-all duration-200 ${
-                    selectedCategory === cat.name ||
-                    (cat.name === "All" && selectedCategory === "all")
-                      ? "bg-[#8d0b41] text-white border-[#8d0b41]"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-[#8d0b41]"
-                  }`}
-                >
-                  {cat.icon}
-                  {cat.name}
-                </button>
-              ))}
+              {categories.map((cat) => {
+                const isSelected =
+                  selectedCategory === cat.name ||
+                  (cat.name === "All" && selectedCategory === "all");
+
+                return (
+                  <button
+                    key={cat.name}
+                    onClick={() =>
+                      setSelectedCategory(cat.name === "All" ? "all" : cat.name)
+                    }
+                    className={`flex items-center gap-1 px-3 py-1 rounded-full border text-xs transition-all duration-200 ${
+                      isSelected
+                        ? "bg-[#8d0b41] text-white border-[#8d0b41]"
+                        : "bg-white text-gray-700 border-gray-300 hover:border-[#8d0b41] hover:text-[#8d0b41]"
+                    }`}
+                  >
+                    <cat.icon.type
+                      className={`w-4 h-4 ${
+                        isSelected ? "text-white" : "text-[#8d0b41]"
+                      } transition-colors duration-200`}
+                    />
+                    {cat.name}
+                  </button>
+                );
+              })}
             </div>
 
             {/* FAQs */}
