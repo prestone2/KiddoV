@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +26,7 @@ const Login = () => {
   const [resendEmail, setResendEmail] = useState('');
   const [resendLoading, setResendLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn, signInWithProvider, user, resendConfirmation } = useAuth();
   const { toast } = useToast();
 
@@ -211,6 +212,22 @@ const Login = () => {
         </div>
       </div>
     );
+  }
+
+  // location.state?.next may hold target after login
+  const next = (location.state as any)?.next || '/games';
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    // ...existing form read logic (email/password) ...
+    try {
+      // call your auth sign-in (example)
+      await signIn(email, password);
+      // ensure any post-login checks run, then redirect
+      navigate(next);
+    } catch (err) {
+      // handle error
+    }
   }
 
   return (

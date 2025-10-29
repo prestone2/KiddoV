@@ -7,7 +7,7 @@ import RecentGames from '@/components/RecentGames';
 import { useGames } from '@/hooks/useGames';
 import { useGenres } from '@/hooks/useGenres';
 import { Loader2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import createImg from '@/assets/create.png';
 import FancyCursor from '@/components/FancyCursor'; // <-- Add this import
 

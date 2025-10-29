@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GamePlayer from '@/components/GamePlayer';
@@ -17,6 +17,8 @@ import { useToast } from '@/hooks/use-toast';
 
 const GameDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { toast } = useToast();
@@ -182,6 +184,30 @@ const GameDetail = () => {
               onReportGame={() => setIsReportModalOpen(true)}
             />
           </div>
+
+          <aside className="mb-6">
+            <button
+              className="inline-block bg-roblox-blue text-white px-4 py-2 rounded"
+              onClick={() => {
+                if (!user) {
+                  navigate('/login', { state: { next: `/games/${game.Id}` } });
+                  return;
+                }
+                // authenticated -> open playable URL
+                if (game.GameURL) {
+                  window.open(game.GameURL, '_blank', 'noopener,noreferrer');
+                } else {
+                  // fallback behaviour if needed
+                  // navigate to an internal player page or show error
+                  navigate(`/games/${game.Id}`);
+                }
+              }}
+            >
+              Play now
+            </button>
+
+            <a href="/report" className="ml-3 text-sm text-red-600">Report</a>
+          </aside>
         </div>
         
         <Footer />
