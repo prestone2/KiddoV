@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -9,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from '@/components/ui/button';
 import { Filter } from 'lucide-react';
 import { useGenres } from '@/hooks/useGenres';
+import Seo from '@/components/Seo';
 
 const Games = () => {
   const [searchParams] = useSearchParams();
@@ -30,6 +30,12 @@ const Games = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Play Free Online Games for Kids | Fun & Safe Games"
+        description="Explore hundreds of fun, safe, and educational games for kids! Filter by genre, device, or age group. New popular and featured games added weekly."
+        keywords="kids games, online games, free games for children, safe games, fun learning games, browser games"
+      />
+
       <Navbar />
       
       <div className="container mx-auto px-4 py-8 flex-grow">
@@ -94,7 +100,6 @@ const Games = () => {
               <Button 
                 className="bg-roblox-blue hover:bg-roblox-blue/90"
                 onClick={() => {
-                  // Filters are applied automatically through the hook
                   console.log('Filters applied:', { genreFilter, deviceFilter, genderFilter });
                 }}
               >
@@ -104,7 +109,6 @@ const Games = () => {
           </div>
         )}
         
-        {/* Games Content with Lazy Loading */}
         <Tabs defaultValue="popular">
           <TabsList className="mb-8">
             <TabsTrigger value="popular">Popular</TabsTrigger>
