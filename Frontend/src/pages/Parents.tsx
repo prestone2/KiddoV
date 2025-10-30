@@ -6,8 +6,11 @@ import { Shield, Eye, Settings, Users, Clock, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import Seo from "@/components/Seo";
 import parentsGuideImg from "@/assets/parentsguide.png";
+import { useAuth } from "@/hooks/useAuth";
 
 const Parents = () => {
+  const { user } = useAuth(); 
+  
   const safetyFeatures = [
     {
       icon: Shield,
@@ -173,7 +176,7 @@ const Parents = () => {
         </section>
 
         {/* Parental Controls */}
-        <section
+        {/* <section
           aria-label="Parental Controls"
           className="bg-blue-50 rounded-lg p-8 mb-12"
         >
@@ -214,7 +217,7 @@ const Parents = () => {
               />
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Educational Benefits */}
         <section aria-label="Educational Benefits" className="mb-12">
@@ -290,27 +293,30 @@ const Parents = () => {
         </section>
 
         {/* CTA Section */}
-        <section
-          aria-label="Get Started"
-          className="text-center bg-blue-100 rounded-lg p-8"
-        >
-          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-gray-600 mb-6">
-            Create a safe account for your child and explore KiddoVase together.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/signup">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                Create Account
-              </Button>
-            </Link>
-            <Link to="/safety">
-              <Button size="lg" variant="outline">
-                Learn About Safety
-              </Button>
-            </Link>
-          </div>
-        </section>
+        {!user && (
+          <section
+            aria-label="Get Started"
+            className="text-center bg-blue-100 rounded-lg p-8"
+          >
+            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p className="text-gray-600 mb-6">
+              Create a safe account for your child and explore KiddoVase
+              together.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/signup">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                  Create Account
+                </Button>
+              </Link>
+              <Link to="/safety">
+                <Button size="lg" variant="outline">
+                  Learn About Safety
+                </Button>
+              </Link>
+            </div>
+          </section>
+        )}
 
       {/* Help & Support Section */}
       <section aria-label="Help and Support" className="mt-8 mb-8 text-center">
