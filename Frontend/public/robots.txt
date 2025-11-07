@@ -11,8 +11,11 @@ User-agent: facebookexternalhit
 Allow: /
 
 User-agent: *
-Allow: /
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /profile
+Disallow: /friends
+Disallow: /settings
 
-User-agent: *
-Allow: /
 Sitemap: https://kiddovase.com/sitemap.xml

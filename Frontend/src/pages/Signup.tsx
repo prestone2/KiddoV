@@ -115,7 +115,9 @@ const Signup = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              Create your account and start playing!
+              Create your Kiddovase account to save progress, earn badges, and
+              join friends in fun games. Signing up is free, quick, and
+              privacy-friendly — no personal data sharing required.
             </motion.p>
           </div>
 
