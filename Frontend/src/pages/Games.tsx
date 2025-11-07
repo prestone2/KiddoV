@@ -57,6 +57,13 @@ const Games = () => {
             <span>Filter</span>
           </Button>
         </div>
+        <p className="text-gray-600 mb-6">
+          Explore Kiddovase’s world of safe and educational games designed for
+          fun learning. Choose from puzzles, adventures, and creativity-boosting
+          challenges. Each title is carefully moderated and parent-approved,
+          ensuring children can enjoy digital play that inspires imagination and
+          growth.
+        </p>
 
         {filterOpen && (
           <div className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">

@@ -26,8 +26,7 @@ const Help = () => {
     {
       icon: <Users className="w-6 h-6 text-[#8d0b41]" />,
       title: "Friends & Social",
-      description:
-        "Get help with friends, groups, and social features safely.",
+      description: "Get help with friends, groups, and social features safely.",
       link: "/help-center?category=social",
     },
     {
@@ -60,8 +59,9 @@ const Help = () => {
       <section className="bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] text-white py-16 text-center">
         <h1 className="text-4xl font-bold mb-3">Need Help?</h1>
         <p className="text-lg opacity-90">
-          We’re here to make your Kiddovase experience safe, fun, and easy to
-          use.
+          The Kiddovase Help Center provides answers for parents, players, and
+          developers. Learn about safety, privacy, account management, and
+          troubleshooting common issues.
         </p>
         <Link to="/help-center">
           <Button className="mt-6 bg-white text-[#8d0b41] hover:bg-pink-100 rounded-full px-6 py-3 font-semibold">
