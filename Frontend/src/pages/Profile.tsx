@@ -136,11 +136,12 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="My Profile – Customize & Play Safely"
-        description="Customize your Kiddovase profile, personalize your avatar, and manage privacy settings — all built to empower children while keeping their safety the top priority."
-        keywords="kids profile, avatar customization, child safety settings, online privacy for kids"
-        canonicalUrl="https://kiddovase.com/profile"
-      />
+        title="Profile — Kiddovase"
+        description="View player profiles on Kiddovase in a kid-safe environment."
+        canonicalUrl={`${window.location.origin}/profile`}
+      >
+        <meta name="robots" content="noindex, nofollow" />
+      </Seo>
 
       <Navbar />
 

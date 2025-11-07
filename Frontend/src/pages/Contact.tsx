@@ -36,27 +36,10 @@ const Contact = () => {
     <div className="min-h-screen flex flex-col">
       {/* ✅ SEO Metadata */}
       <Seo
-        title="Contact KiddoVase - Get in Touch with Our Support Team"
-        description="Need help or have questions about KiddoVase? Contact our support team for assistance with games, safety, or account issues. We're here to help!"
-        keywords="contact kiddovase, kiddovase support, kids gaming help, parental support, report issue, kids games contact"
-        canonicalUrl="https://kiddovase.com/contact"
-      >
-        <script type="application/ld+json">
-          {`{
-            "@context": "https://schema.org",
-            "@type": "ContactPage",
-            "name": "Contact KiddoVase",
-            "url": "https://kiddovase.com/contact",
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "telephone": "+254799855480",
-              "contactType": "Customer Support",
-              "areaServed": "KE",
-              "availableLanguage": ["English"]
-            }
-          }`}
-        </script>
-      </Seo>
+        title="Contact — Kiddovase"
+        description="Learn more about Contact on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/contact`}
+      ></Seo>
 
       <Navbar />
 
@@ -172,10 +155,7 @@ const Contact = () => {
                 solutions and safety information.
               </p>
               <Link to="/help-center" className="w-full">
-                <Button
-                  variant="secondary"
-                  className="w-full"
-                >
+                <Button variant="secondary" className="w-full">
                   Visit Help Center
                 </Button>
               </Link>

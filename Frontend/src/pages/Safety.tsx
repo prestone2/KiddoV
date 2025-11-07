@@ -91,7 +91,7 @@ const Safety = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Safety & Security | KiddoVase"
+        title="Safety & Security | Kiddovase"
         description="Learn how KiddoVase keeps your child safe online through AI moderation, chat filtering, parental controls, and community guidelines."
         keywords="kids online safety, parental controls, child privacy, secure gaming, online moderation, chat filter, cyber safety for kids"
         canonicalUrl="https://kiddovase.com/safety"

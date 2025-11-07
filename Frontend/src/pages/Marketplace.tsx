@@ -32,11 +32,10 @@ const Marketplace = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Marketplace"
-        description="Browse Kiddovase’s safe, parent-approved marketplace for creative items, fun cosmetics, and educational add-ons that make gameplay more rewarding and safe."
-        keywords="marketplace for kids, safe purchases, educational items, parent approved store"
-        canonicalUrl="https://kiddovase.com/marketplace"
-      />
+        title="Marketplace — Kiddovase"
+        description="Learn more about Marketplace on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/marketplace`}
+      ></Seo>
 
       <Navbar />
 

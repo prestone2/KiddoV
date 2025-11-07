@@ -161,11 +161,10 @@ const FriendProfile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Friend Profile – Safe Social Play for Kids"
-        description="View your Kiddovase friends’ profiles, activities, and shared games in a secure and friendly digital environment where children connect positively and safely."
-        keywords="friend profile, safe online community, kids social play, child-friendly platform, Kiddovase"
-        canonicalUrl={`https://kiddovase.com/friends/${friendProfile?.id}`}
-      />
+        title="FriendProfile — Kiddovase"
+        description="Learn more about FriendProfile on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/friend/${id}`}
+      ></Seo>
 
       <Navbar />
 

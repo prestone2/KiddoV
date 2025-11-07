@@ -90,11 +90,10 @@ const AvatarCustomization = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Seo
-          title="Customize Your Avatar"
-          description="Spark creativity with Kiddovase’s avatar builder — a fun, safe, and kid-friendly customization space where children express themselves freely and securely."
-          keywords="avatar customization, creative play for kids, safe avatar builder, dress up games"
-          canonicalUrl="https://kiddovase.com/avatar"
-        />
+          title="AvatarCustomization — Kiddovase"
+          description="Learn more about AvatarCustomization on Kiddovase — a safe and educational gaming platform for kids."
+          canonicalUrl={`${window.location.origin}/avatarcustomization`}
+        ></Seo>
 
         <Navbar />
         <div className="container mx-auto px-4 py-8 flex-grow">

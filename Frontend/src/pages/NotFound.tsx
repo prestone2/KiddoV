@@ -15,12 +15,12 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Seo
-        title="Page Not Found"
-        description="Oops! This page doesn’t exist. Explore Kiddovase to discover fun, safe, and educational games that your child will love."
-        ogDescription="Find your way back to kid-friendly fun on Kiddovase — where learning and play come together safely."
-        keywords="404, page not found, kids games, safe learning platform"
-        canonicalUrl="https://kiddovase.com/404"
-      />
+        title="NotFound — Kiddovase"
+        description="Page not found on Kiddovase. Explore kid-safe games and resources."
+        canonicalUrl={`${window.location.origin}/notfound`}
+      >
+        <meta name="robots" content="noindex, nofollow" />
+      </Seo>
 
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">404</h1>

@@ -56,11 +56,12 @@ const Signup = () => {
   return (
     <>
       <Seo
-        title="Sign Up"
-        description="Create a Kiddovase account for your child or family. Join a fun, safe, and educational gaming world built for kids and trusted by parents."
-        keywords="signup, create account, child registration, family-safe gaming"
-        canonicalUrl="https://kiddovase.com/signup"
-      />
+        title="Signup — Kiddovase"
+        description="Create your Kiddovase account to save progress, earn badges, and play with friends in a safe space."
+        canonicalUrl={`${window.location.origin}/signup`}
+      >
+        <meta name="robots" content="noindex, nofollow" />
+      </Seo>
 
       {!isTouchDevice() && <FancyCursor />}
       <div

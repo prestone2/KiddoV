@@ -16,11 +16,10 @@ const Cookies = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="Cookie Policy"
-        description="Understand how Kiddovase uses cookies to improve safety, analytics, and the user experience — always with your child’s privacy in mind."
-        keywords="cookie policy, site preferences, kids privacy, cookies and safety"
-        canonicalUrl="https://kiddovase.com/cookies"
-      />
+        title="Cookies — Kiddovase"
+        description="Learn more about Cookies on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/cookies`}
+      ></Seo>
 
       <Navbar />
 

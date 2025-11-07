@@ -170,11 +170,12 @@ const ResetPassword = () => {
         style={{ backgroundImage: `url(${bgImage})` }}
       >
         <Seo
-          title="Reset Password"
-          description="Recover your Kiddovase account safely and securely. Protecting your child’s play, learning, and privacy online."
-          keywords="reset password, secure account, kids safety, parental login"
-          canonicalUrl="https://kiddovase.com/reset-password"
-        />
+          title="ResetPassword — Kiddovase"
+          description="Reset your Kiddovase password and keep your account secure."
+          canonicalUrl={`${window.location.origin}/reset-password`}
+        >
+          <meta name="robots" content="noindex, nofollow" />
+        </Seo>
 
         <motion.div
           className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8"
@@ -246,9 +247,7 @@ const ResetPassword = () => {
                 />
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowConfirmPassword(!showConfirmPassword)
-                  }
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
                   {showConfirmPassword ? (

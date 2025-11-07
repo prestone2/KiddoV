@@ -12,11 +12,10 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="About Kiddovase"
-        description="Kiddovase was created to make digital play safe, joyful, and educational. Our mission is to help children learn through games while giving parents peace of mind through transparency and control."
-        keywords="about Kiddovase, mission, kids education, online safety, family platform"
-        canonicalUrl="https://kiddovase.com/about"
-      />
+        title="About — Kiddovase"
+        description="Learn more about About on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/about`}
+      ></Seo>
 
       <Navbar />
 

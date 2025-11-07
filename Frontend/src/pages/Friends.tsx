@@ -88,11 +88,12 @@ const Friends = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Seo
-          title="Friends & Safe Social Play"
-          description="Build friendships and enjoy positive social play in a safe, moderated environment. Kiddovase ensures that every chat and interaction is secure, age-appropriate, and respectful."
-          keywords="safe chat, kids social play, moderated communication, child-friendly community, online safety for kids"
-          canonicalUrl="https://kiddovase.com/friends"
-        />
+          title="Friends — Kiddovase"
+          description="Manage friends and safe social features on Kiddovase."
+          canonicalUrl={`${window.location.origin}/friends`}
+        >
+          <meta name="robots" content="noindex, nofollow" />
+        </Seo>
         <Navbar />
         <div className="container mx-auto px-4 py-8 flex-grow">
           <div className="text-center py-12">

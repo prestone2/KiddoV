@@ -72,7 +72,7 @@ const Parents = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Parents Guide | Keeping Your Child Safe on KiddoVase"
+        title="Parents Guide | Keeping Your Child Safe on kiddovase"
         description="Discover how KiddoVase helps parents protect their children online with content filters, chat restrictions, and age-appropriate gaming experiences."
         keywords="parents guide, kid safety, online games for kids, parental controls, child privacy, internet safety, family-friendly games"
         canonicalUrl="https://kiddovase.com/parents"

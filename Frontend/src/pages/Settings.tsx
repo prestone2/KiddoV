@@ -78,11 +78,12 @@ const Settings = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Seo
-          title="Settings & Privacy"
-          description="Manage your Kiddovase account, privacy, and parental settings in one place. Configure safe chat, content filters, and notification preferences designed with families in mind."
-          keywords="privacy settings, parental controls, kids safety, family preferences"
-          canonicalUrl="https://kiddovase.com/settings"
-        />
+          title="Settings — Kiddovase"
+          description="Manage your Kiddovase account preferences and privacy settings."
+          canonicalUrl={`${window.location.origin}/settings`}
+        >
+          <meta name="robots" content="noindex, nofollow" />
+        </Seo>
 
         <Navbar />
         <div className="container mx-auto px-4 py-8 flex-grow">

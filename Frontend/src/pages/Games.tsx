@@ -37,11 +37,10 @@ const Games = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Fun & Educational Games for Kids"
-        description="Explore hundreds of safe and fun games for children on Kiddovase. Each game is carefully designed to inspire creativity, improve learning, and provide a joyful, secure experience for kids of all ages."
-        keywords="kids games, educational games, safe play, fun learning, learning through games, child development games"
-        canonicalUrl="https://kiddovase.com/games"
-      />
+        title="Games — Kiddovase"
+        description="Explore kid-safe, educational games on Kiddovase. Browse puzzles, adventures, and creative challenges designed for fun learning."
+        canonicalUrl={`${window.location.origin}/games`}
+      ></Seo>
 
       <Navbar />
 
@@ -57,14 +56,34 @@ const Games = () => {
             <span>Filter</span>
           </Button>
         </div>
-        <p className="text-gray-600 mb-6">
-          Explore Kiddovase’s world of safe and educational games designed for
-          fun learning. Choose from puzzles, adventures, and creativity-boosting
-          challenges. Each title is carefully moderated and parent-approved,
-          ensuring children can enjoy digital play that inspires imagination and
-          growth.
-        </p>
-
+        <div className="mt-6 mb-6 space-y-4 leading-relaxed">
+          <p>
+            At Kiddovase, play is more than fun — it’s a powerful way for
+            children to learn and grow. Every game on our platform has been
+            designed or selected to spark creativity, build logical reasoning,
+            and encourage teamwork. Whether kids are solving puzzles, exploring
+            virtual worlds, or expressing themselves through art-based
+            challenges, they’re always learning in a safe, ad-free environment.
+          </p>
+          <p>
+            Our games are organized into educational categories like
+            problem-solving, memory building, science adventures, and creative
+            design. This helps parents and teachers easily find experiences that
+            match a child’s interests or academic goals. All games are moderated
+            to ensure they meet Kiddovase’s safety standards and maintain a
+            positive, inclusive environment.
+          </p>
+          <p>
+            As children progress, they unlock achievements and digital rewards
+            that celebrate curiosity and persistence rather than competition.
+            These badges motivate kids to keep exploring and developing
+            confidence through discovery.
+          </p>
+          <p>
+            Kiddovase believes in play with purpose — blending entertainment
+            with education to help kids thrive both online and offline.
+          </p>
+        </div>
         {filterOpen && (
           <div className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -128,7 +147,6 @@ const Games = () => {
             </div>
           </div>
         )}
-
         <Tabs defaultValue="popular">
           <TabsList className="mb-8">
             <TabsTrigger value="popular">Popular</TabsTrigger>

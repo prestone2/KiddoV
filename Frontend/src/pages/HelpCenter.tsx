@@ -126,11 +126,10 @@ const HelpCenter = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Seo
-        title="Help Center – Safe Play & Support for Families"
-        description="Search FAQs, browse help categories, and learn how Kiddovase keeps your child’s gaming experience safe, educational, and fun."
-        keywords="help center, support, FAQ, child safety, parental guide, Kiddovase"
-        canonicalUrl="https://kiddovase.com/help-center"
-      />
+        title="HelpCenter — Kiddovase"
+        description="Learn more about HelpCenter on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/help-center`}
+      ></Seo>
       <Navbar />
 
       {/* Hero */}

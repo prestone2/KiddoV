@@ -47,11 +47,10 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Seo
-        title="Play, Learn, and Grow Safely"
-        description="Welcome to Kiddovase — the ultimate child-safe gaming platform where kids can play fun educational games, chat with friends safely, and learn through creativity. Empower your child with a safe, positive, and playful online world designed just for them."
-        keywords="kids games, educational games, child-safe gaming, fun learning platform, safe online games for kids, parental controls"
-        canonicalUrl="https://kiddovase.com/"
-      />
+        title="Home — Kiddovase"
+        description="Learn more about Home on Kiddovase — a safe and educational gaming platform for kids."
+        canonicalUrl={`${window.location.origin}/`}
+      ></Seo>
 
       <FancyCursor />
       <Navbar />

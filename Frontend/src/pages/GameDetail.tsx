@@ -168,32 +168,34 @@ const GameDetail = () => {
 
       <div className="min-h-screen flex flex-col">
         <Seo
-          title={
-            game
-              ? `${game.Title} – Play Safe & Educational Games for Kids | Kiddovase`
-              : "Play Safe & Educational Games for Kids | Kiddovase"
-          }
+          title={`${game?.Title ?? "Game"} — Kiddovase`}
           description={
-            game
-              ? `Play ${game.Title} on Kiddovase — a ${
-                  game.Genres
-                } game designed for children to learn, explore, and have fun safely online. ${
-                  game.Description ||
-                  "Enjoy interactive learning experiences and creative play in a secure environment built just for kids."
-                }`
-              : "Discover Kiddovase’s library of safe, educational, and fun online games for children. Learn through play and enjoy a secure, family-friendly experience."
+            game?.Description?.slice(0, 160) ||
+            `Play ${
+              game?.Title ?? "this fun game"
+            } safely on Kiddovase — educational and kid-friendly.`
           }
-          keywords={
-            game
-              ? `${game.Title}, ${game.Genres}, kids games, educational games, learning through play, safe online games, child-friendly platform, Kiddovase`
-              : "kids games, educational games, safe learning, online play, fun for children, Kiddovase games"
-          }
-          canonicalUrl={
-            game
-              ? `https://kiddovase.com/games/${game.Id}`
-              : "https://kiddovase.com/games"
-          }
-        />
+          canonicalUrl={`${window.location.origin}/games/${id}`}
+        >
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "VideoGame",
+              name: game?.Title,
+              url: `${window.location.origin}/games/${id}`,
+              image: gameImage,
+              description:
+                game?.Description ||
+                "Play, Learn, and Grow Safely on Kiddovase.",
+              genre: game?.Genres,
+              author: game?.Developer
+                ? { "@type": "Organization", name: game.Developer }
+                : undefined,
+              applicationCategory: "Game",
+              operatingSystem: "Web",
+            })}
+          </script>
+        </Seo>
 
         <Navbar />
 

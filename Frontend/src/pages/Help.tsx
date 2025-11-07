@@ -48,21 +48,35 @@ const Help = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Seo
-        title="Help & Support – Learn, Stay Safe, and Play Confidently"
-        description="Get support for Kiddovase — from parental controls to safe chat settings. Find guides, FAQs, and tutorials to help your child play and learn safely online."
-        keywords="help, support, safety, parental guide, FAQ, Kiddovase help center"
-        canonicalUrl="https://kiddovase.com/help"
-      />
+        title="Help — Kiddovase"
+        description="Find answers about safety, privacy, accounts, and troubleshooting in the Kiddovase Help Center."
+        canonicalUrl={`${window.location.origin}/help`}
+      ></Seo>
+
       <Navbar />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-[#8d0b41] to-[#a60e4d] text-white py-16 text-center">
         <h1 className="text-4xl font-bold mb-3">Need Help?</h1>
-        <p className="text-lg opacity-90">
-          The Kiddovase Help Center provides answers for parents, players, and
-          developers. Learn about safety, privacy, account management, and
-          troubleshooting common issues.
-        </p>
+        <div className="mt-6 space-y-4 leading-relaxed">
+          <p>
+            Welcome to the Kiddovase Help Center! This is your one-stop guide
+            for getting answers about accounts, safety, privacy, and gameplay.
+            Whether you’re a parent or a young explorer, our help articles are
+            written in simple language to make problem-solving quick and easy.
+          </p>
+          <p>
+            You’ll find tutorials for setting up accounts, managing passwords,
+            and reporting issues safely. Parents can learn how Kiddovase keeps
+            user data private and how our team handles moderation across games
+            and chats.
+          </p>
+          <p>
+            If you ever get stuck, the “Contact Support” option connects you
+            directly with our team. We’re here to help every player enjoy
+            Kiddovase safely and confidently.
+          </p>
+        </div>
         <Link to="/help-center">
           <Button className="mt-6 bg-white text-[#8d0b41] hover:bg-pink-100 rounded-full px-6 py-3 font-semibold">
             Go to Help Center

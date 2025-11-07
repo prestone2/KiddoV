@@ -363,11 +363,12 @@ const Login = () => {
         style={{ backgroundImage: `url(${bgImage})` }}
       >
         <Seo
-          title="Login"
-          description="Securely log in to your Kiddovase account to continue safe play, learning, and exploration in our trusted kids platform."
-          keywords="login, secure access, kids account, parental approved login"
-          canonicalUrl="https://kiddovase.com/login"
-        />
+          title="Login — Kiddovase"
+          description="Access your Kiddovase account securely."
+          canonicalUrl={`${window.location.origin}/login`}
+        >
+          <meta name="robots" content="noindex, nofollow" />
+        </Seo>
 
         <motion.div
           className="max-w-md w-full bg-white rounded-lg shadow-xl p-8"
