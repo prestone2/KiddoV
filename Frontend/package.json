@@ -73,6 +73,9 @@
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react-swc": "^3.5.0",
+        "@vue/compiler-sfc": "^3.5.24",
+        "@vue/server-renderer": "^3.5.24",
+        "@vueuse/head": "^2.0.0",
         "autoprefixer": "^10.4.20",
         "eslint": "^9.9.0",
         "eslint-plugin-react-hooks": "^5.1.0-rc.0",
@@ -85,6 +88,7 @@
         "typescript": "^5.5.3",
         "typescript-eslint": "^8.0.1",
         "vite": "^5.4.19",
-        "vite-plugin-prerender": "^1.0.8"
+        "vite-ssg": "^28.2.2",
+        "vue-router": "^4.0.13"
     }
 }
