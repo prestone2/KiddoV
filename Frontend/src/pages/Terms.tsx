@@ -8,7 +8,7 @@ const Terms = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Seo
-        title="Terms — Kiddovase"
+        title="Terms & Conditions — Kiddovase"
         description="Read the Kiddovase Terms of Service — learn about user conduct, parental supervision, content ownership, and our child-safety policies."
         canonicalUrl={`${window.location.origin}/terms`}
       ></Seo>
