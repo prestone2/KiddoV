@@ -97,7 +97,7 @@ const GameCard: React.FC<GameCardProps> = ({
 
         {/* Play button overlay */}
         {canAccessGame ? (
-          <Link to={`/games/${id}`} onClick={handleGameClick}>
+          <Link to={`/play/${id}`} onClick={handleGameClick}>
             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
               <div
                 className={`bg-roblox-blue text-white rounded-full ${
@@ -114,7 +114,7 @@ const GameCard: React.FC<GameCardProps> = ({
               <Lock className="w-6 h-6 mx-auto mb-1" />
               <p className="text-xs font-medium">Premium Required</p>
               {!isAuthenticated ? (
-                <Link to={`/login?returnUrl=${encodeURIComponent(`/games/${id}`)}`} className="text-xs underline hover:no-underline">
+                <Link to={`/login?returnUrl=${encodeURIComponent(`/play/${id}`)}`} className="text-xs underline hover:no-underline">
                   Sign In to Continue
                 </Link>
               ) : (
@@ -129,7 +129,7 @@ const GameCard: React.FC<GameCardProps> = ({
 
       <CardContent className={`${size === "small" ? "p-2" : "p-4"}`}>
         {canAccessGame ? (
-          <Link to={`/games/${id}`} className="block" onClick={handleGameClick}>
+          <Link to={`/play/${id}`} className="block" onClick={handleGameClick}>
             <h3
               className={`font-semibold mb-1 group-hover:text-roblox-blue transition-colors line-clamp-1 ${
                 size === "small" ? "text-sm" : "text-lg"

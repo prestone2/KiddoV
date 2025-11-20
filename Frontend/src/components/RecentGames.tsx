@@ -193,7 +193,7 @@ const SimpleGameCard: React.FC<SimpleGameCardProps> = ({
   return (
     <div className="group flex flex-col items-center"> {/* Removed Card wrapper */}
       <div className="relative flex flex-col items-center">
-        <Link to={`/games/${id}`} onClick={handleGameClick}>
+        <Link to={`/play/${id}`} onClick={handleGameClick}>
           <img 
             src={imageUrl}
             alt={title}

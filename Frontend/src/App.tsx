@@ -34,6 +34,7 @@ import Safety from "./pages/Safety";
 import Terms from "./pages/Terms";
 import Privacy from '@/pages/Privacy';
 import Cookies from '@/pages/Cookies';
+import GamePlay from "@/pages/GamePlay";
 import CookieConsent from '@/components/CookieConsent';
 import ResetPassword from '@/pages/ResetPassword';
 import AvatarCustomization from './pages/AvatarCustomization';
@@ -56,7 +57,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/games" element={<Games />} />
-            <Route path="/games/:id" element={<GameDetail />} />
+            <Route path="/play/:id" element={<GamePlay />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/friends" element={<Friends />} />
